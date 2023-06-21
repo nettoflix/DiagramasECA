@@ -3,29 +3,28 @@
 #include <QDebug>
 #include <QPalette>
 class Widget;
-Diagram::Diagram(QWidget *parent, QString name) :
+Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     QPushButton(parent),
     ui(new Ui::Diagram)
 {
     ui->setupUi(this);
-    this->parent = dynamic_cast<Widget*>(parent);
+    this->mainWidget = mainWidget;//dynamic_cast<Widget*>(parent);
+    this->parent = parent;
     this->name = name;
-
     this->setStyleSheet("background-color: yellow; margin-top: 50px;");
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     this->setFixedSize(300,200);
     ui->label->setText(name);
-
     connect(this, SIGNAL(clicked()), this, SLOT(setActive()));
-    connect(this, SIGNAL(checkPrerequisites()), parent, SLOT(checkPrerequisitesEvent()));
+    connect(this, SIGNAL(checkPrerequisites()), mainWidget, SLOT(checkPrerequisitesEvent()));
     connect(this, SIGNAL(clicked()), this, SLOT(buildLines()));
 
     for(int i=0; i<8; i++)
-    {
-        lines.append(new ConnectingLine(parent));
+   {
+     // lines.append(new ConnectingLine(parent));
     }
 
-    //lines.append(new ConnectingLine(parent));
+   lines.append(new ConnectingLine(parent));
     //lines[0]->addPoint(*new QPoint(100,100));
     //lines[0]->addPoint(*new QPoint(300,200));
 }
@@ -74,22 +73,23 @@ void Diagram::setPrerequisites(QVector<Diagram*> *prerequisites)
 
 void Diagram::addPointToLine(QPoint point)
 {
-    qDebug() << "Point: " << point;
-qDebug() << "lineIndex: " << lineIndex;
-qDebug() << "lines size: " << lines.size();
+    //qDebug() << "Point: " << point;
+//qDebug() << "lineIndex: " << lineIndex;
+//qDebug() << "lines size: " << lines.size();
 lines[lineIndex]->addPoint(point);
 }
 
 void Diagram::addNewLine()
 {
-    QWidget* parentPtr = parent;
-    lines.append(new ConnectingLine(parentPtr));
+    //QWidget* parentPtr = this->parent;
+    lines.append(new ConnectingLine(parent));
+    this->parent->updateGeometry();
 }
 
 void Diagram::incIndex()
 {
 this->lineIndex++;
-if(lineIndex>=lines.size()) lineIndex = 0;
+//if(lineIndex>=lines.size()) lineIndex = 0;
 }
 
 bool Diagram::operator==(const Diagram &other) const
@@ -121,10 +121,11 @@ void Diagram::setActive()
 
 void Diagram::buildLines()
 {
-        if(parent->getState() == States::WaitingFor) //state is waitingFlorClick
+        Widget* l_parent = dynamic_cast<Widget*>(mainWidget);
+        if(l_parent->getState() == States::WaitingFor) //state is waitingFlorClick
         {
-            parent->setState(States::AddingPoints);
-            parent->setCurrentDiagram(this);
+            l_parent->setState(States::AddingPoints);
+            l_parent->setCurrentDiagram(this);
             //adicionandoPontos = true;
             qDebug() << "BuldingLines";
 

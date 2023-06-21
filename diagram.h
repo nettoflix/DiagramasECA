@@ -18,12 +18,13 @@ class Diagram : public QPushButton
     Q_OBJECT
 
 public:
-    explicit Diagram(QWidget *parent = nullptr, QString name="");
+    explicit Diagram(QWidget *parent = nullptr,QWidget *mainWidget = nullptr ,QString name="");
     ~Diagram();
    // QPushButton* button;
 
     Ui::Diagram *ui;
-    Widget *parent;
+    QWidget *mainWidget;
+    QWidget *parent;
     QString name;
     int lineIndex = 0;
     bool adicionandoPontos = false;

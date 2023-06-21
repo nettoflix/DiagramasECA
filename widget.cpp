@@ -6,6 +6,7 @@
 
 #include <QDebug>
 #include <QScrollArea>
+#include <QScrollBar>
 
 
 
@@ -19,49 +20,66 @@ Widget::Widget(QWidget *parent)
     //this->waitingForClick = false;
     //ui->setupUi(this);
     qDebug() << "Main Widget Geometry" <<this->geometry();
+
     QBoxLayout* mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
 
-    //
-       MTM_3110 = new Diagram(this, "Calculo 1");
-      FSC_5101 = new Diagram(this, "Física 1");
+    QWidget *container = new QWidget;
+
+    //container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    container->setGeometry(0,0, 800,800);
+    //mainLayout->addWidget(container);
+
+    QGridLayout* gridLayout = new QGridLayout;
+    container->setLayout(gridLayout);
+
+    QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setWidget(container);
+    scrollArea->setWidgetResizable(true);
+    mainLayout->addWidget(scrollArea);
+
+    MTM_3110 = new Diagram(container, this, "Calculo 1");
+    FSC_5101 = new Diagram(container, this, "Física 1");
     //QPoint FSC_5101_pos = QPoint()
     //
-    FSC_5002 = new Diagram(this, "Física 2");
-    MTM_3120 = new Diagram(this,"Calculo 2");
-    QWidget *container = new QWidget;
-     mainLayout->addWidget(container);
-    QGridLayout* containerLayout = new QGridLayout;
-    container->setLayout(containerLayout);
-    //QScrollArea *scrollArea = new QScrollArea;
-    // Set the container as the widget for the scroll area
-    //scrollArea->setWidget(container);
-    //scrollArea->setWidgetResizable(true);
-    //containerLayout->addWidget(scrollArea);
+    FSC_5002 = new Diagram(container, this, "Física 2");
+    MTM_3120 = new Diagram(container, this,"Calculo 2");
+
+
 
     //primeiro semestre (coluna 0)
-    containerLayout->addWidget(MTM_3110, 0,0);
-    containerLayout->addWidget(FSC_5101,1,0);
+    gridLayout->addWidget(MTM_3110, 0,0);
+    MTM_3110->setMinimumSize(300, 300);  // Set the minimum size
+    gridLayout->addWidget(FSC_5101,1,0);
+    FSC_5101->setMinimumSize(300, 300);
     //segundo semestre (coluna 1)
-    containerLayout->addWidget(FSC_5002,0,1);
-    containerLayout->addWidget(MTM_3120,1,1);
-      // QVector<Diagram*>* FSC_5002_reqs = new QVector<Diagram*>();
-      // FSC_5002_reqs->append(FSC_5101);
-       // FSC_5002->setPrerequisites(FSC_5002_reqs);
+    gridLayout->addWidget(FSC_5002,2,0);
+    FSC_5002->setMinimumSize(300, 300);
+    gridLayout->addWidget(MTM_3120,3,0);
+    MTM_3120->setMinimumSize(300, 300);
+
+
+    verticalScrollBar = scrollArea->verticalScrollBar();
+    // Get the horizontal scroll bar
+    horizontalScrollBar = scrollArea->horizontalScrollBar();
 
     diagrams.append(MTM_3110);
     diagrams.append(MTM_3120);
-    //diagrams.append(FSC_5101);
-    //diagrams.append(FSC_5002);
+    diagrams.append(FSC_5101);
+    diagrams.append(FSC_5002);
 
 
+    QRect combinedRect = container->childrenRect();
+
+    // Access the width and height
+   containerWidth = combinedRect.width();
+    containerHeight = combinedRect.height();
 }
 void Widget::showEvent(QShowEvent *event){
       // Your custom code here
 
-     // qDebug() << "Widget is about to be shown!";
-    //  QPoint globalPos1 = FSC_5101->pos();//FSC_5101->mapToGlobal(QPoint(0, 0));
-   //  qDebug() << "FSC_5101 position: " << globalPos1;
+     qDebug() << "Widget is about to be shown!";
+     qDebug() << "containerWidth and height: " << containerWidth << " | " << containerHeight;
 
       //fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {FSC_5101->mapToGlobal(QPoint(0, 0)),FSC_5002->mapToGlobal(QPoint(0, 0))});
     // QPoint globalPos2 = FSC_5002->pos();//FSC_5002->mapToGlobal(QPoint(0, 0));
@@ -178,7 +196,8 @@ void Widget::loadLines()
                 qDebug()<<"loaded X [ij] " << pointObject.value("x").toInt();
                 qDebug()<<"loaded y [ij] " << pointObject.value("y").toInt() <<"[" <<i<<j << "]";
                 QPoint point = QPoint(pointObject.value("x").toInt(), pointObject.value("y").toInt());
-                diagram->lines[i]->addPoint(point);
+               diagram->lines[i]->addPoint(point);
+               // diagram->lines.append(new ConnectingLine(this));
             }
 
         }
@@ -199,7 +218,7 @@ void Widget::mousePressEvent(QMouseEvent *event)
         break;
     default:
 
-        qDebug() << "MousePos: "<< mousePos;
+//        qDebug() << "MousePos: "<< mousePos;
     break;
     }
     }
@@ -266,9 +285,15 @@ QByteArray Widget::readFile(QString fileName)
 void Widget::paintEvent(QPaintEvent *)
 {
     //qDebug() << "MainWidget Position: " << this->mapToGlobal(QPoint(0,0));
+//qDebug() << "OI";
+// Get the current scroll positions
+//int verticalScrollPosition = verticalScrollBar->value();
+//int horizontalScrollPosition = horizontalScrollBar->value();
 
-    QPainter painter(this);
-   // painter.drawLine(QLineF(200,200,400,400));
+//qDebug() << verticalScrollPosition;
+//qDebug() << horizontalScrollPosition;
+ QPainter painter(this);
+ //painter.drawLine(QLineF(200,300,400,400));
 }
 void Widget::resizeEvent(QResizeEvent *event)
     {
@@ -310,8 +335,8 @@ void Widget::keyPressEvent(QKeyEvent *event)
             qDebug() << "Plus";
             if(currentDiagram != nullptr)
             {
-                qDebug() << "Plus2";
-               // currentDiagram->addNewLine();
+            //    qDebug() << "Plus2";
+               //currentDiagram->addNewLine();
                currentDiagram->incIndex();
             }
         break;

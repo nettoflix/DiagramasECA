@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QPainter>
+#include <QScrollBar>
 #include <QWidget>
 //#include "diagram.h"
 #include "connectingline.h"
@@ -50,8 +51,14 @@ private:
     QPoint FSC_5101_pos;
     QPoint FSC_5002_pos;
     bool waitingForClick;
+    QScrollBar* verticalScrollBar;
+    QScrollBar* horizontalScrollBar;
     void writeFile(QString fileName, QString content);
     QByteArray readFile(QString fileName);
+
+
+    int containerWidth=0;
+    int containerHeight=0;
 protected:
        void paintEvent(QPaintEvent *) override;
        void showEvent(QShowEvent *event) override;
