@@ -17,7 +17,8 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QTextStream>
-
+#include <QScrollArea>
+#include <QScrollBar>
 class Diagram;
 namespace Ui { class Widget; }
 
@@ -44,15 +45,35 @@ private:
     QVector<Diagram*> diagrams;
     ConnectingLine* fsc5101_to_fsc5002;
     ConnectingLine* mtm3110_to_fsc5002;
+
+
     Diagram* MTM_3110;
     Diagram* MTM_3120;
     Diagram* FSC_5101;
     Diagram* FSC_5002;
+    Diagram* encheLinguica1;
+    Diagram* encheLinguica2;
+    Diagram* encheLinguica3;
+    Diagram* encheLinguica4;
+    Diagram* encheLinguica5;
+    Diagram* encheLinguica6;
+    Diagram* encheLinguica7;
+    Diagram* encheLinguica8;
+    Diagram* encheLinguica9;
+    Diagram* encheLinguica10;
+    Diagram* encheLinguica11;
+    Diagram* encheLinguica12;
+
+
+
     QPoint FSC_5101_pos;
     QPoint FSC_5002_pos;
     bool waitingForClick;
     QScrollBar* verticalScrollBar;
     QScrollBar* horizontalScrollBar;
+    QPoint oldMousePos;
+    bool use_oldH_mousePos=false;
+     bool use_oldV_mousePos=false;
     void writeFile(QString fileName, QString content);
     QByteArray readFile(QString fileName);
 
@@ -64,6 +85,8 @@ protected:
        void showEvent(QShowEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
         void keyPressEvent(QKeyEvent* event) override;
+        void keyReleaseEvent(QKeyEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
+
 };
 #endif // WIDGET_H

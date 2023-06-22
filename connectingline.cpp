@@ -20,7 +20,7 @@ ConnectingLine::~ConnectingLine()
 }
 void ConnectingLine::setColor(Qt::GlobalColor color)
 {
-    qDebug()<< "Line Color is set to " << color;
+   // qDebug()<< "Line Color is set to " << color;
 this->color = color;
 }
 void ConnectingLine::setPoints(QList<QPoint> points)
@@ -48,7 +48,7 @@ QList<QPoint> ConnectingLine::getPoints()
 void ConnectingLine::addPoint(QPoint point)
 {
     this->points->append(point);
-    qDebug() << "points size" << points->size();
+   // qDebug() << "points size" << points->size();
 }
 
 void ConnectingLine::paintEvent(QPaintEvent *event)
@@ -56,7 +56,7 @@ void ConnectingLine::paintEvent(QPaintEvent *event)
 
     // qDebug("PAINTING LINE");
       QPainter painter(this);
-       painter.drawLine(QLineF(100,100,1500,700));
+     //  painter.drawLine(QLineF(100,100,1500,700));
         //painter.drawLine(m_start, m_end);
      // qDebug() << "Points size " << points->size();
       //QLine line = QLine(QPoint(410,593),QPoint(1117,396));

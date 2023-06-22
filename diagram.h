@@ -43,6 +43,11 @@ signals:
 public slots:
     void setActive();
     void buildLines();
+    void paintDiagramColorAndLines(bool onoff);
+    void paintDiagramColor(QString color);
+    void paintDiagramLines(Qt::GlobalColor color);
+
+
 private:
     bool active=false;
 };

@@ -5,8 +5,7 @@
 
 
 #include <QDebug>
-#include <QScrollArea>
-#include <QScrollBar>
+
 
 
 
@@ -33,7 +32,7 @@ Widget::Widget(QWidget *parent)
     QGridLayout* gridLayout = new QGridLayout;
     container->setLayout(gridLayout);
 
-    QScrollArea *scrollArea = new QScrollArea;
+    QScrollArea* scrollArea = new QScrollArea;
     scrollArea->setWidget(container);
     scrollArea->setWidgetResizable(true);
     mainLayout->addWidget(scrollArea);
@@ -44,21 +43,64 @@ Widget::Widget(QWidget *parent)
     //
     FSC_5002 = new Diagram(container, this, "Física 2");
     MTM_3120 = new Diagram(container, this,"Calculo 2");
+    //
+    encheLinguica1 = new Diagram(container, this,"encheLinguica1");
+    encheLinguica2= new Diagram(container, this, "encheLinguica2");
+    encheLinguica3= new Diagram(container, this, "encheLinguica3");
+    encheLinguica4= new Diagram(container, this, "encheLinguica4");
+    encheLinguica5= new Diagram(container, this, "encheLinguica5");
+    encheLinguica6= new Diagram(container, this, "encheLinguica6");
+    encheLinguica7= new Diagram(container, this, "encheLinguica6");
+    encheLinguica8= new Diagram(container, this, "encheLinguica6");
+    encheLinguica9= new Diagram(container, this, "encheLinguica6");
+    encheLinguica10= new Diagram(container, this, "encheLinguica6");
+    encheLinguica11= new Diagram(container, this, "encheLinguica6");
+    encheLinguica12= new Diagram(container, this, "encheLinguica6");
 
-
+     gridLayout->setHorizontalSpacing(500);
 
     //primeiro semestre (coluna 0)
     gridLayout->addWidget(MTM_3110, 0,0);
-    MTM_3110->setMinimumSize(300, 300);  // Set the minimum size
+
     gridLayout->addWidget(FSC_5101,1,0);
-    FSC_5101->setMinimumSize(300, 300);
+
     //segundo semestre (coluna 1)
     gridLayout->addWidget(FSC_5002,2,0);
-    FSC_5002->setMinimumSize(300, 300);
+
     gridLayout->addWidget(MTM_3120,3,0);
+
+
+    gridLayout->addWidget(encheLinguica1, 0,1);
+    gridLayout->addWidget(encheLinguica2, 1,1);
+    gridLayout->addWidget(encheLinguica3, 2,1);
+    gridLayout->addWidget(encheLinguica4, 3,1);
+    gridLayout->addWidget(encheLinguica5, 4,1);
+    gridLayout->addWidget(encheLinguica6, 5,1);
+    gridLayout->addWidget(encheLinguica7, 0,2);
+    gridLayout->addWidget(encheLinguica8, 1,2);
+    gridLayout->addWidget(encheLinguica9, 2,2);
+    gridLayout->addWidget(encheLinguica10, 3,2);
+    gridLayout->addWidget(encheLinguica11, 4,2);
+    gridLayout->addWidget(encheLinguica12, 5,2);
+
+    MTM_3110->setMinimumSize(300, 300);  // Set the minimum size
+    FSC_5101->setMinimumSize(300, 300);
+    FSC_5002->setMinimumSize(300, 300);
     MTM_3120->setMinimumSize(300, 300);
+    encheLinguica1->setMinimumSize(300, 300);
+    encheLinguica2->setMinimumSize(300, 300);
+    encheLinguica3->setMinimumSize(300, 300);
+    encheLinguica4->setMinimumSize(300, 300);
+    encheLinguica5->setMinimumSize(300, 300);
+    encheLinguica6->setMinimumSize(300, 300);
+    encheLinguica7->setMinimumSize(300, 300);
+    encheLinguica8->setMinimumSize(300, 300);
+    encheLinguica9->setMinimumSize(300, 300);
+    encheLinguica10->setMinimumSize(300, 300);
+    encheLinguica11->setMinimumSize(300, 300);
+    encheLinguica12->setMinimumSize(300, 300);
 
-
+    encheLinguica1->setPrerequisites(new QVector<Diagram*>{MTM_3110, FSC_5101});
     verticalScrollBar = scrollArea->verticalScrollBar();
     // Get the horizontal scroll bar
     horizontalScrollBar = scrollArea->horizontalScrollBar();
@@ -67,6 +109,7 @@ Widget::Widget(QWidget *parent)
     diagrams.append(MTM_3120);
     diagrams.append(FSC_5101);
     diagrams.append(FSC_5002);
+    diagrams.append(encheLinguica1);
 
 
     QRect combinedRect = container->childrenRect();
@@ -209,17 +252,40 @@ void Widget::mousePressEvent(QMouseEvent *event)
     qDebug() << "State: " << this->state;
     if (event->button() == Qt::LeftButton) {
      QPoint mousePos = event->pos();
+
+     //if  "H" is pressed, return mouse pos with old horizontal pos
+     if(use_oldH_mousePos)
+     {
+     mousePos = QPoint(mousePos.x(), oldMousePos.y());
+     oldMousePos = mousePos;
+     }
+     else if(use_oldV_mousePos)
+     {
+     mousePos = QPoint(oldMousePos.x(), mousePos.y());
+     oldMousePos = mousePos;
+     }
+     else
+     {
+        oldMousePos = mousePos;
+     }
+     //if "V" is pressed, return mouse pos with old vertical pos
+
+
+
+     int verticalScrollPosition = verticalScrollBar->value();
+     int horizontalScrollPosition = horizontalScrollBar->value();
+     QPoint mousePosMapped(horizontalScrollPosition+ mousePos.x(), verticalScrollPosition+ mousePos.y());
+     //qDebug() << "MousePos relatively to screen: "<< mousePos;
+     //qDebug() << "MousePos relatively to scroll area: "<< mousePos2;
     switch(this->state)
     {
     case WaitingFor:
         break;
     case AddingPoints:
-    this->currentDiagram->addPointToLine(mousePos);
+    this->currentDiagram->addPointToLine(mousePosMapped);
         break;
     default:
-
-//        qDebug() << "MousePos: "<< mousePos;
-    break;
+        break;
     }
     }
 }
@@ -230,13 +296,13 @@ void Widget::checkPrerequisitesEvent()
      qInfo("checking prerequisetes in widget.cpp");
     for(Diagram* diagram: diagrams)
     {
-        if(diagram->isOpen())
+        if(diagram->isOpen() && !diagram->isActive())
         {
-            diagram->setStyleSheet("background-color: red;");
+            diagram->paintDiagramColor("green");
         }
-        else
+        else if (!diagram->isActive())
         {
-          diagram->setStyleSheet("background-color: yellow;");
+            diagram->paintDiagramColor("yellow");
         }
    }
 
@@ -287,8 +353,7 @@ void Widget::paintEvent(QPaintEvent *)
     //qDebug() << "MainWidget Position: " << this->mapToGlobal(QPoint(0,0));
 //qDebug() << "OI";
 // Get the current scroll positions
-//int verticalScrollPosition = verticalScrollBar->value();
-//int horizontalScrollPosition = horizontalScrollBar->value();
+
 
 //qDebug() << verticalScrollPosition;
 //qDebug() << horizontalScrollPosition;
@@ -348,10 +413,35 @@ void Widget::keyPressEvent(QKeyEvent *event)
             qDebug() << "Loading Lines";
             loadLines();
         break;
+        case Qt::Key_H:
+            use_oldH_mousePos = true;
+        break;
+        case Qt::Key_V:
+            use_oldV_mousePos = true;
+
+        break;
+        default:
+
+        break;
     }
     //event->key();
     // Call the base class implementation
     QWidget::keyPressEvent(event);
+}
+
+void Widget::keyReleaseEvent(QKeyEvent *event)
+{
+    switch(event->key())
+    {
+    break;
+    case Qt::Key_H:
+        use_oldH_mousePos = false;
+    break;
+    case Qt::Key_V:
+        use_oldH_mousePos = false;
+    break;
+
+    }
 }
 void Widget::setState(States state)
 {

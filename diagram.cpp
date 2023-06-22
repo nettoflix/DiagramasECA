@@ -21,10 +21,10 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
 
     for(int i=0; i<8; i++)
    {
-     // lines.append(new ConnectingLine(parent));
+      lines.append(new ConnectingLine(parent));
     }
 
-   lines.append(new ConnectingLine(parent));
+   //lines.append(new ConnectingLine(parent));
     //lines[0]->addPoint(*new QPoint(100,100));
     //lines[0]->addPoint(*new QPoint(300,200));
 }
@@ -60,7 +60,7 @@ bool Diagram::isOpen() const
            }
            else
            {
-               open = isActive();
+               open = true;
                qDebug("PREREQUISITES IS NULLPTR");
            }
             return open;
@@ -105,18 +105,62 @@ return qHash(key.objectName());
 void Diagram::setActive()
 {
     //qDebug() << this->pos();
-    if(this->active)
-    {this->active = false;
-    this->setStyleSheet("background-color: yellow; margin-top: 50px;");
+    if(this->isOpen())
+    {
+         emit checkPrerequisites();
+        if(this->active) //desativando
+        {
+            this->active = false;
+            this->paintDiagramColor("green");
 
+            this->paintDiagramLines(Qt::red);
+           // paintDiagramColorAndLines(false);
+        }
+        else //ativando
+        {
+            this->active=true;
+            this->paintDiagramColor("blue");
+            this->paintDiagramLines(Qt::blue);
+           // paintDiagramColorAndLines(true);
+        }
 
+    }
+
+}
+void Diagram:: paintDiagramColor(QString color)
+{
+       this->setStyleSheet("background-color:" + color+ "; margin-top: 50px;");
+}
+void Diagram:: paintDiagramLines(Qt::GlobalColor color)
+{
+    for(ConnectingLine *line : this->lines)
+    {
+        line->setColor(color);
+    }
+}
+void Diagram:: paintDiagramColorAndLines(bool onoff)
+{
+
+    if(onoff == true)
+    {
+        qDebug() << "OI";
+       this->setStyleSheet("background-color: green; margin-top: 50px;");
+        for(ConnectingLine *line : this->lines)
+        {
+            line->setColor(Qt::blue);
+        }
     }
     else
-    {this->active=true;
-  this->setStyleSheet("background-color: green; margin-top: 50px;");
+    {
+        qDebug() << "NAO OI";
+        this->setStyleSheet("background-color: yellow; margin-top: 50px;");
+        for(ConnectingLine *line : this->lines)
+        {
+          line->setColor(Qt::red);
+        }
+
 
     }
-    emit checkPrerequisites();
 }
 
 void Diagram::buildLines()
