@@ -19,6 +19,8 @@
 #include <QTextStream>
 #include <QScrollArea>
 #include <QScrollBar>
+
+#include "fasetitle.h"
 class Diagram;
 namespace Ui { class Widget; }
 
@@ -50,7 +52,29 @@ private:
     Diagram* MTM_3110;
     Diagram* MTM_3120;
     Diagram* FSC_5101;
+
+
+    Diagram* DAS_5334;
+    Diagram* DAS_5411;
+    Diagram* ECZ_5102;
+    Diagram*EGR_5606;
+    //SEGUNDA FASE
+    Diagram* EEL_5105;
+    Diagram* DAS_5102;
+    Diagram* MTM_3121;
+    Diagram* FSC_5122;
     Diagram* FSC_5002;
+
+
+
+
+
+
+
+
+
+
+
     Diagram* encheLinguica1;
     Diagram* encheLinguica2;
     Diagram* encheLinguica3;

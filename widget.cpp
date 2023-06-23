@@ -18,6 +18,7 @@ Widget::Widget(QWidget *parent)
     this->state = States::Off;
     //this->waitingForClick = false;
     //ui->setupUi(this);
+
     qDebug() << "Main Widget Geometry" <<this->geometry();
 
     QBoxLayout* mainLayout = new QVBoxLayout;
@@ -37,70 +38,65 @@ Widget::Widget(QWidget *parent)
     scrollArea->setWidgetResizable(true);
     mainLayout->addWidget(scrollArea);
 
+    //PRIMEIRA FASE
     MTM_3110 = new Diagram(container, this, "Calculo 1");
     FSC_5101 = new Diagram(container, this, "Física 1");
-    //QPoint FSC_5101_pos = QPoint()
-    //
+    DAS_5334 = new Diagram(container, this, "Introdução à informática para Automação");
+    DAS_5411= new Diagram(container, this, "Introdução à Engenheria de Controle e Automação");
+    ECZ_5102 = new Diagram(container, this, "Conservação dos Recursos Naturais");
+    EGR_5606 = new Diagram(container, this, "Desenho Técnico para Automação");
+    //SEGUNDA FASE
     FSC_5002 = new Diagram(container, this, "Física 2");
+    EEL_5105 = new Diagram(container, this,"Circuitos e Técnicas Digitais");
+    DAS_5102 = new Diagram(container, this,"Fundamentos da Estrutura da Informação");
+    MTM_3121 = new Diagram(container, this,"Algebra Linear");
     MTM_3120 = new Diagram(container, this,"Calculo 2");
+    FSC_5122 = new Diagram(container, this,"Física Experimental");
     //
-    encheLinguica1 = new Diagram(container, this,"encheLinguica1");
-    encheLinguica2= new Diagram(container, this, "encheLinguica2");
-    encheLinguica3= new Diagram(container, this, "encheLinguica3");
-    encheLinguica4= new Diagram(container, this, "encheLinguica4");
-    encheLinguica5= new Diagram(container, this, "encheLinguica5");
-    encheLinguica6= new Diagram(container, this, "encheLinguica6");
-    encheLinguica7= new Diagram(container, this, "encheLinguica6");
-    encheLinguica8= new Diagram(container, this, "encheLinguica6");
-    encheLinguica9= new Diagram(container, this, "encheLinguica6");
-    encheLinguica10= new Diagram(container, this, "encheLinguica6");
-    encheLinguica11= new Diagram(container, this, "encheLinguica6");
-    encheLinguica12= new Diagram(container, this, "encheLinguica6");
+   // encheLinguica1 = new Diagram(container, this,"encheLinguica1");
+  //  encheLinguica2= new Diagram(container, this, "encheLinguica2");
+//    encheLinguica3= new Diagram(container, this, "encheLinguica3");
+//    encheLinguica4= new Diagram(container, this, "encheLinguica4");
+//    encheLinguica5= new Diagram(container, this, "encheLinguica5");
+//    encheLinguica6= new Diagram(container, this, "encheLinguica6");
+//    encheLinguica7= new Diagram(container, this, "encheLinguica7");
+//    encheLinguica8= new Diagram(container, this, "encheLinguica8");
+//    encheLinguica9= new Diagram(container, this, "encheLinguica9");
+//    encheLinguica10= new Diagram(container, this, "encheLinguica10");
+//    encheLinguica11= new Diagram(container, this, "encheLinguica11");
+    //encheLinguica12= new Diagram(container, this, "encheLinguica12");
 
-     gridLayout->setHorizontalSpacing(500);
+     gridLayout->setHorizontalSpacing(200);
 
-    //primeiro semestre (coluna 0)
-    gridLayout->addWidget(MTM_3110, 0,0);
+    //PRIMEIRA FASE (coluna 0)
+    QWidget* fase1 = new FaseTitle(this, "1º fase");
+    gridLayout->addWidget(fase1, 0,0);
+    gridLayout->addWidget(MTM_3110, 1,0);
+    gridLayout->addWidget(FSC_5101,2,0);
+    gridLayout->addWidget(DAS_5334,3,0);
+    gridLayout->addWidget(DAS_5411,4,0);
+    gridLayout->addWidget(ECZ_5102,5,0);
+    gridLayout->addWidget(EGR_5606,6,0);
 
-    gridLayout->addWidget(FSC_5101,1,0);
+    //SEGUNDA FASE (coluna 1)
+    QWidget* fase2 = new FaseTitle(this, "2º fase");
+    gridLayout->addWidget(fase2, 0,1);
+    gridLayout->addWidget(FSC_5002,1,1);
+    gridLayout->addWidget(MTM_3120,2,1);
+    gridLayout->addWidget(EEL_5105,3,1);
+    gridLayout->addWidget(DAS_5102,4,1);
+    gridLayout->addWidget(MTM_3121,5,1);
+    gridLayout->addWidget(FSC_5122,6,1);
 
-    //segundo semestre (coluna 1)
-    gridLayout->addWidget(FSC_5002,2,0);
-
-    gridLayout->addWidget(MTM_3120,3,0);
 
 
-    gridLayout->addWidget(encheLinguica1, 0,1);
-    gridLayout->addWidget(encheLinguica2, 1,1);
-    gridLayout->addWidget(encheLinguica3, 2,1);
-    gridLayout->addWidget(encheLinguica4, 3,1);
-    gridLayout->addWidget(encheLinguica5, 4,1);
-    gridLayout->addWidget(encheLinguica6, 5,1);
-    gridLayout->addWidget(encheLinguica7, 0,2);
-    gridLayout->addWidget(encheLinguica8, 1,2);
-    gridLayout->addWidget(encheLinguica9, 2,2);
-    gridLayout->addWidget(encheLinguica10, 3,2);
-    gridLayout->addWidget(encheLinguica11, 4,2);
-    gridLayout->addWidget(encheLinguica12, 5,2);
 
-    MTM_3110->setMinimumSize(300, 300);  // Set the minimum size
-    FSC_5101->setMinimumSize(300, 300);
-    FSC_5002->setMinimumSize(300, 300);
-    MTM_3120->setMinimumSize(300, 300);
-    encheLinguica1->setMinimumSize(300, 300);
-    encheLinguica2->setMinimumSize(300, 300);
-    encheLinguica3->setMinimumSize(300, 300);
-    encheLinguica4->setMinimumSize(300, 300);
-    encheLinguica5->setMinimumSize(300, 300);
-    encheLinguica6->setMinimumSize(300, 300);
-    encheLinguica7->setMinimumSize(300, 300);
-    encheLinguica8->setMinimumSize(300, 300);
-    encheLinguica9->setMinimumSize(300, 300);
-    encheLinguica10->setMinimumSize(300, 300);
-    encheLinguica11->setMinimumSize(300, 300);
-    encheLinguica12->setMinimumSize(300, 300);
 
-    encheLinguica1->setPrerequisites(new QVector<Diagram*>{MTM_3110, FSC_5101});
+
+
+ //   encheLinguica1->setPrerequisites(new QVector<Diagram*>{MTM_3110, FSC_5101});
+  //  encheLinguica2->setPrerequisites(new QVector<Diagram*>{MTM_3120, FSC_5002});
+   // qDebug() << encheLinguica1->prerequisites->size();
     verticalScrollBar = scrollArea->verticalScrollBar();
     // Get the horizontal scroll bar
     horizontalScrollBar = scrollArea->horizontalScrollBar();
@@ -108,8 +104,27 @@ Widget::Widget(QWidget *parent)
     diagrams.append(MTM_3110);
     diagrams.append(MTM_3120);
     diagrams.append(FSC_5101);
-    diagrams.append(FSC_5002);
-    diagrams.append(encheLinguica1);
+    diagrams.append(FSC_5002);   
+    diagrams.append(DAS_5334);
+    diagrams.append(DAS_5411);
+    diagrams.append(ECZ_5102);
+    diagrams.append(EGR_5606);
+    diagrams.append(EEL_5105);
+    diagrams.append(DAS_5102);
+    diagrams.append(MTM_3121);
+    diagrams.append(FSC_5122);
+    //diagrams.append(encheLinguica1);
+    //diagrams.append(encheLinguica2);
+   // diagrams.append(encheLinguica3);
+  //  diagrams.append(encheLinguica4);
+  //  diagrams.append(encheLinguica5);
+  //  diagrams.append(encheLinguica6);
+  //  diagrams.append(encheLinguica7);
+   // diagrams.append(encheLinguica8);
+ //   diagrams.append(encheLinguica9);
+  //  diagrams.append(encheLinguica10);
+  //  diagrams.append(encheLinguica11);
+ //   diagrams.append(encheLinguica12);
 
 
     QRect combinedRect = container->childrenRect();
@@ -154,15 +169,6 @@ void Widget::setCurrentDiagram(Diagram *diagram)
 //CONTINUE FROM HERE!!!!!!!!!!!!!!!!!!
 void Widget::saveLines()
 {
-    //for all diagrams
-    //save its name and all its lines to a file
-  //  for(Diagram* diagram : diagrams)
-   // {
-     //   for(int i=0; i<diagram->lines.size(); i++)
-       // {
-
-       // }
-    //}
         QJsonObject mainObject;
         QJsonObject diagramsObject;
 
@@ -250,6 +256,8 @@ void Widget::loadLines()
 void Widget::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "State: " << this->state;
+    qDebug() << "H state: " << this->use_oldH_mousePos;
+     qDebug() << "V state: " << this->use_oldV_mousePos;
     if (event->button() == Qt::LeftButton) {
      QPoint mousePos = event->pos();
 
@@ -298,11 +306,12 @@ void Widget::checkPrerequisitesEvent()
     {
         if(diagram->isOpen() && !diagram->isActive())
         {
-            diagram->paintDiagramColor("green");
+            //qDebug() << diagram->name << " is open!";
+            diagram->paintDiagramColor(MyConstants::my_blue);
         }
-        else if (!diagram->isActive())
+        else if (!diagram->isActive() | !diagram->isOpen())
         {
-            diagram->paintDiagramColor("yellow");
+            diagram->paintDiagramColor(MyConstants::my_red);
         }
    }
 
@@ -438,7 +447,7 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
         use_oldH_mousePos = false;
     break;
     case Qt::Key_V:
-        use_oldH_mousePos = false;
+        use_oldV_mousePos = false;
     break;
 
     }

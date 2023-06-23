@@ -74,12 +74,11 @@ void ConnectingLine::paintEvent(QPaintEvent *event)
          // QLine line = QLine(points->at(i), points->at(i+1));
           QLine line = QLine(point1,point2);
           QPen pen(color); // set the pen color to red
+          pen.setWidth(4);
           painter.setPen(pen); //
           painter.drawLine(line);
 
        }
 update();
-
-
 
 }

@@ -28,11 +28,15 @@ SOURCES += \
     widget.cpp \
     connectingline.cpp \
     diagram.cpp \
+    myconstants.cpp \
+    fasetitle.cpp
 
 HEADERS += \
     widget.h \
     connectingline.h \
     diagram.h \
+    myconstants.h \
+    fasetitle.h
 
 FORMS += \
     widget.ui \

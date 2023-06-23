@@ -8,7 +8,8 @@
 #include <QStyleFactory>
 #include "connectingline.h"
 #include "widget.h"
-
+#include <QLabel>
+#include "myconstants.h"
 namespace Ui {
 class Diagram;
 }
@@ -43,7 +44,6 @@ signals:
 public slots:
     void setActive();
     void buildLines();
-    void paintDiagramColorAndLines(bool onoff);
     void paintDiagramColor(QString color);
     void paintDiagramLines(Qt::GlobalColor color);
 

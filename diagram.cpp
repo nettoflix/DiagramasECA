@@ -2,19 +2,35 @@
 #include "./ui_diagram.h"
 #include <QDebug>
 #include <QPalette>
+
+
 class Widget;
 Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     QPushButton(parent),
     ui(new Ui::Diagram)
 {
-    ui->setupUi(this);
+    //ui->setupUi(this);
     this->mainWidget = mainWidget;//dynamic_cast<Widget*>(parent);
     this->parent = parent;
     this->name = name;
-    this->setStyleSheet("background-color: yellow; margin-top: 50px;");
-    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    this->paintDiagramColor(MyConstants::my_green);
+    //this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     this->setFixedSize(300,200);
-    ui->label->setText(name);
+
+    QVBoxLayout* layout = new QVBoxLayout(this);  // Create a vertical layout
+    layout->setContentsMargins(0, 0, 0, 0);  // Remove margins
+
+
+    QLabel* label = new QLabel(this);
+    QFont f( "Arial", 14);
+    label->setFont( f);
+
+
+    label->setText(name);
+    label->setAlignment(Qt::AlignCenter);
+    layout->addWidget(label);
+
+    //ui->label->setText(name);
     connect(this, SIGNAL(clicked()), this, SLOT(setActive()));
     connect(this, SIGNAL(checkPrerequisites()), mainWidget, SLOT(checkPrerequisitesEvent()));
     connect(this, SIGNAL(clicked()), this, SLOT(buildLines()));
@@ -43,7 +59,7 @@ Diagram::~Diagram()
 bool Diagram::isOpen() const
 {
     bool open=true;
-        qDebug()<< "ISS OPEN?:";
+       // qDebug()<< "ISS OPEN?:";
         if(prerequisites != nullptr)
            {
                //QList<Diagram*> keys = prerequisites->value();
@@ -54,14 +70,14 @@ bool Diagram::isOpen() const
                    {
                     open=false;
                     //prerequisite->setColor(Qt::blue);
-                    qDebug()<< "pre requisite is NOT active!";
+                   // qDebug()<< "pre requisite in" <<this->name <<"is NOT active!";
                     }
                }
            }
            else
            {
                open = true;
-               qDebug("PREREQUISITES IS NULLPTR");
+               //qDebug("PREREQUISITES IS NULLPTR");
            }
             return open;
 }
@@ -107,11 +123,11 @@ void Diagram::setActive()
     //qDebug() << this->pos();
     if(this->isOpen())
     {
-         emit checkPrerequisites();
+
         if(this->active) //desativando
         {
             this->active = false;
-            this->paintDiagramColor("green");
+            this->paintDiagramColor(MyConstants::my_blue);
 
             this->paintDiagramLines(Qt::red);
            // paintDiagramColorAndLines(false);
@@ -119,17 +135,20 @@ void Diagram::setActive()
         else //ativando
         {
             this->active=true;
-            this->paintDiagramColor("blue");
+            this->paintDiagramColor(MyConstants::my_green);
             this->paintDiagramLines(Qt::blue);
            // paintDiagramColorAndLines(true);
         }
+        emit checkPrerequisites();
 
     }
 
 }
-void Diagram:: paintDiagramColor(QString color)
+void Diagram:: paintDiagramColor(QString colorHex)
 {
-       this->setStyleSheet("background-color:" + color+ "; margin-top: 50px;");
+   // QString borderColor = "#FF0000"; // Hex color code for red
+       QString colorStr = QString("%1").arg(colorHex);
+       this->setStyleSheet("background-color:" + colorStr+ "; margin-top: 50px; border: 3px solid black");
 }
 void Diagram:: paintDiagramLines(Qt::GlobalColor color)
 {
@@ -138,30 +157,7 @@ void Diagram:: paintDiagramLines(Qt::GlobalColor color)
         line->setColor(color);
     }
 }
-void Diagram:: paintDiagramColorAndLines(bool onoff)
-{
 
-    if(onoff == true)
-    {
-        qDebug() << "OI";
-       this->setStyleSheet("background-color: green; margin-top: 50px;");
-        for(ConnectingLine *line : this->lines)
-        {
-            line->setColor(Qt::blue);
-        }
-    }
-    else
-    {
-        qDebug() << "NAO OI";
-        this->setStyleSheet("background-color: yellow; margin-top: 50px;");
-        for(ConnectingLine *line : this->lines)
-        {
-          line->setColor(Qt::red);
-        }
-
-
-    }
-}
 
 void Diagram::buildLines()
 {
