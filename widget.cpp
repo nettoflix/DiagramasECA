@@ -52,21 +52,54 @@ Widget::Widget(QWidget *parent)
     MTM_3121 = new Diagram(container, this,"Algebra Linear");
     MTM_3120 = new Diagram(container, this,"Calculo 2");
     FSC_5122 = new Diagram(container, this,"Física Experimental");
-    //
-   // encheLinguica1 = new Diagram(container, this,"encheLinguica1");
-  //  encheLinguica2= new Diagram(container, this, "encheLinguica2");
-//    encheLinguica3= new Diagram(container, this, "encheLinguica3");
-//    encheLinguica4= new Diagram(container, this, "encheLinguica4");
-//    encheLinguica5= new Diagram(container, this, "encheLinguica5");
-//    encheLinguica6= new Diagram(container, this, "encheLinguica6");
-//    encheLinguica7= new Diagram(container, this, "encheLinguica7");
-//    encheLinguica8= new Diagram(container, this, "encheLinguica8");
-//    encheLinguica9= new Diagram(container, this, "encheLinguica9");
-//    encheLinguica10= new Diagram(container, this, "encheLinguica10");
-//    encheLinguica11= new Diagram(container, this, "encheLinguica11");
-    //encheLinguica12= new Diagram(container, this, "encheLinguica12");
+    //TERCEIRA FASE
+    DAS_5332 = new Diagram(container, this,"Arquit. e Prog. de Sistemas Microcontrolados");
+    DAS_5210 = new Diagram(container, this,"Introdução ao Controle de Processos");
+    MTM_3131 = new Diagram(container, this,"Equações Diferenciais Ordinárias");
+    MTM_3103= new Diagram(container, this,"Cálculo 3");
+    FSC_5113= new Diagram(container, this,"Física 3");
+    ECV_5215= new Diagram(container, this,"Mecânica dos Sólidos 1");
+    //QUARTA FASE
+    DAS_5307 = new Diagram(container, this,"Sistemas de Automação Discreta");
+    DAS_5308 = new Diagram(container, this,"Programação de Sistemas Automatizados");
+    DAS_5103 = new Diagram(container, this,"Cálculo Numérico para Controle e Automação");
+    DAS_5114 = new Diagram(container, this,"Sinais e Sistemas Lineares");
+    EEL_7540 = new Diagram(container, this,"Circuitos Elétricos para Automação");
+    INE_5108 = new Diagram(container, this,"Estatística e Probabilidade para Ciências Exatas");
+    //QUINTA FASE
+    DAS_5203 = new Diagram(container, this,"Modelagem e Controle de Sist. a Eventos Discretos");
+    DAS_5312 = new Diagram(container, this,"Metodolodia para Desenv. de Sistemas");
+    EMC_5425 = new Diagram(container, this,"Fênenomenos de Transporte");
+    DAS_5109 = new Diagram(container, this,"Modelagem e Simulação de Processos");
+    EEL_7550 = new Diagram(container, this,"Eletrônica Aplicada");
+    EMC_5235 = new Diagram(container, this,"Metrologia Industrial");
+    //SEXTA FASE
+    CNM_7820 = new Diagram(container, this,"Aspectos Econômicos e Sociais da Automação");
+    DAS_5314= new Diagram(container, this,"Redes de Computadores para Automação Industrial");
+    EMC_5467 = new Diagram(container, this,"Acionamentos Hidráulicos e Pneum. para Automação");
+    DAS_5120 = new Diagram(container, this,"Sistemas de Controle");
+    EEL_5193 = new Diagram(container, this,"Máquina e Acionamentos Elétricos para Automação");
+    DAS_5151 = new Diagram(container, this,"Instrumentação em controle");
+    //SÉTIMA FASE
+    EMC_5258 = new Diagram(container, this,"Inrodução à Automação da Manafatura");
+    DAS_5104 = new Diagram(container, this,"Projeto Integrador");
+    DAS_5142 = new Diagram(container, this,"Sistemas Dinâmicos");
+    EMC_5251 = new Diagram(container, this,"Introdução à Robótica Industrial");
+    EEL_5354 = new Diagram(container, this,"Eletrotécnica para automação");
+    DAS_5310 = new Diagram(container, this,"Avaliação de Des. de Sist. da Automação Discreta");
+    //OITAVA FASE
+    DAS_5501 = new Diagram(container, this,"Estágio em Controle e Automação");
+    DAS_5401 = new Diagram(container, this,"Aspectos de Seg. em Sist. de Controle e Automação");
+    OPT_PROF8 = new Diagram(container, this,"Optativas Profissionalizantes");
+    EPS_5211= new Diagram(container, this,"Programação Econômica e Financeira");
+    //NONA FASE
+    OPT_PROF16 = new Diagram(container, this,"Optativas Profissionalizantes(16)");
+    OPT_LIVR = new Diagram(container, this,"Optativas Livres");
+    //DÉCIMA FASE
+    DAS_5511 = new Diagram(container, this,"Projeto de Fim de Curso");
 
-     gridLayout->setHorizontalSpacing(200);
+
+     gridLayout->setHorizontalSpacing(100);
 
     //PRIMEIRA FASE (coluna 0)
     QWidget* fase1 = new FaseTitle(this, "1º fase");
@@ -87,12 +120,67 @@ Widget::Widget(QWidget *parent)
     gridLayout->addWidget(DAS_5102,4,1);
     gridLayout->addWidget(MTM_3121,5,1);
     gridLayout->addWidget(FSC_5122,6,1);
-
-
-
-
-
-
+    //TERCEIRA FASE (coluna 2)
+    QWidget* fase3 = new FaseTitle(this, "3º fase");
+    gridLayout->addWidget(fase3,0,2);
+    gridLayout->addWidget(DAS_5332,1,2);
+    gridLayout->addWidget(DAS_5210,2,2);
+    gridLayout->addWidget(MTM_3131,3,2);
+    gridLayout->addWidget(MTM_3103,4,2);
+    gridLayout->addWidget(FSC_5113,5,2);
+    gridLayout->addWidget(ECV_5215,6,2);
+    //QUARTA FASE (coluna 3)
+    QWidget* fase4 = new FaseTitle(this, "4º fase");
+    gridLayout->addWidget(fase4,0,3);
+    gridLayout->addWidget(DAS_5307,1,3);
+    gridLayout->addWidget(DAS_5308,2,3);
+    gridLayout->addWidget(DAS_5103,3,3);
+    gridLayout->addWidget(DAS_5114,4,3);
+    gridLayout->addWidget(EEL_7540,5,3);
+    gridLayout->addWidget(INE_5108,6,3);
+    //QUINTA FASE (coluna 4)
+    QWidget* fase5 = new FaseTitle(this, "5º fase");
+    gridLayout->addWidget(fase5,0,4);
+    gridLayout->addWidget(DAS_5203,1,4);
+    gridLayout->addWidget(DAS_5312,2,4);
+    gridLayout->addWidget(EMC_5425,3,4);
+    gridLayout->addWidget(DAS_5109,4,4);
+    gridLayout->addWidget(EEL_7550,5,4);
+    gridLayout->addWidget(EMC_5235,6,4);
+    //SEXTA FASE (coluna 5)
+    QWidget* fase6 = new FaseTitle(this, "6º fase");
+    gridLayout->addWidget(fase6,0,5);
+    gridLayout->addWidget(CNM_7820,1,5);
+    gridLayout->addWidget(DAS_5314,2,5);
+    gridLayout->addWidget(EMC_5467,3,5);
+    gridLayout->addWidget(DAS_5120,4,5);
+    gridLayout->addWidget(EEL_5193,5,5);
+    gridLayout->addWidget(DAS_5151,6,5);
+    //SÉTIMA FASE (coluna 6)
+    QWidget* fase7 = new FaseTitle(this, "7º fase");
+    gridLayout->addWidget(fase7,0,6);
+    gridLayout->addWidget(EMC_5258,1,6);
+    gridLayout->addWidget(DAS_5104,2,6);
+    gridLayout->addWidget(DAS_5142,3,6);
+    gridLayout->addWidget(EMC_5251,4,6);
+    gridLayout->addWidget(EEL_5354,5,6);
+    gridLayout->addWidget(DAS_5310,6,6);
+    //OITAVA FASE (coluna 7)
+    QWidget* fase8 = new FaseTitle(this, "8º fase");
+    gridLayout->addWidget(fase8,0,7);
+    gridLayout->addWidget(DAS_5501,1,7);
+    gridLayout->addWidget(DAS_5401,2,7);
+    gridLayout->addWidget(OPT_PROF8,3,7);
+    gridLayout->addWidget(EPS_5211,4,7);
+    //NONA FASE (coluna 8)
+    QWidget* fase9 = new FaseTitle(this, "9º fase");
+    gridLayout->addWidget(fase9,0,8);
+    gridLayout->addWidget(OPT_PROF16,1,8);
+    gridLayout->addWidget(OPT_LIVR,2,8);
+    //DÉCIMA FASE (coluna 9)
+    QWidget* fase10 = new FaseTitle(this, "10º fase");
+    gridLayout->addWidget(fase10,0,9);
+    gridLayout->addWidget(DAS_5511,1,9);
 
  //   encheLinguica1->setPrerequisites(new QVector<Diagram*>{MTM_3110, FSC_5101});
   //  encheLinguica2->setPrerequisites(new QVector<Diagram*>{MTM_3120, FSC_5002});
@@ -113,18 +201,45 @@ Widget::Widget(QWidget *parent)
     diagrams.append(DAS_5102);
     diagrams.append(MTM_3121);
     diagrams.append(FSC_5122);
-    //diagrams.append(encheLinguica1);
-    //diagrams.append(encheLinguica2);
-   // diagrams.append(encheLinguica3);
-  //  diagrams.append(encheLinguica4);
-  //  diagrams.append(encheLinguica5);
-  //  diagrams.append(encheLinguica6);
-  //  diagrams.append(encheLinguica7);
-   // diagrams.append(encheLinguica8);
- //   diagrams.append(encheLinguica9);
-  //  diagrams.append(encheLinguica10);
-  //  diagrams.append(encheLinguica11);
- //   diagrams.append(encheLinguica12);
+    diagrams.append(DAS_5332);
+    diagrams.append(DAS_5210);
+    diagrams.append(MTM_3131);
+    diagrams.append(MTM_3103);
+    diagrams.append(FSC_5113);
+    diagrams.append(ECV_5215);
+
+    diagrams.append(DAS_5307);
+    diagrams.append(DAS_5308);
+    diagrams.append(DAS_5103);
+    diagrams.append(DAS_5114);
+    diagrams.append(EEL_7540);
+    diagrams.append(INE_5108);
+    diagrams.append(DAS_5203);
+    diagrams.append(DAS_5312);
+    diagrams.append(EMC_5425);
+    diagrams.append(DAS_5109);
+    diagrams.append(EEL_7550);
+    diagrams.append(EMC_5235);
+    diagrams.append(CNM_7820);
+    diagrams.append(DAS_5314);
+    diagrams.append(EMC_5467);
+    diagrams.append(DAS_5120);
+    diagrams.append(EEL_5193);
+    diagrams.append(DAS_5151);
+    diagrams.append(EMC_5258);
+    diagrams.append(DAS_5104);
+    diagrams.append(DAS_5142);
+    diagrams.append(EMC_5251);
+    diagrams.append(EEL_5354);
+    diagrams.append(DAS_5310);
+    diagrams.append(DAS_5501);
+    diagrams.append(DAS_5401);
+    diagrams.append(OPT_PROF8);
+    diagrams.append(EPS_5211);
+    diagrams.append(OPT_PROF16);
+    diagrams.append(OPT_LIVR);
+    diagrams.append(DAS_5511);
+
 
 
     QRect combinedRect = container->childrenRect();
@@ -150,10 +265,6 @@ void Widget::showEvent(QShowEvent *event){
 Widget::~Widget()
 {
     delete ui;
-    delete fsc5101_to_fsc5002;
-    delete FSC_5101;
-    delete FSC_5002;
-    delete MTM_3110;
     qDeleteAll(diagrams);
 }
 

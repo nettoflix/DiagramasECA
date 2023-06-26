@@ -15,16 +15,17 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     this->name = name;
     this->paintDiagramColor(MyConstants::my_green);
     //this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    this->setFixedSize(300,200);
+    this->setFixedSize(250,200);
 
     QVBoxLayout* layout = new QVBoxLayout(this);  // Create a vertical layout
-    layout->setContentsMargins(0, 0, 0, 0);  // Remove margins
+    //layout->setContentsMargins(5, 0, 5, 0);
 
 
     QLabel* label = new QLabel(this);
+    label->setStyleSheet("border: none;");
     QFont f( "Arial", 14);
     label->setFont( f);
-
+    label->setWordWrap(true); //break line if text is too big
 
     label->setText(name);
     label->setAlignment(Qt::AlignCenter);

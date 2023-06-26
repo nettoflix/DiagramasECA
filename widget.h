@@ -64,10 +64,51 @@ private:
     Diagram* MTM_3121;
     Diagram* FSC_5122;
     Diagram* FSC_5002;
-
-
-
-
+    //TERCEIRA FASE
+    Diagram* DAS_5332;
+    Diagram* DAS_5210;
+    Diagram* MTM_3131;
+    Diagram* MTM_3103;
+    Diagram* FSC_5113;
+    Diagram* ECV_5215;
+    //QUARTA FASE
+    Diagram* DAS_5307;
+    Diagram* DAS_5308;
+    Diagram* DAS_5103;
+    Diagram* DAS_5114;
+    Diagram* EEL_7540;
+    Diagram* INE_5108;
+    //QUINTA FASE
+    Diagram* DAS_5203;
+    Diagram* DAS_5312;
+    Diagram* EMC_5425;
+    Diagram* DAS_5109;
+    Diagram* EEL_7550;
+    Diagram* EMC_5235;
+    //SEXTA FASE
+    Diagram* CNM_7820;
+    Diagram* DAS_5314;
+    Diagram* EMC_5467;
+    Diagram* DAS_5120;
+    Diagram* EEL_5193;
+    Diagram* DAS_5151;
+    //SÉTIMA FASE
+    Diagram* EMC_5258;
+    Diagram* DAS_5104;
+    Diagram* DAS_5142;
+    Diagram* EMC_5251;
+    Diagram* EEL_5354;
+    Diagram* DAS_5310;
+    //OITAVA FASE
+    Diagram* DAS_5501;
+    Diagram* DAS_5401;
+    Diagram* OPT_PROF8;
+    Diagram* EPS_5211;
+    //NONA FASE
+    Diagram* OPT_PROF16;
+    Diagram* OPT_LIVR;
+    //DÉCIMA
+    Diagram* DAS_5511;
 
 
 
