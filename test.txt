@@ -1,84 +1,130 @@
 {
     "Diagramas": {
+        "Acionamentos Hidráulicos e Pneum. para Automação": [
+        ],
+        "Algebra Linear": [
+        ],
+        "Arquit. e Prog. de Sistemas Microcontrolados": [
+        ],
+        "Aspectos Econômicos e Sociais da Automação": [
+        ],
+        "Aspectos de Seg. em Sist. de Controle e Automação": [
+        ],
+        "Avaliação de Des. de Sist. da Automação Discreta": [
+        ],
         "Calculo 1": [
             [
                 {
-                    "x": 558,
-                    "y": 275
+                    "x": 281,
+                    "y": 327
                 },
                 {
-                    "x": 1274,
-                    "y": 275
+                    "x": 413,
+                    "y": 327
                 }
             ]
         ],
         "Calculo 2": [
-            [
-                {
-                    "x": 573,
-                    "y": 1196
-                },
-                {
-                    "x": 1225,
-                    "y": 1196
-                },
-                {
-                    "x": 1225,
-                    "y": 615
-                },
-                {
-                    "x": 1280,
-                    "y": 615
-                }
-            ]
+        ],
+        "Circuitos Elétricos para Automação": [
+        ],
+        "Circuitos e Técnicas Digitais": [
+        ],
+        "Conservação dos Recursos Naturais": [
+        ],
+        "Cálculo 3": [
+        ],
+        "Cálculo Numérico para Controle e Automação": [
+        ],
+        "Desenho Técnico para Automação": [
+        ],
+        "Eletrotécnica para automação": [
+        ],
+        "Eletrônica Aplicada": [
+        ],
+        "Equações Diferenciais Ordinárias": [
+        ],
+        "Estatística e Probabilidade para Ciências Exatas": [
+        ],
+        "Estágio em Controle e Automação": [
+        ],
+        "Fundamentos da Estrutura da Informação": [
+        ],
+        "Fênenomenos de Transporte": [
         ],
         "Física 1": [
             [
                 {
-                    "x": 558,
-                    "y": 577
+                    "x": 275,
+                    "y": 567
                 },
                 {
-                    "x": 1100,
-                    "y": 577
+                    "x": 349,
+                    "y": 567
                 },
                 {
-                    "x": 1100,
-                    "y": 328
+                    "x": 349,
+                    "y": 359
                 },
                 {
-                    "x": 1275,
-                    "y": 328
-                }
+                    "x": 418,
+                    "y": 359
+                }  
             ]
         ],
         "Física 2": [
-            [
-                {
-                    "x": 571,
-                    "y": 886
-                },
-                {
-                    "x": 1069,
-                    "y": 886
-                },
-                {
-                    "x": 1155,
-                    "y": 886
-                },
-                {
-                    "x": 1155,
-                    "y": 549
-                },
-                {
-                    "x": 1281,
-                    "y": 549
-                }
-            ]
         ],
-        "encheLinguica1": [
+        "Física 3": [
         ],
-        "encheLinguica2": [
+        "Física Experimental": [
+        ],
+        "Inrodução à Automação da Manafatura": [
+        ],
+        "Instrumentação em controle": [
+        ],
+        "Introdução ao Controle de Processos": [
+        ],
+        "Introdução à Engenheria de Controle e Automação": [
+        ],
+        "Introdução à Robótica Industrial": [
+        ],
+        "Introdução à informática para Automação": [
+        ],
+        "Mecânica dos Sólidos 1": [
+        ],
+        "Metodolodia para Desenv. de Sistemas": [
+        ],
+        "Metrologia Industrial": [
+        ],
+        "Modelagem e Controle de Sist. a Eventos Discretos": [
+        ],
+        "Modelagem e Simulação de Processos": [
+        ],
+        "Máquina e Acionamentos Elétricos para Automação": [
+        ],
+        "Optativas Livres": [
+        ],
+        "Optativas Profissionalizantes": [
+        ],
+        "Optativas Profissionalizantes(16)": [
+        ],
+        "Programação Econômica e Financeira": [
+        ],
+        "Programação de Sistemas Automatizados": [
+        ],
+        "Projeto Integrador": [
+        ],
+        "Projeto de Fim de Curso": [
+        ],
+        "Redes de Computadores para Automação Industrial": [
+        ],
+        "Sinais e Sistemas Lineares": [
+        ],
+        "Sistemas Dinâmicos": [
+        ],
+        "Sistemas de Automação Discreta": [
+        ],
+        "Sistemas de Controle": [
         ]
     }
 }
