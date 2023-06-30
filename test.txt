@@ -1,130 +1,277 @@
 {
     "Diagramas": {
-        "Acionamentos Hidráulicos e Pneum. para Automação": [
-        ],
-        "Algebra Linear": [
-        ],
-        "Arquit. e Prog. de Sistemas Microcontrolados": [
-        ],
-        "Aspectos Econômicos e Sociais da Automação": [
-        ],
-        "Aspectos de Seg. em Sist. de Controle e Automação": [
-        ],
-        "Avaliação de Des. de Sist. da Automação Discreta": [
-        ],
-        "Calculo 1": [
-            [
-                {
-                    "x": 281,
-                    "y": 327
-                },
-                {
-                    "x": 413,
-                    "y": 327
-                }
+        "Acionamentos Hidráulicos e Pneum. para Automação": {
+            "isActive": false,
+            "lines": [
             ]
-        ],
-        "Calculo 2": [
-        ],
-        "Circuitos Elétricos para Automação": [
-        ],
-        "Circuitos e Técnicas Digitais": [
-        ],
-        "Conservação dos Recursos Naturais": [
-        ],
-        "Cálculo 3": [
-        ],
-        "Cálculo Numérico para Controle e Automação": [
-        ],
-        "Desenho Técnico para Automação": [
-        ],
-        "Eletrotécnica para automação": [
-        ],
-        "Eletrônica Aplicada": [
-        ],
-        "Equações Diferenciais Ordinárias": [
-        ],
-        "Estatística e Probabilidade para Ciências Exatas": [
-        ],
-        "Estágio em Controle e Automação": [
-        ],
-        "Fundamentos da Estrutura da Informação": [
-        ],
-        "Fênenomenos de Transporte": [
-        ],
-        "Física 1": [
-            [
-                {
-                    "x": 275,
-                    "y": 567
-                },
-                {
-                    "x": 349,
-                    "y": 567
-                },
-                {
-                    "x": 349,
-                    "y": 359
-                },
-                {
-                    "x": 418,
-                    "y": 359
-                }  
+        },
+        "Algebra Linear": {
+            "isActive": false,
+            "lines": [
             ]
-        ],
-        "Física 2": [
-        ],
-        "Física 3": [
-        ],
-        "Física Experimental": [
-        ],
-        "Inrodução à Automação da Manafatura": [
-        ],
-        "Instrumentação em controle": [
-        ],
-        "Introdução ao Controle de Processos": [
-        ],
-        "Introdução à Engenheria de Controle e Automação": [
-        ],
-        "Introdução à Robótica Industrial": [
-        ],
-        "Introdução à informática para Automação": [
-        ],
-        "Mecânica dos Sólidos 1": [
-        ],
-        "Metodolodia para Desenv. de Sistemas": [
-        ],
-        "Metrologia Industrial": [
-        ],
-        "Modelagem e Controle de Sist. a Eventos Discretos": [
-        ],
-        "Modelagem e Simulação de Processos": [
-        ],
-        "Máquina e Acionamentos Elétricos para Automação": [
-        ],
-        "Optativas Livres": [
-        ],
-        "Optativas Profissionalizantes": [
-        ],
-        "Optativas Profissionalizantes(16)": [
-        ],
-        "Programação Econômica e Financeira": [
-        ],
-        "Programação de Sistemas Automatizados": [
-        ],
-        "Projeto Integrador": [
-        ],
-        "Projeto de Fim de Curso": [
-        ],
-        "Redes de Computadores para Automação Industrial": [
-        ],
-        "Sinais e Sistemas Lineares": [
-        ],
-        "Sistemas Dinâmicos": [
-        ],
-        "Sistemas de Automação Discreta": [
-        ],
-        "Sistemas de Controle": [
-        ]
+        },
+        "Arquit. e Prog. de Sistemas Microcontrolados": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Aspectos Econômicos e Sociais da Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Aspectos de Seg. em Sist. de Controle e Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Avaliação de Des. de Sist. da Automação Discreta": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Calculo 1": {
+            "isActive": true,
+            "lines": [
+                [
+                    {
+                        "x": 345,
+                        "y": 411
+                    },
+                    {
+                        "x": 352,
+                        "y": 518
+                    },
+                    {
+                        "x": 338,
+                        "y": 588
+                    },
+                    {
+                        "x": 352,
+                        "y": 703
+                    }
+                ],
+                [
+                    {
+                        "x": 336,
+                        "y": 812
+                    },
+                    {
+                        "x": 364,
+                        "y": 946
+                    }
+                ]
+            ]
+        },
+        "Calculo 2": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Circuitos Elétricos para Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Circuitos e Técnicas Digitais": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Conservação dos Recursos Naturais": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Cálculo 3": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Cálculo Numérico para Controle e Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Desenho Técnico para Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Eletrotécnica para automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Eletrônica Aplicada": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Equações Diferenciais Ordinárias": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Estatística e Probabilidade para Ciências Exatas": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Estágio em Controle e Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Fundamentos da Estrutura da Informação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Fênenomenos de Transporte": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Física 1": {
+            "isActive": true,
+            "lines": [
+            ]
+        },
+        "Física 2": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Física 3": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Física Experimental": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Inrodução à Automação da Manafatura": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Instrumentação em controle": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Introdução ao Controle de Processos": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Introdução à Engenheria de Controle e Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Introdução à Robótica Industrial": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Introdução à informática para Automação": {
+            "isActive": true,
+            "lines": [
+            ]
+        },
+        "Mecânica dos Sólidos 1": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Metodolodia para Desenv. de Sistemas": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Metrologia Industrial": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Modelagem e Controle de Sist. a Eventos Discretos": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Modelagem e Simulação de Processos": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Máquina e Acionamentos Elétricos para Automação": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Optativas Livres": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Optativas Profissionalizantes": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Optativas Profissionalizantes(16)": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Programação Econômica e Financeira": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Programação de Sistemas Automatizados": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Projeto Integrador": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Projeto de Fim de Curso": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Redes de Computadores para Automação Industrial": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Sinais e Sistemas Lineares": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Sistemas Dinâmicos": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Sistemas de Automação Discreta": {
+            "isActive": false,
+            "lines": [
+            ]
+        },
+        "Sistemas de Controle": {
+            "isActive": false,
+            "lines": [
+            ]
+        }
     }
 }

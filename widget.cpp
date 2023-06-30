@@ -282,15 +282,17 @@ void Widget::saveLines()
 {
         QJsonObject mainObject;
         QJsonObject diagramsObject;
-
+        QJsonObject diagramObj;
           for(Diagram* diagram : diagrams)
           {
+
               QJsonArray lines;
+              QJsonObject isActive;
               for(int i=0; i<diagram->lines.size(); i++)
               {
                   if(diagram->lines[i]->getPoints().size() != 0)
                   {
-                      QJsonArray lineArray;
+                      QJsonArray pointsArray;
                       for(QPoint point : diagram->lines[i]->getPoints())
                       {
                           QJsonObject pointObject;
@@ -298,11 +300,14 @@ void Widget::saveLines()
                           qDebug()<<" Saving Y:" << point.y();
                           pointObject.insert("x", point.x());
                           pointObject.insert("y", point.y());
-                          lineArray.push_back(pointObject);
+                          pointsArray.push_back(pointObject);
                       }
-                      lines.push_back(lineArray);
+                      lines.push_back(pointsArray);
                   }
-                diagramsObject.insert(diagram->name,lines);
+              //  isActive.insert()
+                diagramObj.insert("lines", lines);
+                diagramObj.insert("isActive", diagram->isActive());
+                diagramsObject.insert(diagram->name,diagramObj);
               }
           }
 
@@ -345,7 +350,11 @@ void Widget::loadLines()
 
     for(Diagram* diagram : diagrams)
     {
-        QJsonArray arr_allLines = diagramasObject.value(diagram->name).toArray();
+        QJsonObject diagramObj = diagramasObject.value(diagram->name).toObject();
+        QJsonArray arr_allLines = diagramObj.value("lines").toArray();
+        bool isActive = diagramObj.value("isActive").toBool();
+        if(isActive) diagram->setActive();
+        //QJsonArray arr_allLines = diagramasObject.value(diagram->name).toArray();
     qDebug()<<"Diagram: "<< diagram->name;
         for(int i=0; i<arr_allLines.size(); i++)
         {
