@@ -50,6 +50,7 @@ Diagram::~Diagram()
 {
     delete ui;
     qDeleteAll(lines);
+    delete prerequisites;
 }
 
  bool Diagram::isActive() const

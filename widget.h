@@ -37,10 +37,12 @@ public:
     void setCurrentDiagram(Diagram* diagram);
     void saveLines();
     void loadLines();
+    void initPrerequisites();
 public slots:
     void checkPrerequisitesEvent();
 
 private:
+    int tempCounter =0;
     States state= States::WaitingFor;
     Diagram *currentDiagram = nullptr;
     Ui::Widget *ui;

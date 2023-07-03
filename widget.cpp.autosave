@@ -466,6 +466,14 @@ void Widget::checkPrerequisitesEvent()
     for(Diagram* diagram: diagrams)
     {
         qDebug() << diagram->name << " isOpen=" << diagram->isOpen() << "isActive=" << diagram->isActive() << " "<<tempCounter;
+        for(Diagram* prereq : diagram->prerequisites)
+        {
+            if(!prereq->isActive())
+            {
+                //diagram->setActive();
+            }
+        }
+        
         if(diagram->isOpen() && !diagram->isActive())
         {
             diagram->paintDiagramColor(MyConstants::my_blue);
