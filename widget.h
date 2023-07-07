@@ -42,6 +42,7 @@ public slots:
     void checkPrerequisitesEvent();
 
 private:
+    qreal scaleFactor=1;
     int tempCounter =0;
     States state= States::WaitingFor;
     Diagram *currentDiagram = nullptr;
@@ -147,6 +148,7 @@ private:
 
     int containerWidth=0;
     int containerHeight=0;
+         bool eventFilter(QObject *watched, QEvent *evt);
 protected:
        void paintEvent(QPaintEvent *) override;
        void showEvent(QShowEvent *event) override;
@@ -154,6 +156,8 @@ protected:
         void keyPressEvent(QKeyEvent* event) override;
         void keyReleaseEvent(QKeyEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
+        void wheelEvent(QWheelEvent *event) override;
+
 
 };
 #endif // WIDGET_H

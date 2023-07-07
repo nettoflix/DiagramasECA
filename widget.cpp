@@ -36,6 +36,7 @@ Widget::Widget(QWidget *parent)
     QScrollArea* scrollArea = new QScrollArea;
     scrollArea->setWidget(container);
     scrollArea->setWidgetResizable(true);
+    scrollArea->viewport()->installEventFilter(this);
     mainLayout->addWidget(scrollArea);
 
     //PRIMEIRA FASE
@@ -398,7 +399,7 @@ void Widget::loadLines()
         QJsonObject diagramObj = diagramasObject.value(diagram->name).toObject();
         QJsonArray arr_allLines = diagramObj.value("lines").toArray();
         bool isActive = diagramObj.value("isActive").toBool();
-        if(isActive) diagram->setActive();
+        if(isActive) diagram->setActive(true);
         //QJsonArray arr_allLines = diagramasObject.value(diagram->name).toArray();
     qDebug()<<"Diagram: "<< diagram->name;
         for(int i=0; i<arr_allLines.size(); i++)
@@ -466,13 +467,19 @@ void Widget::checkPrerequisitesEvent()
     for(Diagram* diagram: diagrams)
     {
         qDebug() << diagram->name << " isOpen=" << diagram->isOpen() << "isActive=" << diagram->isActive() << " "<<tempCounter;
-        for(Diagram* prereq : diagram->prerequisites)
+        if(diagram->prerequisites != nullptr)
         {
-            if(!prereq->isActive())
-            {
-                //diagram->setActive();
-            }
+            qDebug() <<"Prereq Size: " <<diagram->prerequisites->size();
+              for(Diagram* prereq : *diagram->prerequisites)
+                {
+
+                if(!prereq->isActive())
+               {
+                    diagram->setActive(false);
+                }
+           //
         }
+       }
 
         if(diagram->isOpen() && !diagram->isActive())
         {
@@ -663,7 +670,61 @@ void Widget:: initPrerequisites()
     //EPS_5211->setPrerequisites(new QVector<Diagram*>{});
     //DAS_5511->setPrerequisites(new QVector<Diagram*>{});
 
+}
+void Widget::wheelEvent(QWheelEvent *event)
+{
+    // Calculate the zoom factor based on the mouse wheel delta
+           const qreal zoomInFactor = 1.1;
+           const qreal zoomOutFactor = 0.9;
+
+           const int numDegrees = event->delta() / 8;
+           const int numSteps = numDegrees / 15;
+            qDebug() << "WheelEvent: " << numSteps;
+
+           // Adjust the zoom factor based on the direction of the mouse wheel
+           if (event->delta() > 0) {
+               this->scaleFactor =1.1;
+           } else {
+               this->scaleFactor = 0.9;
+           }
 
 
+           // Calculate the new size based on the scale factor
+
+
+           // Calculate the new position to keep the widget centered
+           //int newX = this->x() - (scaledWidth - this->width()) / 2;
+           //int newY = this->y() - (scaledHeight - this->height()) / 2;
+
+           // Set the new size and position
+           //this->setGeometry(t, this->y(), scaledWidth, scaledHeight);
+           for(Diagram* diagram : diagrams)
+           {
+            int scaledWidth = diagram->width() * scaleFactor;
+            int scaledHeight = diagram->height() * scaleFactor;
+            diagram->setFixedSize(scaledWidth,scaledHeight);
+           }
+
+           // Limit the zoom factor to a certain range if needed
+           // scaleFactor = qBound(0.1, scaleFactor, 10.0);
+
+           // Apply the new scale factor to the transformation matrix
+           //update(); // Trigger a repaint to apply the new zoom factor
+           event->accept();
+}
+
+bool Widget::eventFilter(QObject *watched, QEvent *evt)
+{
+            if (evt->type() == QEvent::Wheel)
+             {
+                 // ignore the event (this effectively
+                 // makes it "skip" one object)
+                qDebug() <<"Wheel event in eventFilter";
+               //  evt->ignore();
+                 return true;
+             }
+             // return false to continue event propagation
+             // for all events
+             return false;
 }
 

@@ -15,6 +15,7 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     this->name = name;
     this->paintDiagramColor(MyConstants::my_green);
     //this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
     this->setFixedSize(250,200);
 
     QVBoxLayout* layout = new QVBoxLayout(this);  // Create a vertical layout
@@ -32,7 +33,7 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     layout->addWidget(label);
 
     //ui->label->setText(name);
-    connect(this, SIGNAL(clicked()), this, SLOT(setActive()));
+    connect(this, SIGNAL(clicked()), this, SLOT(setActive_slot()));
     connect(this, SIGNAL(checkPrerequisites()), mainWidget, SLOT(checkPrerequisitesEvent()));
     connect(this, SIGNAL(clicked()), this, SLOT(buildLines()));
 
@@ -120,31 +121,42 @@ uint Diagram::myQHash(const Diagram &key)
 return qHash(key.objectName());
 }
 
-void Diagram::setActive()
+void Diagram::setActive_slot()
 {
     //qDebug() << this->pos();
     if(this->isOpen())
     {
-
-        if(this->active) //desativando
+        if(this->active)
         {
-            this->active = false;
-            this->paintDiagramColor(MyConstants::my_blue);
-
-            this->paintDiagramLines(Qt::red);
-           // paintDiagramColorAndLines(false);
+            setActive(false);
         }
-        else //ativando
+        else
         {
-            this->active=true;
-            this->paintDiagramColor(MyConstants::my_green);
-            this->paintDiagramLines(Qt::blue);
-           // paintDiagramColorAndLines(true);
+            setActive(true);
         }
         emit checkPrerequisites();
 
     }
 
+}
+
+void Diagram::setActive(bool set)
+{
+    if(!set) //desativando
+    {
+        this->active = false;
+        this->paintDiagramColor(MyConstants::my_blue);
+
+        this->paintDiagramLines(Qt::red);
+       // paintDiagramColorAndLines(false);
+    }
+    else //ativando
+    {
+        this->active=true;
+        this->paintDiagramColor(MyConstants::my_green);
+        this->paintDiagramLines(Qt::blue);
+       // paintDiagramColorAndLines(true);
+    }
 }
 void Diagram:: paintDiagramColor(QString colorHex)
 {
@@ -159,6 +171,17 @@ void Diagram:: paintDiagramLines(Qt::GlobalColor color)
         line->setColor(color);
     }
 }
+
+
+
+//void Diagram::paintEvent(QPaintEvent *e)
+//{
+
+    //QPainter painter(this);
+  //  painter.setTransform(QTransform().scale(scaleFactor, scaleFactor));
+    // Draw your widgets and contents here
+   // QWidget::paintEvent(e);
+//}
 
 
 void Diagram::buildLines()

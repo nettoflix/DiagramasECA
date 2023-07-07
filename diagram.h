@@ -22,7 +22,6 @@ public:
     explicit Diagram(QWidget *parent = nullptr,QWidget *mainWidget = nullptr ,QString name="");
     ~Diagram();
    // QPushButton* button;
-
     Ui::Diagram *ui;
     QWidget *mainWidget;
     QWidget *parent;
@@ -42,11 +41,14 @@ public:
 signals:
     void checkPrerequisites();
 public slots:
-    void setActive();
+    void setActive_slot();
+    void setActive(bool set);
     void buildLines();
     void paintDiagramColor(QString color);
     void paintDiagramLines(Qt::GlobalColor color);
+protected:
 
+   // void paintEvent(QPaintEvent *e) override;
 
 private:
     bool active=false;
