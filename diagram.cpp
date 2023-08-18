@@ -16,7 +16,9 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     this->paintDiagramColor(MyConstants::my_green);
     //this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    this->setFixedSize(250,200);
+    this->setFixedSize(130,120);
+    //this->setMinimumSize(50,40);
+   // this->setMaximumSize(600,480);
 
     QVBoxLayout* layout = new QVBoxLayout(this);  // Create a vertical layout
     //layout->setContentsMargins(5, 0, 5, 0);
@@ -24,7 +26,7 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
 
     QLabel* label = new QLabel(this);
     label->setStyleSheet("border: none;");
-    QFont f( "Arial", 14);
+    QFont f( "Arial", 11);
     label->setFont( f);
     label->setWordWrap(true); //break line if text is too big
 
@@ -108,7 +110,17 @@ void Diagram::addNewLine()
 void Diagram::incIndex()
 {
 this->lineIndex++;
-//if(lineIndex>=lines.size()) lineIndex = 0;
+    //if(lineIndex>=lines.size()) lineIndex = 0;
+}
+
+void Diagram::decIndex()
+{
+  this->lineIndex--;
+}
+
+QList<QPoint>* Diagram::getCurrentLine()
+{
+ return this->lines[lineIndex]->points;
 }
 
 bool Diagram::operator==(const Diagram &other) const
@@ -193,6 +205,8 @@ void Diagram::buildLines()
             l_parent->setCurrentDiagram(this);
             //adicionandoPontos = true;
             qDebug() << "BuldingLines";
+            qDebug() << this->height()/2;
+            //adiciona o ponto inicial da linha perto do diagrama
 
         }
 

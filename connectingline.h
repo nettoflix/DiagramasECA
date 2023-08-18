@@ -11,12 +11,16 @@ class ConnectingLine : public QWidget
 public:
     explicit ConnectingLine(QWidget *parent);
     ~ConnectingLine();
+
+     QList<QPoint>* points;
+
     void setColor(Qt::GlobalColor color);
     void setStartPoint(QPoint start) { m_start = start; }
     void setEndPoint(QPoint end) { m_end = end; }
     void setPoints(QList<QPoint> points);
     QList<QPoint> getPoints();
     void addPoint(QPoint point);
+    void clearPoints();
    // void paintLine(QPainter &painter)
    // {
   //  qDebug() << "painting line";
@@ -35,7 +39,7 @@ private:
 
     QPoint m_start;
     QPoint m_end;
-    QList<QPoint>* points;
+
     Qt::GlobalColor color;
 
 };

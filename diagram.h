@@ -34,6 +34,8 @@ public:
     void addPointToLine(QPoint point);
     void addNewLine();
     void incIndex();
+    void decIndex();
+    QList<QPoint>* getCurrentLine();
     bool operator==(const Diagram &other) const;
     uint myQHash(const Diagram &key);
      QVector<Diagram*>* prerequisites= nullptr;

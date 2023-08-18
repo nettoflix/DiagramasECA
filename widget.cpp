@@ -18,25 +18,28 @@ Widget::Widget(QWidget *parent)
     this->state = States::Off;
     //this->waitingForClick = false;
     //ui->setupUi(this);
-
+    this->defaultDiagramWidth = 130;
+    this->defaultDiagramHeight= 120;
+    this->defaultSpaceWidth = 10;
+    this->defaultSpaceHeight = 10;
     qDebug() << "Main Widget Geometry" <<this->geometry();
 
     QBoxLayout* mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
 
-    QWidget *container = new QWidget;
+    container = new QWidget;
 
-    //container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    container->setGeometry(0,0, 800,800);
+    container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //container->setGeometry(0,0, 800,800);
     //mainLayout->addWidget(container);
 
-    QGridLayout* gridLayout = new QGridLayout;
+    this->gridLayout = new QGridLayout;
     container->setLayout(gridLayout);
 
     QScrollArea* scrollArea = new QScrollArea;
     scrollArea->setWidget(container);
     scrollArea->setWidgetResizable(true);
-    scrollArea->viewport()->installEventFilter(this);
+   // scrollArea->viewport()->installEventFilter(this);
     mainLayout->addWidget(scrollArea);
 
     //PRIMEIRA FASE
@@ -104,10 +107,10 @@ Widget::Widget(QWidget *parent)
             //  encheLinguica1->setPrerequisites(new QVector<Diagram*>{MTM_3110, FSC_5101});
 
 
-     gridLayout->setHorizontalSpacing(100);
-
-
-    QWidget *spacer = new QWidget(); spacer->setFixedSize(250,200);
+     gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
+    gridLayout->setVerticalSpacing(this->defaultSpaceHeight);
+    //gridLayout->
+    QWidget *spacer = new QWidget(); //spacer->setFixedSize(250,200);
     //PRIMEIRA FASE (coluna 0)
     QWidget* fase1 = new FaseTitle(this, "1º fase");
     gridLayout->addWidget(fase1, 0,0);
@@ -137,16 +140,16 @@ Widget::Widget(QWidget *parent)
     //TERCEIRA FASE (coluna 2)
     QWidget* fase3 = new FaseTitle(this, "3º fase");
     gridLayout->addWidget(fase3,0,2);
-    gridLayout->addWidget(spacer,1,2);
-    gridLayout->addWidget(DAS_5332,2,2);
+    //gridLayout->addWidget(spacer,1,2);
+    gridLayout->addWidget(DAS_5332,1,2);
+    gridLayout->addWidget(spacer,2,2);
     gridLayout->addWidget(spacer,3,2);
     gridLayout->addWidget(spacer,4,2);
-    gridLayout->addWidget(spacer,5,2);
-    gridLayout->addWidget(DAS_5210,6,2);
-    gridLayout->addWidget(MTM_3131,7,2);
-    gridLayout->addWidget(MTM_3103,8,2);
-    gridLayout->addWidget(FSC_5113,9,2);
-    gridLayout->addWidget(ECV_5215,10,2);
+    gridLayout->addWidget(DAS_5210,5,2);
+    gridLayout->addWidget(MTM_3131,6,2);
+    gridLayout->addWidget(MTM_3103,7,2);
+    gridLayout->addWidget(FSC_5113,8,2);
+    gridLayout->addWidget(ECV_5215,9,2);
     //QUARTA FASE (coluna 3)
     QWidget* fase4 = new FaseTitle(this, "4º fase");
     gridLayout->addWidget(fase4,0,3);
@@ -156,11 +159,10 @@ Widget::Widget(QWidget *parent)
     gridLayout->addWidget(DAS_5103,4,3);
     gridLayout->addWidget(spacer,5,3);
     gridLayout->addWidget(spacer,6,3);
-    gridLayout->addWidget(spacer,7,3);
-    gridLayout->addWidget(DAS_5114,8,3);
-    gridLayout->addWidget(EEL_7540,9,3);
-     gridLayout->addWidget(spacer,10,3);
-    gridLayout->addWidget(INE_5108,11,3);
+    gridLayout->addWidget(DAS_5114,7,3);
+    gridLayout->addWidget(EEL_7540,8,3);
+     gridLayout->addWidget(spacer,9,3);
+    gridLayout->addWidget(INE_5108,10,3);
     //QUINTA FASE (coluna 4)
     QWidget* fase5 = new FaseTitle(this, "5º fase");
     gridLayout->addWidget(fase5,0,4);
@@ -293,6 +295,7 @@ Widget::Widget(QWidget *parent)
     // Access the width and height
    containerWidth = combinedRect.width();
     containerHeight = combinedRect.height();
+
 }
 void Widget::showEvent(QShowEvent *event){
       // Your custom code here
@@ -374,14 +377,14 @@ void Widget::saveLines()
 
        // Write our jsondocument as json with JSON format
        //ui->txtJsonEncoded->setPlainText( jsonDoc.toJson() );
-       this->writeFile("/home/mago/QtProjects/Diagramas2/test.txt", jsonDoc.toJson());
+       this->writeFile("/home/mago/QtProjects/DiagramasECA/test.txt", jsonDoc.toJson());
 
 
 }
 
 void Widget::loadLines()
 {
-    QByteArray jsonData = this->readFile("/home/mago/QtProjects/Diagramas2/test.txt");
+    QByteArray jsonData = this->readFile("/home/mago/QtProjects/DiagramasECA/test.txt");
     qDebug() << "jsonData: "<< jsonData.size();
     QJsonParseError error;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &error);
@@ -408,14 +411,14 @@ void Widget::loadLines()
             for(int j=0; j<arr_singleLine.size(); j++)
             {
                 QJsonObject pointObject = arr_singleLine.at(j).toObject();
-                qDebug()<<"loaded X [ij] " << pointObject.value("x").toInt();
+                qDebug()<<"loaded X [ij] 4SRotManager.ini" << pointObject.value("x").toInt();
                 qDebug()<<"loaded y [ij] " << pointObject.value("y").toInt() <<"[" <<i<<j << "]";
                 QPoint point = QPoint(pointObject.value("x").toInt(), pointObject.value("y").toInt());
                diagram->lines[i]->addPoint(point);
                // diagram->lines.append(new ConnectingLine(this));
             }
-
         }
+        diagram->lineIndex = arr_allLines.size();
     }
 
 }
@@ -451,7 +454,19 @@ void Widget::mousePressEvent(QMouseEvent *event)
     case WaitingFor:
         break;
     case AddingPoints:
-    this->currentDiagram->addPointToLine(mousePosMapped);
+        if(this->currentDiagram->getCurrentLine()->size() <= 0) //se for o primeiro ponto da linha, coloca o ponto na disciplina
+        {
+            qDebug()<< currentDiagram->name<< ": "<< this->currentDiagram->lineIndex<<" ";
+
+            currentDiagram->addPointToLine(QPoint(currentDiagram->pos().x()+ currentDiagram->width()+2, currentDiagram->pos().y()+ (80)));
+            oldMousePos = QPoint(currentDiagram->mapToGlobal(QPoint(0,0)).x()+ currentDiagram->width()+2, currentDiagram->mapToGlobal(QPoint(0,0)).y()+4);
+
+
+        }
+        else
+        {
+          this->currentDiagram->addPointToLine(mousePosMapped);
+        }
         break;
     default:
         break;
@@ -466,10 +481,10 @@ void Widget::checkPrerequisitesEvent()
      tempCounter+=1;
     for(Diagram* diagram: diagrams)
     {
-        qDebug() << diagram->name << " isOpen=" << diagram->isOpen() << "isActive=" << diagram->isActive() << " "<<tempCounter;
+       // qDebug() << diagram->name << " isOpen=" << diagram->isOpen() << "isActive=" << diagram->isActive() << " "<<tempCounter;
         if(diagram->prerequisites != nullptr)
         {
-            qDebug() <<"Prereq Size: " <<diagram->prerequisites->size();
+            //qDebug() <<"Prereq Size: " <<diagram->prerequisites->size();
               for(Diagram* prereq : *diagram->prerequisites)
                 {
 
@@ -533,6 +548,21 @@ QByteArray Widget::readFile(QString fileName)
         return jsonData;
 }
 
+void Widget::clearLines()
+{
+    setState(States::Off);
+    for(Diagram* diagram : diagrams)
+    {
+        diagram->lineIndex = 0;
+        for(ConnectingLine* line : diagram->lines)
+        {
+            line->clearPoints();
+        }
+        //diagram->lines.clear();
+    }
+
+}
+
 void Widget::paintEvent(QPaintEvent *)
 {
 
@@ -559,48 +589,92 @@ void Widget::resizeEvent(QResizeEvent *event)
 
 void Widget::keyPressEvent(QKeyEvent *event)
 {
+    qreal scaleFactor=1;
+    int scaledWidth;
+    int scaledHeight;
     switch(event->key())
     {
-        case Qt::Key_Escape:
-            qDebug() << "Key_Escape";
+    case Qt::Key_Escape:
+        qDebug() << "Key_Escape";
         break;
-        case Qt::Key_Shift:
-            qDebug() << "Key_Shift";
-            if(this->state == States::Off)
-            {
-                setState(States::WaitingFor);
-            }
-            else if(this->state == States::AddingPoints)
-            {
-                setState(States::Off);
+    case Qt::Key_Shift:
+        qDebug() << "Key_Shift";
+        if(this->state == States::Off)
+        {
+            setState(States::WaitingFor);
+        }
+        else if(this->state == States::AddingPoints)
+        {
+            setState(States::Off);
 
-            }
+        }
         break;
-        case Qt::Key_Plus:
+    case Qt::Key_Plus:
+
+        if(currentDiagram != nullptr)
+        {
             qDebug() << "Plus";
-            if(currentDiagram != nullptr)
-            {
+            //currentDiagram->addNewLine();
+            currentDiagram->incIndex();
+        }
+        break;
+    case Qt::Key_Minus:
 
-               //currentDiagram->addNewLine();
-               currentDiagram->incIndex();
-            }
+        if(currentDiagram != nullptr)
+        {
+            qDebug() << "Minus";
+            //currentDiagram->addNewLine();
+            currentDiagram->decIndex();
+        }
         break;
-        case Qt::Key_1:
-            qDebug() << "Saving Lines";
-            saveLines();
+    case Qt::Key_1:
+        qDebug() << "Saving Lines";
+        saveLines();
         break;
-        case Qt::Key_2:
-            qDebug() << "Loading Lines";
-            loadLines();
+    case Qt::Key_2:
+        qDebug() << "Loading Lines";
+        loadLines();
         break;
-        case Qt::Key_H:
-            use_oldH_mousePos = true;
+    case Qt::Key_H:
+        use_oldH_mousePos = true;
         break;
-        case Qt::Key_V:
-            use_oldV_mousePos = true;
-
+    case Qt::Key_V:
+        use_oldV_mousePos = true;
         break;
-        default:
+    case Qt::Key_9:
+        scaleFactor=0.1;
+        for(Diagram* diagram : diagrams)
+        {
+            scaledWidth = diagram->width() + (scaleFactor * this->defaultDiagramWidth);
+            scaledHeight = diagram->height() + (scaleFactor * this->defaultDiagramHeight);
+            diagram->setFixedSize(scaledWidth,scaledHeight);
+        }
+        qDebug() << "diagramWidth" << scaledWidth;
+        qDebug() << "diagramHeight" << scaledHeight;
+        gridLayout->setHorizontalSpacing(gridLayout->horizontalSpacing()+(scaleFactor * this->defaultSpaceWidth));
+        gridLayout->setVerticalSpacing(gridLayout->verticalSpacing()+(scaleFactor * this->defaultSpaceHeight));
+        qDebug() << "horizontalSpacing" << gridLayout->horizontalSpacing();
+        qDebug() << "verticalSpacing" << gridLayout->verticalSpacing();
+        break;
+    case Qt::Key_6:
+        scaleFactor=-0.1;
+        for(Diagram* diagram : diagrams)
+        {
+            scaledWidth = diagram->width() + (scaleFactor * this->defaultDiagramWidth);
+            scaledHeight = diagram->height() + (scaleFactor * this->defaultDiagramHeight);
+            diagram->setFixedSize(scaledWidth,scaledHeight);
+        }
+        qDebug() << "diagramWidth" << scaledWidth;
+        qDebug() << "diagramHeight" << scaledHeight;
+        gridLayout->setHorizontalSpacing(gridLayout->horizontalSpacing()+(scaleFactor * this->defaultSpaceWidth));
+        gridLayout->setVerticalSpacing(gridLayout->verticalSpacing()+(scaleFactor * this->defaultSpaceHeight));
+        qDebug() << "horizontalSpacing" << gridLayout->horizontalSpacing();
+        qDebug() << "verticalSpacing" << gridLayout->verticalSpacing();
+        break;
+    case Qt::Key_C:
+        clearLines();
+        break;
+    default:
 
         break;
     }
@@ -655,11 +729,11 @@ void Widget:: initPrerequisites()
     EMC_5425->setPrerequisites(new QVector<Diagram*>{FSC_5002, MTM_3103});
     //CNM_7820->setPrerequisites(new QVector<Diagram*>{});
     DAS_5120->setPrerequisites(new QVector<Diagram*>{DAS_5109});
-    DAS_5151->setPrerequisites(new QVector<Diagram*>{EEL_7550, EMC_5235});
+    DAS_5151->setPrerequisites(new QVector<Diagram*>{EEL_7550, EMC_5235, DAS_5109});
     DAS_5314->setPrerequisites(new QVector<Diagram*>{DAS_5308});
     EEL_5193->setPrerequisites(new QVector<Diagram*>{EEL_7540});
     EMC_5467->setPrerequisites(new QVector<Diagram*>{DAS_5307, EMC_5425});
-    DAS_5104->setPrerequisites(new QVector<Diagram*>{DAS_5151, DAS_5312, DAS_5314, DAS_5120});
+    DAS_5104->setPrerequisites(new QVector<Diagram*>{DAS_5151, DAS_5312, DAS_5314, DAS_5120, DAS_5203});
     DAS_5142->setPrerequisites(new QVector<Diagram*>{DAS_5120});
     DAS_5310->setPrerequisites(new QVector<Diagram*>{DAS_5203, INE_5108});
     EEL_5354->setPrerequisites(new QVector<Diagram*>{EEL_5193, EEL_7540});
@@ -668,48 +742,13 @@ void Widget:: initPrerequisites()
    // DAS_5401->setPrerequisites(new QVector<Diagram*>{});
     //DAS_5501->setPrerequisites(new QVector<Diagram*>{});
     //EPS_5211->setPrerequisites(new QVector<Diagram*>{});
-    //DAS_5511->setPrerequisites(new QVector<Diagram*>{});
+    DAS_5511->setPrerequisites(new QVector<Diagram*>{DAS_5501});
 
 }
 void Widget::wheelEvent(QWheelEvent *event)
 {
-    // Calculate the zoom factor based on the mouse wheel delta
-           const qreal zoomInFactor = 1.1;
-           const qreal zoomOutFactor = 0.9;
 
-           const int numDegrees = event->delta() / 8;
-           const int numSteps = numDegrees / 15;
-            qDebug() << "WheelEvent: " << numSteps;
-
-           // Adjust the zoom factor based on the direction of the mouse wheel
-           if (event->delta() > 0) {
-               this->scaleFactor =1.1;
-           } else {
-               this->scaleFactor = 0.9;
-           }
-
-
-           // Calculate the new size based on the scale factor
-
-
-           // Calculate the new position to keep the widget centered
-           //int newX = this->x() - (scaledWidth - this->width()) / 2;
-           //int newY = this->y() - (scaledHeight - this->height()) / 2;
-
-           // Set the new size and position
-           //this->setGeometry(t, this->y(), scaledWidth, scaledHeight);
-           for(Diagram* diagram : diagrams)
-           {
-            int scaledWidth = diagram->width() * scaleFactor;
-            int scaledHeight = diagram->height() * scaleFactor;
-            diagram->setFixedSize(scaledWidth,scaledHeight);
-           }
-
-           // Limit the zoom factor to a certain range if needed
-           // scaleFactor = qBound(0.1, scaleFactor, 10.0);
-
-           // Apply the new scale factor to the transformation matrix
-           //update(); // Trigger a repaint to apply the new zoom factor
+            //gridLayout->setSpacing(gridLayout->spacing()*scaleFactor);
            event->accept();
 }
 
@@ -719,7 +758,6 @@ bool Widget::eventFilter(QObject *watched, QEvent *evt)
              {
                  // ignore the event (this effectively
                  // makes it "skip" one object)
-                qDebug() <<"Wheel event in eventFilter";
                //  evt->ignore();
                  return true;
              }

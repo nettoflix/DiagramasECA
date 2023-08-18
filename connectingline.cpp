@@ -48,7 +48,12 @@ QList<QPoint> ConnectingLine::getPoints()
 void ConnectingLine::addPoint(QPoint point)
 {
     this->points->append(point);
-   // qDebug() << "points size" << points->size();
+    // qDebug() << "points size" << points->size();
+}
+
+void ConnectingLine::clearPoints()
+{
+    this->points->clear();
 }
 
 void ConnectingLine::paintEvent(QPaintEvent *event)

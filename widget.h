@@ -42,7 +42,8 @@ public slots:
     void checkPrerequisitesEvent();
 
 private:
-    qreal scaleFactor=1;
+    QGridLayout* gridLayout;
+
     int tempCounter =0;
     States state= States::WaitingFor;
     Diagram *currentDiagram = nullptr;
@@ -132,8 +133,6 @@ private:
     Diagram* encheLinguica11;
     Diagram* encheLinguica12;
 
-
-
     QPoint FSC_5101_pos;
     QPoint FSC_5002_pos;
     bool waitingForClick;
@@ -145,10 +144,18 @@ private:
     void writeFile(QString fileName, QString content);
     QByteArray readFile(QString fileName);
 
-
+    QWidget *container;
     int containerWidth=0;
     int containerHeight=0;
-         bool eventFilter(QObject *watched, QEvent *evt);
+
+     ConnectingLine* line;
+       //zoom stuff
+       int defaultDiagramWidth=0;
+       int defaultDiagramHeight=0;
+       int defaultSpaceWidth=0;
+       int defaultSpaceHeight=0;
+    void clearLines();
+    bool eventFilter(QObject *watched, QEvent *evt);
 protected:
        void paintEvent(QPaintEvent *) override;
        void showEvent(QShowEvent *event) override;
