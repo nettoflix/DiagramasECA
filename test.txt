@@ -235,7 +235,7 @@
             ]
         },
         "Circuitos Elétricos para Automação": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -352,7 +352,7 @@
             ]
         },
         "Cálculo 3": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -390,7 +390,7 @@
             ]
         },
         "Eletrônica Aplicada": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -413,7 +413,7 @@
             ]
         },
         "Equações Diferenciais Ordinárias": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -454,7 +454,7 @@
             ]
         },
         "Estatística e Probabilidade para Ciências Exatas": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -644,7 +644,7 @@
             ]
         },
         "Instrumentação em Controle": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -667,7 +667,7 @@
             ]
         },
         "Introdução ao Controle de Processos": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -772,12 +772,12 @@
             ]
         },
         "Mecânica dos Sólidos 1": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
             ]
         },
         "Metodolodia para Desenv. de Sistemas": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -800,7 +800,7 @@
             ]
         },
         "Metrologia Industrial": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -815,7 +815,7 @@
             ]
         },
         "Modelagem e Controle de Sist. a Eventos Discretos": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -864,7 +864,7 @@
             ]
         },
         "Modelagem e Simulação de Processos": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -897,7 +897,7 @@
             ]
         },
         "Máquina e Acionamentos Elétricos para Automação": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -932,7 +932,7 @@
             ]
         },
         "Programação de Sistemas Automatizados": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -987,7 +987,7 @@
             ]
         },
         "Redes de Computadores para Automação Industrial": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -1010,7 +1010,7 @@
             ]
         },
         "Sinais e Sistemas Lineares": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
@@ -1123,7 +1123,7 @@
             ]
         },
         "Sistemas de Controle": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
                 [
                     {
