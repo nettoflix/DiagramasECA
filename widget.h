@@ -42,6 +42,8 @@ public slots:
     void checkPrerequisitesEvent();
 
 private:
+
+    QString path="";
     QGridLayout* gridLayout;
 
     int tempCounter =0;

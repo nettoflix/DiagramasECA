@@ -413,7 +413,7 @@
             ]
         },
         "Equações Diferenciais Ordinárias": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -454,7 +454,7 @@
             ]
         },
         "Estatística e Probabilidade para Ciências Exatas": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -667,7 +667,7 @@
             ]
         },
         "Introdução ao Controle de Processos": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {

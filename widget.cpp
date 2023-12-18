@@ -22,8 +22,9 @@ Widget::Widget(QWidget *parent)
     this->defaultDiagramHeight= 120;
     this->defaultSpaceWidth = 10;
     this->defaultSpaceHeight = 10;
-    qDebug() << "Main Widget Geometry" <<this->geometry();
-
+   // path = "/home/nettoflix/Netto/Desenvolvimento/DiagramasECA/test.txt";
+    path = QCoreApplication::applicationDirPath() + "/files/saved.txt";
+    qDebug("path: [%s]", path.toLatin1().data());
     QBoxLayout* mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
 
@@ -39,7 +40,7 @@ Widget::Widget(QWidget *parent)
     QScrollArea* scrollArea = new QScrollArea;
     scrollArea->setWidget(container);
     scrollArea->setWidgetResizable(true);
-   // scrollArea->viewport()->installEventFilter(this);
+    // scrollArea->viewport()->installEventFilter(this);
     mainLayout->addWidget(scrollArea);
 
     //PRIMEIRA FASE
@@ -57,7 +58,7 @@ Widget::Widget(QWidget *parent)
     MTM_3120 = new Diagram(container, this,"Calculo 2");
     FSC_5122 = new Diagram(container, this,"Física Experimental");
     //TERCEIRA FASE
-    DAS_5332 = new Diagram(container, this,"Arquit. e Prog. de Sistemas Microcontrolados");
+    DAS_5332 = new Diagram(container, this,"Arquit. e Prog. de Sist. Microcontrolados");
     DAS_5210 = new Diagram(container, this,"Introdução ao Controle de Processos");
     MTM_3131 = new Diagram(container, this,"Equações Diferenciais Ordinárias");
     MTM_3103= new Diagram(container, this,"Cálculo 3");
@@ -65,24 +66,24 @@ Widget::Widget(QWidget *parent)
     ECV_5215= new Diagram(container, this,"Mecânica dos Sólidos 1");
     //QUARTA FASE
     DAS_5307 = new Diagram(container, this,"Sistemas de Automação Discreta");
-    DAS_5308 = new Diagram(container, this,"Programação de Sistemas Automatizados");
-    DAS_5103 = new Diagram(container, this,"Cálculo Numérico para Controle e Automação");
+    DAS_5308 = new Diagram(container, this,"Programação de Sist. Automatizados");
+    DAS_5103 = new Diagram(container, this,"Cálc. Numérico para Automação");
     DAS_5114 = new Diagram(container, this,"Sinais e Sistemas Lineares");
     EEL_7540 = new Diagram(container, this,"Circuitos Elétricos para Automação");
-    INE_5108 = new Diagram(container, this,"Estatística e Probabilidade para Ciências Exatas");
+    INE_5108 = new Diagram(container, this,"Estatística e Probabilidade");
     //QUINTA FASE
-    DAS_5203 = new Diagram(container, this,"Modelagem e Controle de Sist. a Eventos Discretos");
+    DAS_5203 = new Diagram(container, this,"Modelagem e Contr. de Sist. a Eventos Discr.");
     DAS_5312 = new Diagram(container, this,"Metodolodia para Desenv. de Sistemas");
     EMC_5425 = new Diagram(container, this,"Fênenomenos de Transporte");
     DAS_5109 = new Diagram(container, this,"Modelagem e Simulação de Processos");
     EEL_7550 = new Diagram(container, this,"Eletrônica Aplicada");
     EMC_5235 = new Diagram(container, this,"Metrologia Industrial");
     //SEXTA FASE
-    CNM_7820 = new Diagram(container, this,"Aspectos Econômicos e Sociais da Automação");
-    DAS_5314= new Diagram(container, this,"Redes de Computadores para Automação Industrial");
-    EMC_5467 = new Diagram(container, this,"Acionamentos Hidráulicos e Pneum. para Automação");
+    CNM_7820 = new Diagram(container, this,"Aspectos Econômic. Sociais da Aut.");
+    DAS_5314= new Diagram(container, this,"Redes de Comp. para Automação Ind.");
+    EMC_5467 = new Diagram(container, this,"Aci. Hidráulic. e Pneum. para Automação");
     DAS_5120 = new Diagram(container, this,"Sistemas de Controle");
-    EEL_5193 = new Diagram(container, this,"Máquina e Acionamentos Elétricos para Automação");
+    EEL_5193 = new Diagram(container, this,"Máquina e Acionamen. Elétricos-");
     DAS_5151 = new Diagram(container, this,"Instrumentação em Controle");
     //SÉTIMA FASE
     EMC_5258 = new Diagram(container, this,"Introdução à Automação da Manafatura");
@@ -93,23 +94,20 @@ Widget::Widget(QWidget *parent)
     DAS_5310 = new Diagram(container, this,"Avaliação de Des. de Sist. da Automação Discreta");
     //OITAVA FASE
     DAS_5501 = new Diagram(container, this,"Estágio em Controle e Automação");
-    DAS_5401 = new Diagram(container, this,"Aspectos de Seg. em Sist. de Controle e Automação");
-    OPT_PROF8 = new Diagram(container, this,"Optativas Profissionalizantes");
+    DAS_5401 = new Diagram(container, this,"Aspectos de Seg. em Sist. de Cont. e Automação");
+    OPT_PROF8 = new Diagram(container, this,"Optativas Prof.");
     EPS_5211= new Diagram(container, this,"Programação Econômica e Financeira");
     //NONA FASE
-    OPT_PROF16 = new Diagram(container, this,"Optativas Profissionalizantes(16)");
+    OPT_PROF16 = new Diagram(container, this,"Optativas Prof.(16)");
     OPT_LIVR = new Diagram(container, this,"Optativas Livres");
     //DÉCIMA FASE
     DAS_5511 = new Diagram(container, this,"Projeto de Fim de Curso");
 
     //setPrerequisites
     this->initPrerequisites();
-            //  encheLinguica1->setPrerequisites(new QVector<Diagram*>{MTM_3110, FSC_5101});
 
-
-     gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
+    gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
     gridLayout->setVerticalSpacing(this->defaultSpaceHeight);
-    //gridLayout->
     QWidget *spacer = new QWidget(); //spacer->setFixedSize(250,200);
     //PRIMEIRA FASE (coluna 0)
     QWidget* fase1 = new FaseTitle(this, "1º fase");
@@ -122,7 +120,6 @@ Widget::Widget(QWidget *parent)
     gridLayout->addWidget(spacer,6,0);
     gridLayout->addWidget(MTM_3110, 7,0);
     gridLayout->addWidget(FSC_5101,8,0);
-
 
 
     //SEGUNDA FASE (coluna 1)
@@ -154,37 +151,37 @@ Widget::Widget(QWidget *parent)
     QWidget* fase4 = new FaseTitle(this, "4º fase");
     gridLayout->addWidget(fase4,0,3);
     gridLayout->addWidget(DAS_5307,1,3);
-     gridLayout->addWidget(spacer,2,3);
+    gridLayout->addWidget(spacer,2,3);
     gridLayout->addWidget(DAS_5308,3,3);
     gridLayout->addWidget(DAS_5103,4,3);
     gridLayout->addWidget(spacer,5,3);
     gridLayout->addWidget(spacer,6,3);
     gridLayout->addWidget(DAS_5114,7,3);
     gridLayout->addWidget(EEL_7540,8,3);
-     gridLayout->addWidget(spacer,9,3);
+    gridLayout->addWidget(spacer,9,3);
     gridLayout->addWidget(INE_5108,10,3);
     //QUINTA FASE (coluna 4)
     QWidget* fase5 = new FaseTitle(this, "5º fase");
     gridLayout->addWidget(fase5,0,4);
-     gridLayout->addWidget(spacer,1,4);
+    gridLayout->addWidget(spacer,1,4);
     gridLayout->addWidget(DAS_5203,2,4);
     gridLayout->addWidget(DAS_5312,3,4);
-     gridLayout->addWidget(spacer,4,4);
+    gridLayout->addWidget(spacer,4,4);
     gridLayout->addWidget(EMC_5425,5,4);
     gridLayout->addWidget(DAS_5109,6,4);
     gridLayout->addWidget(EEL_7550,7,4);
-     gridLayout->addWidget(spacer,8,4);
+    gridLayout->addWidget(spacer,8,4);
     gridLayout->addWidget(EMC_5235,9,4);
     //SEXTA FASE (coluna 5)
     QWidget* fase6 = new FaseTitle(this, "6º fase");
     gridLayout->addWidget(fase6,0,5);
-     gridLayout->addWidget(spacer,1,5);
+    gridLayout->addWidget(spacer,1,5);
     gridLayout->addWidget(CNM_7820,2,5);
     gridLayout->addWidget(DAS_5314,3,5);
-     gridLayout->addWidget(spacer,4,5);
+    gridLayout->addWidget(spacer,4,5);
     gridLayout->addWidget(EMC_5467,5,5);
     gridLayout->addWidget(DAS_5120,6,5);
-     gridLayout->addWidget(spacer,7,5);
+    gridLayout->addWidget(spacer,7,5);
     gridLayout->addWidget(EEL_5193,8,5);
     gridLayout->addWidget(DAS_5151,9,5);
     //SÉTIMA FASE (coluna 6)
@@ -232,7 +229,7 @@ Widget::Widget(QWidget *parent)
     gridLayout->addWidget(spacer,1,9);
     gridLayout->addWidget(DAS_5511,2,9);
 
-   // qDebug() << encheLinguica1->prerequisites->size();
+    // qDebug() << encheLinguica1->prerequisites->size();
     verticalScrollBar = scrollArea->verticalScrollBar();
     // Get the horizontal scroll bar
     horizontalScrollBar = scrollArea->horizontalScrollBar();
@@ -240,7 +237,7 @@ Widget::Widget(QWidget *parent)
     diagrams.append(MTM_3110);
     diagrams.append(MTM_3120);
     diagrams.append(FSC_5101);
-    diagrams.append(FSC_5002);   
+    diagrams.append(FSC_5002);
     diagrams.append(DAS_5334);
     diagrams.append(DAS_5411);
     diagrams.append(ECZ_5102);
@@ -292,25 +289,27 @@ Widget::Widget(QWidget *parent)
 
     QRect combinedRect = container->childrenRect();
 
+    loadLines();
+    checkPrerequisitesEvent();
     // Access the width and height
-   containerWidth = combinedRect.width();
-    containerHeight = combinedRect.height();
+    //containerWidth = combinedRect.width();
+    //containerHeight = combinedRect.height();
 
 }
 void Widget::showEvent(QShowEvent *event){
-      // Your custom code here
+    // Your custom code here
 
-     qDebug() << "Widget is about to be shown!";
+    qDebug() << "Widget is about to be shown!";
 
 
-      //fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {FSC_5101->mapToGlobal(QPoint(0, 0)),FSC_5002->mapToGlobal(QPoint(0, 0))});
+    //fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {FSC_5101->mapToGlobal(QPoint(0, 0)),FSC_5002->mapToGlobal(QPoint(0, 0))});
     // QPoint globalPos2 = FSC_5002->pos();//FSC_5002->mapToGlobal(QPoint(0, 0));
-     //qDebug() << "FSC_5002 position: " << globalPos2;
-     // fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {globalPos1, globalPos2});
+    //qDebug() << "FSC_5002 position: " << globalPos2;
+    // fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {globalPos1, globalPos2});
 
-      // Call the base class implementation
-      QWidget::showEvent(event);
-  }
+    // Call the base class implementation
+    QWidget::showEvent(event);
+}
 Widget::~Widget()
 {
     delete ui;
@@ -329,62 +328,56 @@ void Widget::setCurrentDiagram(Diagram *diagram)
 //CONTINUE FROM HERE!!!!!!!!!!!!!!!!!!
 void Widget::saveLines()
 {
-        QJsonObject mainObject;
-        QJsonObject diagramsObject;
-        QJsonObject diagramObj;
-          for(Diagram* diagram : diagrams)
-          {
+    QJsonObject mainObject;
+    QJsonObject diagramsObject;
+    QJsonObject diagramObj;
+    for(Diagram* diagram : diagrams)
+    {
 
-              QJsonArray lines;
-              QJsonObject isActive;
-              for(int i=0; i<diagram->lines.size(); i++)
-              {
-                  if(diagram->lines[i]->getPoints().size() != 0)
-                  {
-                      QJsonArray pointsArray;
-                      for(QPoint point : diagram->lines[i]->getPoints())
-                      {
-                          QJsonObject pointObject;
-                         // qDebug()<<" Saving X:" << point.x();
-                          //qDebug()<<" Saving Y:" << point.y();
-                          pointObject.insert("x", point.x());
-                          pointObject.insert("y", point.y());
-                          pointsArray.push_back(pointObject);
-                      }
-                      lines.push_back(pointsArray);
-                  }
-              //  isActive.insert()
-                diagramObj.insert("lines", lines);
-                diagramObj.insert("isActive", diagram->isActive());
-                diagramsObject.insert(diagram->name,diagramObj);
-              }
-          }
+        QJsonArray lines;
+        QJsonObject isActive;
+        for(int i=0; i<diagram->lines.size(); i++)
+        {
+            if(diagram->lines[i]->getPoints().size() != 0)
+            {
+                QJsonArray pointsArray;
+                for(QPoint point : diagram->lines[i]->getPoints())
+                {
+                    QJsonObject pointObject;
+                    // qDebug()<<" Saving X:" << point.x();
+                    //qDebug()<<" Saving Y:" << point.y();
+                    pointObject.insert("x", point.x());
+                    pointObject.insert("y", point.y());
+                    pointsArray.push_back(pointObject);
+                }
+                lines.push_back(pointsArray);
+            }
+            //  isActive.insert()
+            diagramObj.insert("lines", lines);
+            diagramObj.insert("isActive", diagram->isActive());
+            diagramsObject.insert(diagram->name,diagramObj);
+        }
+    }
 
-
-
-        //lineArray.push_back(point);
-       //insert single datas first
-
-
-       mainObject.insert("Diagramas", diagramsObject);
+    mainObject.insert("Diagramas", diagramsObject);
 
 
 
 
-       // lastly we created a JSON document and set mainObject as object of document
-       QJsonDocument jsonDoc;
-       jsonDoc.setObject(mainObject);
+    // lastly we created a JSON document and set mainObject as object of document
+    QJsonDocument jsonDoc;
+    jsonDoc.setObject(mainObject);
 
-       // Write our jsondocument as json with JSON format
-       //ui->txtJsonEncoded->setPlainText( jsonDoc.toJson() );
-       this->writeFile("/home/mago/QtProjects/DiagramasECA/test.txt", jsonDoc.toJson());
+    // Write our jsondocument as json with JSON format
+    //ui->txtJsonEncoded->setPlainText( jsonDoc.toJson() );
+    this->writeFile(path, jsonDoc.toJson());
 
 
 }
 
 void Widget::loadLines()
 {
-    QByteArray jsonData = this->readFile("/home/mago/QtProjects/DiagramasECA/test.txt");
+    QByteArray jsonData = this->readFile(path);
     qDebug() << "jsonData: "<< jsonData.size();
     QJsonParseError error;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &error);
@@ -403,19 +396,17 @@ void Widget::loadLines()
         QJsonArray arr_allLines = diagramObj.value("lines").toArray();
         bool isActive = diagramObj.value("isActive").toBool();
         if(isActive) diagram->setActive(true);
-        //QJsonArray arr_allLines = diagramasObject.value(diagram->name).toArray();
-    qDebug()<<"Diagram: "<< diagram->name;
+
+        qDebug()<<"Diagram: "<< diagram->name;
         for(int i=0; i<arr_allLines.size(); i++)
         {
             QJsonArray arr_singleLine =  arr_allLines.at(i).toArray();
             for(int j=0; j<arr_singleLine.size(); j++)
             {
                 QJsonObject pointObject = arr_singleLine.at(j).toObject();
-                qDebug()<<"loaded X [ij] 4SRotManager.ini" << pointObject.value("x").toInt();
-                qDebug()<<"loaded y [ij] " << pointObject.value("y").toInt() <<"[" <<i<<j << "]";
                 QPoint point = QPoint(pointObject.value("x").toInt(), pointObject.value("y").toInt());
-               diagram->lines[i]->addPoint(point);
-               // diagram->lines.append(new ConnectingLine(this));
+                diagram->lines[i]->addPoint(point);
+                // diagram->lines.append(new ConnectingLine(this));
             }
         }
         diagram->lineIndex = arr_allLines.size();
@@ -425,52 +416,52 @@ void Widget::loadLines()
 void Widget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-     QPoint mousePos = event->pos();
+        QPoint mousePos = event->pos();
         qDebug() << this->state;
-     //if  "H" is pressed, return mouse pos with old horizontal pos
-     if(use_oldH_mousePos)
-     {
-     mousePos = QPoint(mousePos.x(), oldMousePos.y());
-     oldMousePos = mousePos;
-     }
-     else if(use_oldV_mousePos)
-     {
-     mousePos = QPoint(oldMousePos.x(), mousePos.y());
-     oldMousePos = mousePos;
-     }
-     else
-     {
-        oldMousePos = mousePos;
-     }
-     //if "V" is pressed, return mouse pos with old vertical pos
-
-
-
-     int verticalScrollPosition = verticalScrollBar->value();
-     int horizontalScrollPosition = horizontalScrollBar->value();
-     QPoint mousePosMapped(horizontalScrollPosition+ mousePos.x(), verticalScrollPosition+ mousePos.y());
-    switch(this->state)
-    {
-    case WaitingFor:
-        break;
-    case AddingPoints:
-        if(this->currentDiagram->getCurrentLine()->size() <= 0) //se for o primeiro ponto da linha, coloca o ponto na disciplina
+        //if  "H" is pressed, return mouse pos with old horizontal pos
+        if(use_oldH_mousePos)
         {
-            qDebug()<< currentDiagram->name<< ": "<< this->currentDiagram->lineIndex<<" ";
-
-            currentDiagram->addPointToLine(QPoint(currentDiagram->pos().x()+ currentDiagram->width()+2, currentDiagram->pos().y()+ (80)));
-            oldMousePos = QPoint(currentDiagram->mapToGlobal(QPoint(0,0)).x()+ currentDiagram->width()+2, currentDiagram->mapToGlobal(QPoint(0,0)).y()+4);
-
-
+            mousePos = QPoint(mousePos.x(), oldMousePos.y());
+            oldMousePos = mousePos;
+        }
+        else if(use_oldV_mousePos)
+        {
+            mousePos = QPoint(oldMousePos.x(), mousePos.y());
+            oldMousePos = mousePos;
         }
         else
         {
-          this->currentDiagram->addPointToLine(mousePosMapped);
+            oldMousePos = mousePos;
         }
-        break;
-    default:
-        break;
-    }
+        //if "V" is pressed, return mouse pos with old vertical pos
+
+
+
+        int verticalScrollPosition = verticalScrollBar->value();
+        int horizontalScrollPosition = horizontalScrollBar->value();
+        QPoint mousePosMapped(horizontalScrollPosition+ mousePos.x(), verticalScrollPosition+ mousePos.y());
+        switch(this->state)
+        {
+        case WaitingFor:
+            break;
+        case AddingPoints:
+            if(this->currentDiagram->getCurrentLine()->size() <= 0) //se for o primeiro ponto da linha, coloca o ponto na disciplina
+            {
+                qDebug()<< currentDiagram->name<< ": "<< this->currentDiagram->lineIndex<<" ";
+
+                currentDiagram->addPointToLine(QPoint(currentDiagram->pos().x()+ currentDiagram->width()+2, currentDiagram->pos().y()+ (80)));
+                oldMousePos = QPoint(currentDiagram->mapToGlobal(QPoint(0,0)).x()+ currentDiagram->width()+2, currentDiagram->mapToGlobal(QPoint(0,0)).y()+4);
+
+
+            }
+            else
+            {
+                this->currentDiagram->addPointToLine(mousePosMapped);
+            }
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -478,23 +469,23 @@ void Widget::mousePressEvent(QMouseEvent *event)
 void Widget::checkPrerequisitesEvent()
 {
     // qInfo("checking prerequisetes in widget.cpp");
-     tempCounter+=1;
+    tempCounter+=1;
     for(Diagram* diagram: diagrams)
     {
-       // qDebug() << diagram->name << " isOpen=" << diagram->isOpen() << "isActive=" << diagram->isActive() << " "<<tempCounter;
+        // qDebug() << diagram->name << " isOpen=" << diagram->isOpen() << "isActive=" << diagram->isActive() << " "<<tempCounter;
         if(diagram->prerequisites != nullptr)
         {
             //qDebug() <<"Prereq Size: " <<diagram->prerequisites->size();
-              for(Diagram* prereq : *diagram->prerequisites)
-                {
+            for(Diagram* prereq : *diagram->prerequisites)
+            {
 
                 if(!prereq->isActive())
-               {
+                {
                     diagram->setActive(false);
                 }
-           //
+                //
+            }
         }
-       }
 
         if(diagram->isOpen() && !diagram->isActive())
         {
@@ -504,48 +495,48 @@ void Widget::checkPrerequisitesEvent()
         {
             diagram->paintDiagramColor(MyConstants::my_red);
         }
-   }
+    }
 
 }
 
 void Widget::writeFile(QString fileName, QString content)
 {
     QFile file(fileName);
-        // Trying to open in WriteOnly and Text mode
-        if(!file.open(QFile::WriteOnly |
-                      QFile::Text))
-        {
-            qDebug() << " Could not open file for writing";
-            return;
-        }
+    // Trying to open in WriteOnly and Text mode
+    if(!file.open(QFile::WriteOnly |
+                  QFile::Text))
+    {
+        qDebug() << " Could not open file for writing";
+        return;
+    }
 
-        // To write text, we use operator<<(),
-        // which is overloaded to take
-        // a QTextStream on the left
-        // and data types (including QString) on the right
+    // To write text, we use operator<<(),
+    // which is overloaded to take
+    // a QTextStream on the left
+    // and data types (including QString) on the right
 
-        QTextStream out(&file);
-        out << content;
-        file.flush();
-        file.close();
+    QTextStream out(&file);
+    out << content;
+    file.flush();
+    file.close();
 }
 
 QByteArray Widget::readFile(QString fileName)
 {
-        QFile file(fileName);
-        if(!file.open(QFile::ReadOnly |
-                      QFile::Text))
-        {
-            qDebug() << " Could not open the file for reading";
-            return nullptr;
-        }
+    QFile file(fileName);
+    if(!file.open(QFile::ReadOnly |
+                  QFile::Text))
+    {
+        qDebug() << " Could not open the file for reading";
+        return nullptr;
+    }
 
-        //QTextStream in(&file);
-       // QString myText = in.readAll();
+    //QTextStream in(&file);
+    // QString myText = in.readAll();
 
-        QByteArray jsonData = file.readAll();
-        file.close();
-        return jsonData;
+    QByteArray jsonData = file.readAll();
+    file.close();
+    return jsonData;
 }
 
 void Widget::clearLines()
@@ -566,23 +557,23 @@ void Widget::clearLines()
 void Widget::paintEvent(QPaintEvent *)
 {
 
-// Get the current scroll positions
- QPainter painter(this);
- //painter.drawLine(QLineF(200,300,400,400));
+    // Get the current scroll positions
+    QPainter painter(this);
+    //painter.drawLine(QLineF(200,300,400,400));
 }
 void Widget::resizeEvent(QResizeEvent *event)
-    {
+{
     qDebug() <<"Resizing...";
-        // Call the base class implementation
-        QWidget::resizeEvent(event);
-        int yOffSet = 150;
-        int xOffSet = 150;
+    // Call the base class implementation
+    QWidget::resizeEvent(event);
+    int yOffSet = 150;
+    int xOffSet = 150;
     //    FSC_5101_pos = FSC_5101->mapToParent(QPoint(0,0));//mainWindow_pos+ FSC_5101->mapToGlobal(QPoint(FSC_5101->width()/2, FSC_5101->height()/2));
 
-  //      FSC_5002_pos =FSC_5002->mapToParent(QPoint(0,0)); //FSC_5002->mapToGlobal(QPoint(FSC_5002->width()/2, FSC_5002->height())/2);
+    //      FSC_5002_pos =FSC_5002->mapToParent(QPoint(0,0)); //FSC_5002->mapToGlobal(QPoint(FSC_5002->width()/2, FSC_5002->height())/2);
 
-       //fsc5101_to_fsc5002->setPoints(QList<QPoint>{FSC_5101_pos + QPoint(FSC_5101->width(),yOffSet),QPoint(FSC_5002_pos.x()+0,FSC_5101_pos.y() + 0),FSC_5002_pos+ QPoint(0,FSC_5002->height())});
-       //função que atualiza as coordenadas da linha quando resiza a tela
+    //fsc5101_to_fsc5002->setPoints(QList<QPoint>{FSC_5101_pos + QPoint(FSC_5101->width(),yOffSet),QPoint(FSC_5002_pos.x()+0,FSC_5101_pos.y() + 0),FSC_5002_pos+ QPoint(0,FSC_5002->height())});
+    //função que atualiza as coordenadas da linha quando resiza a tela
 
 
 }
@@ -690,10 +681,10 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
     break;
     case Qt::Key_H:
         use_oldH_mousePos = false;
-    break;
+        break;
     case Qt::Key_V:
         use_oldV_mousePos = false;
-    break;
+        break;
 
     }
 }
@@ -706,7 +697,7 @@ void Widget:: initPrerequisites()
     MTM_3120->setPrerequisites(new QVector<Diagram*>{MTM_3110});
     FSC_5002->setPrerequisites(new QVector<Diagram*>{FSC_5101,MTM_3110});
     DAS_5102->setPrerequisites(new QVector<Diagram*>{DAS_5334});
-   // EEL_5105->setPrerequisites(new QVector<Diagram*>{FSC_5101, MTM_3110});
+    // EEL_5105->setPrerequisites(new QVector<Diagram*>{FSC_5101, MTM_3110});
     FSC_5122->setPrerequisites(new QVector<Diagram*>{FSC_5101});
     //MTM_3121->setPrerequisites(new QVector<Diagram*>{});
     DAS_5210->setPrerequisites(new QVector<Diagram*>{DAS_5411,FSC_5101, MTM_3110});
@@ -739,7 +730,7 @@ void Widget:: initPrerequisites()
     EEL_5354->setPrerequisites(new QVector<Diagram*>{EEL_5193, EEL_7540});
     EMC_5251->setPrerequisites(new QVector<Diagram*>{DAS_5114});
     EMC_5258->setPrerequisites(new QVector<Diagram*>{DAS_5307});
-   // DAS_5401->setPrerequisites(new QVector<Diagram*>{});
+    // DAS_5401->setPrerequisites(new QVector<Diagram*>{});
     //DAS_5501->setPrerequisites(new QVector<Diagram*>{});
     //EPS_5211->setPrerequisites(new QVector<Diagram*>{});
     DAS_5511->setPrerequisites(new QVector<Diagram*>{DAS_5501});
@@ -747,22 +738,20 @@ void Widget:: initPrerequisites()
 }
 void Widget::wheelEvent(QWheelEvent *event)
 {
-
-            //gridLayout->setSpacing(gridLayout->spacing()*scaleFactor);
-           event->accept();
+    event->accept();
 }
 
 bool Widget::eventFilter(QObject *watched, QEvent *evt)
 {
-            if (evt->type() == QEvent::Wheel)
-             {
-                 // ignore the event (this effectively
-                 // makes it "skip" one object)
-               //  evt->ignore();
-                 return true;
-             }
-             // return false to continue event propagation
-             // for all events
-             return false;
+    if (evt->type() == QEvent::Wheel)
+    {
+        // ignore the event (this effectively
+        // makes it "skip" one object)
+        //  evt->ignore();
+        return true;
+    }
+    // return false to continue event propagation
+    // for all events
+    return false;
 }
 

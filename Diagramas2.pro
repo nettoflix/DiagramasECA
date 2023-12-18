@@ -42,3 +42,10 @@ FORMS += \
     widget.ui \
     diagram.ui \
     widget.ui
+
+RESOURCES += \
+    resources.qrc
+
+CONFIG += import_plugins
+QTPLUGIN += qwayland-generic
+QTPLUGIN += xcb
