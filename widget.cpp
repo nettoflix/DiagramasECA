@@ -22,6 +22,7 @@ Widget::Widget(QWidget *parent)
 
     this->setGeometry(0,0, QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
     this->state = States::Off;
+    setWindowTitle(QString::fromUtf8("Fluxograma ECA — currículo 20241 (não oficial, confira no CAGR)"));
     //this->waitingForClick = false;
     //ui->setupUi(this);
     this->defaultSpaceWidth = 10;
