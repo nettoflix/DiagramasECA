@@ -381,7 +381,7 @@
             ]
         },
         "Conservação dos Recursos Naturais": {
-            "isActive": true,
+            "isActive": false,
             "lines": [
             ]
         },
