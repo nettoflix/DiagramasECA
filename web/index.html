@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fluxograma ECA</title>
+<meta name="author" content="Nettoflix">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
@@ -149,6 +150,19 @@ h1 small {
 .legenda .l-aberta i { background: var(--aberta-fundo); border: 2px solid var(--aberta); }
 .legenda .l-bloq i { background: var(--bloq-fundo); border: 1.5px solid var(--bloq-borda); }
 
+.credito {
+  margin: 0;
+  font-size: 13px;
+  color: var(--suave);
+}
+.credito a {
+  color: var(--tinta);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--feita);
+}
+.credito a:hover { color: var(--feita); }
+.credito a:focus-visible { outline: 2px solid var(--foco); outline-offset: 2px; }
 .ferramentas {
   display: flex;
   align-items: center;
@@ -265,6 +279,9 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
 @media (max-width: 1100px) { .dica { display: none; } #limpar { margin-left: auto; } }
 
 @media (max-width: 640px) {
+  .ferramentas { flex-wrap: wrap; }
+  .ferramentas .sep { display: none; }
+  .fases { order: 5; flex-basis: 100%; padding-bottom: 2px; }
   .legenda { margin-left: 0; }
   .dica { display: none; }
   h1 small { display: none; }
@@ -288,6 +305,7 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
       <span class="l-aberta"><i></i>Disponível</span>
       <span class="l-bloq"><i></i>Bloqueada</span>
     </div>
+    <p class="credito">feito por <a href="https://github.com/nettoflix" target="_blank" rel="noopener">Nettoflix</a></p>
   </div>
   <div class="ferramentas">
     <button id="tudo" type="button" title="Mostrar todas as fases (0)">Ver tudo</button>

@@ -1,5 +1,7 @@
 # Fluxograma ECA — versão web
 
+Feito por **Nettoflix** — <https://nettoflix.github.io/DiagramasECA/web/>
+
 `index.html` é a versão web do app: um arquivo único, sem dependências
 além das fontes do Google Fonts, com os dados embutidos. Abre em qualquer
 navegador, inclusive no celular.
