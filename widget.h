@@ -19,7 +19,10 @@
 #include <QTextStream>
 #include <QScrollArea>
 #include <QScrollBar>
-#include "CustomViewport.h"
+#include <QGraphicsScene>
+#include <QGraphicsProxyWidget>
+#include <QLabel>
+#include "zoomview.h"
 #include "fasetitle.h"
 class Diagram;
 namespace Ui { class Widget; }
@@ -42,8 +45,15 @@ public slots:
     void checkPrerequisitesEvent();
 
 private:
-    QScrollArea* scrollArea=nullptr;
-    QPoint mousePos;
+    QGraphicsScene* scene=nullptr;
+    ZoomView* view=nullptr;
+    QLabel* zoomLabel=nullptr;
+    int lastFase=-1;
+    bool firstShow=true;
+    bool shiftAlone=false;
+    QRectF faseRect(int firstCol, int lastCol);
+    QLayout* buildToolbar();
+    void addPointAt(QPoint scenePos);
     QString path="";
     QGridLayout* gridLayout;
 
@@ -139,8 +149,6 @@ private:
     QPoint FSC_5101_pos;
     QPoint FSC_5002_pos;
     bool waitingForClick;
-    QScrollBar* verticalScrollBar;
-    QScrollBar* horizontalScrollBar;
     QPoint oldMousePos;
     bool use_oldH_mousePos=false;
      bool use_oldV_mousePos=false;
@@ -152,22 +160,15 @@ private:
     int containerHeight=0;
 
      ConnectingLine* line;
-       //zoom stuff
-       int defaultDiagramWidth=0;
-       int defaultDiagramHeight=0;
        int defaultSpaceWidth=0;
-       int defaultSpaceHeight=0;
     void clearLines();
-    bool eventFilter(QObject *watched, QEvent *evt);
+    bool eventFilter(QObject *watched, QEvent *evt) override;
 protected:
        void paintEvent(QPaintEvent *) override;
        void showEvent(QShowEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
         void keyPressEvent(QKeyEvent* event) override;
         void keyReleaseEvent(QKeyEvent *event) override;
-        void mousePressEvent(QMouseEvent *event) override;
-        void wheelEvent(QWheelEvent *event) override;
-        void mouseMoveEvent(QMouseEvent *event) override;
 
 
 

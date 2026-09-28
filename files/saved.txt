@@ -2,10 +2,11 @@
     "Diagramas": {
         "Aci. Hidráulic. e Pneum. para Automação": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Algebra Linear": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -46,7 +47,7 @@
             ]
         },
         "Arquit. e Prog. de Sist. Microcontrolados": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -70,18 +71,21 @@
         },
         "Aspectos Econômic. Sociais da Aut.": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Aspectos de Seg. em Sist. de Cont. e Automação": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Avaliação de Des. de Sist. da Automação Discreta": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Calculo 1": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -176,7 +180,7 @@
             ]
         },
         "Calculo 2": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -231,11 +235,17 @@
                         "x": 626,
                         "y": 1675
                     }
+                ],
+                [
+                    {
+                        "x": 480,
+                        "y": 1285
+                    }
                 ]
             ]
         },
         "Circuitos Elétricos para Automação": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -330,7 +340,7 @@
             ]
         },
         "Circuitos e Técnicas Digitais": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -371,15 +381,17 @@
             ]
         },
         "Conservação dos Recursos Naturais": {
-            "isActive": false,
-            "lines": []
+            "isActive": true,
+            "lines": [
+            ]
         },
         "Cálc. Numérico para Automação": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Cálculo 3": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -402,12 +414,14 @@
             ]
         },
         "Desenho Técnico para Automação": {
-            "isActive": false,
-            "lines": []
+            "isActive": true,
+            "lines": [
+            ]
         },
         "Eletrotécnica para automação": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Eletrônica Aplicada": {
             "isActive": false,
@@ -433,7 +447,7 @@
             ]
         },
         "Equações Diferenciais Ordinárias": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -474,7 +488,7 @@
             ]
         },
         "Estatística e Probabilidade": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -504,7 +518,7 @@
             ]
         },
         "Fundamentos da Estrutura da Informação": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -560,7 +574,7 @@
             ]
         },
         "Física 1": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -619,7 +633,7 @@
             ]
         },
         "Física 2": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -678,7 +692,7 @@
             ]
         },
         "Física 3": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -693,8 +707,9 @@
             ]
         },
         "Física Experimental": {
-            "isActive": false,
-            "lines": []
+            "isActive": true,
+            "lines": [
+            ]
         },
         "Instrumentação em Controle": {
             "isActive": false,
@@ -720,7 +735,7 @@
             ]
         },
         "Introdução ao Controle de Processos": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -744,10 +759,11 @@
         },
         "Introdução à Automação da Manafatura": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Introdução à Engenheria de Controle e Automação": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -789,10 +805,11 @@
         },
         "Introdução à Robótica Industrial": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Introdução à informática para Automação": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -807,11 +824,12 @@
             ]
         },
         "Mecânica dos Sólidos 1": {
-            "isActive": false,
-            "lines": []
+            "isActive": true,
+            "lines": [
+            ]
         },
         "Metodolodia para Desenv. de Sistemas": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -955,22 +973,26 @@
         },
         "Optativas Livres": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Optativas Prof.": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Optativas Prof.(16)": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Programação Econômica e Financeira": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Programação de Sist. Automatizados": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -1012,11 +1034,13 @@
         },
         "Projeto Integrador": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Projeto de Fim de Curso": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Redes de Comp. para Automação Ind.": {
             "isActive": false,
@@ -1042,7 +1066,7 @@
             ]
         },
         "Sinais e Sistemas Lineares": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -1092,10 +1116,11 @@
         },
         "Sistemas Dinâmicos": {
             "isActive": false,
-            "lines": []
+            "lines": [
+            ]
         },
         "Sistemas de Automação Discreta": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {

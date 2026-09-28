@@ -33,7 +33,7 @@ detalhe.
 
 | Arquivo | Função |
 |---|---|
-| `probe/main.cpp` | `main()` alternativo do app: abre a janela, espera 2,5 s, imprime a geometria de cada `Diagram` e salva um PNG da renderização (`container->grab()`). |
+| `probe/main.cpp` | `main()` alternativo do app: abre a janela, espera 2,5 s, imprime a geometria de cada `Diagram` e salva um PNG da renderização (`container->grab()`, em escala 1:1, independente do zoom). Encontra o container através do `QGraphicsProxyWidget` da `ZoomView`. |
 | `render.sh` | Compila uma cópia do projeto com o `probe/main.cpp` (em `build/`, sem tocar no projeto), carrega um JSON de linhas e gera PNG + geometria medida. |
 | `route.py` | Leitura de `widget.cpp` (nomes e pré-requisitos), leitura da geometria medida, definição das trilhas e dos moldes de rota. Também contém a **1ª versão** do roteador (uma linha independente por aresta). |
 | `route2.py` | Roteador **final** (modelo de tronco + simulated annealing). É ele que gera o `saved.txt`. |
@@ -157,10 +157,11 @@ A medição corrigiu duas suposições que estariam erradas:
 
 ![Layout sem linhas](imagens/0_layout_sem_linhas.png)
 
-Outro ponto importante: com a janela maximizada em 1920×1080, a viewport
-(1812×978) é **menor** que o tamanho mínimo do container (3108×2033).
-Então o `QGridLayout` não distribui espaço extra e as posições são
-determinísticas. Veja as [Limitações](#14-limitações).
+Outro ponto importante: na época da geração, com a janela maximizada em
+1920×1080, a viewport (1812×978) era **menor** que o tamanho mínimo do
+container (3108×2033). Então o `QGridLayout` não distribuía espaço extra e
+as posições eram determinísticas. Hoje, com o zoom, o container sempre tem
+o tamanho natural. Veja as [Limitações](#14-limitações).
 
 O mesmo probe salva um PNG da renderização. Ele foi usado em todas as
 etapas para **ver** o resultado exatamente como o Qt desenha.
@@ -444,11 +445,16 @@ regra "sai pela direita e entra pela esquerda".
 
 ## 14. Limitações
 
-- **Coordenadas absolutas.** Elas só valem enquanto a viewport da
-  `QScrollArea` for menor que o container (3108×2033), o que acontece em
-  telas de até cerca de 1920×1080 ou 2560×1440. Num monitor maior (4K
-  maximizado), o `QGridLayout` espalha as células e as linhas saem do
-  lugar. Essa limitação já existia no desenho manual original.
+- **Coordenadas absolutas.** As linhas estão em coordenadas do `container`.
+  Quando elas foram geradas, o container ficava dentro de uma `QScrollArea`
+  e só mantinha o tamanho mínimo (3108×2033) em telas pequenas. Desde a
+  implementação do zoom, o container fica num `QGraphicsProxyWidget` (veja
+  `zoomview.h`) e **tem sempre o tamanho natural**, então as coordenadas
+  valem em qualquer monitor e em qualquer nível de zoom. A única exigência
+  é manter as margens da grade em 9 px, o que `widget.cpp` fixa com
+  `gridLayout->setContentsMargins(9, 9, 9, 9)`. Sem isso, o container, que
+  virou janela de topo dentro do proxy, usaria 11 px e tudo se deslocaria
+  2 px.
 - **Qualquer mudança de layout exige regenerar.** Isso inclui posições em
   `gridLayout->addWidget`, `setFixedSize(159,159)`, `margin-top: 50px`,
   espaçamentos e `FaseTitle`. Basta repetir a

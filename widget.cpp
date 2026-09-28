@@ -5,6 +5,10 @@
 
 
 #include <QDebug>
+#include <QApplication>
+#include <QHBoxLayout>
+#include <QToolButton>
+#include <QShortcut>
 
 
 
@@ -18,14 +22,13 @@ Widget::Widget(QWidget *parent)
     this->state = States::Off;
     //this->waitingForClick = false;
     //ui->setupUi(this);
-    this->defaultDiagramWidth = 130;
-    this->defaultDiagramHeight= 120;
     this->defaultSpaceWidth = 10;
-    this->defaultSpaceHeight = 10;
     // path = "/home/nettoflix/Netto/Desenvolvimento/DiagramasECA/test.txt";
     path = QCoreApplication::applicationDirPath() + "/files/saved.txt";
     qDebug("path: [%s]", path.toLatin1().data());
     QBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->setContentsMargins(4, 4, 4, 4);
+    mainLayout->setSpacing(4);
     this->setLayout(mainLayout);
 
     container = new QWidget;
@@ -37,13 +40,13 @@ Widget::Widget(QWidget *parent)
     this->gridLayout = new QGridLayout;
     container->setLayout(gridLayout);
 
-    QScrollArea* scrollArea = new QScrollArea();
-    CustomViewport* viewPort = new CustomViewport();
-    scrollArea->setViewport(viewPort);
-    scrollArea->setWidget(container);
-    scrollArea->setWidgetResizable(true);
-    // scrollArea->viewport()->installEventFilter(this);
-    mainLayout->addWidget(scrollArea);
+    // o container é embutido numa QGraphicsScene (mais abaixo, depois de
+    // preenchido) para que o zoom seja uma transformação linear da vista:
+    // caixas, textos e linhas escalam juntos e as coordenadas de saved.txt
+    // (relativas ao container) continuam válidas.
+    scene = new QGraphicsScene(this);
+    view = new ZoomView(scene);
+    mainLayout->addWidget(view);
 
     //PRIMEIRA FASE
     MTM_3110 = new Diagram(container, this, "Calculo 1");
@@ -109,6 +112,11 @@ Widget::Widget(QWidget *parent)
     this->initPrerequisites();
 
     gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
+    // dentro do QGraphicsProxyWidget o container vira janela de topo, e o estilo
+    // usaria margem 11 (de janela) em vez de 9 (de widget filho): fixa em 9 para
+    // manter a geometria com que files/saved.txt foi gerado
+    gridLayout->setContentsMargins(9, 9, 9, 9);
+    gridLayout->setVerticalSpacing(6);
     //gridLayout->setVerticalSpacing(this->defaultSpaceHeight);
     QWidget *spacer = new QWidget(); //spacer->setFixedSize(250,200);
     //PRIMEIRA FASE (coluna 0)
@@ -231,10 +239,6 @@ Widget::Widget(QWidget *parent)
     gridLayout->addWidget(spacer,1,9);
     gridLayout->addWidget(DAS_5511,2,9);
 
-    // qDebug() << encheLinguica1->prerequisites->size();
-    verticalScrollBar = scrollArea->verticalScrollBar();
-    // Get the horizontal scroll bar
-    horizontalScrollBar = scrollArea->horizontalScrollBar();
 
     diagrams.append(MTM_3110);
     diagrams.append(MTM_3120);
@@ -289,30 +293,33 @@ Widget::Widget(QWidget *parent)
 
 
 
-    QRect combinedRect = container->childrenRect();
+    // barra de zoom no topo (depois da grade pronta: um botão por fase/coluna)
+    mainLayout->insertLayout(0, buildToolbar());
+
+    // tamanho natural da grade (sem esticar), igual ao usado para gerar saved.txt
+    container->adjustSize();
+    container->installEventFilter(this);
+    QGraphicsProxyWidget* proxy = scene->addWidget(container);
+    proxy->setPos(0, 0);
+    scene->setSceneRect(QRectF(QPointF(0, 0), container->size()));
+    for(Diagram* diagram : diagrams)
+        for(ConnectingLine* l : diagram->lines)
+            l->setGeometry(container->rect());
+
+    // cliques do modo de edição de linhas (Shift) chegam pela viewport
+    view->viewport()->installEventFilter(this);
 
     loadLines();
     checkPrerequisitesEvent();
-    scrollArea->setMouseTracking(true);
-    container->setMouseTracking(true);
-    setMouseTracking(true);
-    scrollArea->viewport()->setMouseTracking(true);
-
 
 }
 void Widget::showEvent(QShowEvent *event){
-    // Your custom code here
-
-    qDebug() << "Widget is about to be shown!";
-
-
-    //fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {FSC_5101->mapToGlobal(QPoint(0, 0)),FSC_5002->mapToGlobal(QPoint(0, 0))});
-    // QPoint globalPos2 = FSC_5002->pos();//FSC_5002->mapToGlobal(QPoint(0, 0));
-    //qDebug() << "FSC_5002 position: " << globalPos2;
-    // fsc5101_to_fsc5002->addPoints(*new QList<QPoint> {globalPos1, globalPos2});
-
-    // Call the base class implementation
     QWidget::showEvent(event);
+    if(firstShow)
+    {
+        firstShow = false;
+        view->fitAll(false); // abre mostrando todas as disciplinas
+    }
 }
 Widget::~Widget()
 {
@@ -417,56 +424,28 @@ void Widget::loadLines()
     }
 
 }
-void Widget::mousePressEvent(QMouseEvent *event)
+// Modo de edição de linhas: recebe o clique já em coordenadas de cena,
+// que são as mesmas coordenadas do container usadas em saved.txt.
+void Widget::addPointAt(QPoint scenePos)
 {
-    if (event->button() == Qt::LeftButton) {
-        QPoint mousePos = event->pos();
-        qDebug() << this->state;
-        //if  "H" is pressed, return mouse pos with old horizontal pos
-        if(use_oldH_mousePos)
-        {
-            mousePos = QPoint(mousePos.x(), oldMousePos.y());
-            oldMousePos = mousePos;
-        }
-        else if(use_oldV_mousePos)
-        {
-            mousePos = QPoint(oldMousePos.x(), mousePos.y());
-            oldMousePos = mousePos;
-        }
-        else
-        {
-            oldMousePos = mousePos;
-        }
-        //if "V" is pressed, return mouse pos with old vertical pos
-
-
-
-        int verticalScrollPosition = verticalScrollBar->value();
-        int horizontalScrollPosition = horizontalScrollBar->value();
-        QPoint mousePosMapped(horizontalScrollPosition+ mousePos.x(), verticalScrollPosition+ mousePos.y());
-        switch(this->state)
-        {
-        case WaitingFor:
-            break;
-        case AddingPoints:
-            if(this->currentDiagram->getCurrentLine()->size() <= 0) //se for o primeiro ponto da linha, coloca o ponto na disciplina
-            {
-                qDebug()<< currentDiagram->name<< ": "<< this->currentDiagram->lineIndex<<" ";
-
-                currentDiagram->addPointToLine(QPoint(currentDiagram->pos().x()+ currentDiagram->width()+2, currentDiagram->pos().y()+ (80)));
-                oldMousePos = QPoint(currentDiagram->mapToGlobal(QPoint(0,0)).x()+ currentDiagram->width()+2, currentDiagram->mapToGlobal(QPoint(0,0)).y()+4);
-
-
-            }
-            else
-            {
-                this->currentDiagram->addPointToLine(mousePosMapped);
-            }
-            break;
-        default:
-            break;
-        }
+    if(this->state != AddingPoints || currentDiagram == nullptr)
+        return;
+    if(currentDiagram->getCurrentLine()->size() <= 0) //se for o primeiro ponto da linha, coloca o ponto na disciplina
+    {
+        qDebug()<< currentDiagram->name<< ": "<< this->currentDiagram->lineIndex<<" ";
+        QPoint start(currentDiagram->pos().x()+ currentDiagram->width()+2, currentDiagram->pos().y()+ (80));
+        currentDiagram->addPointToLine(start);
+        oldMousePos = start;
+        return;
     }
+    //if "H" is pressed, keep the previous vertical position (horizontal segment)
+    if(use_oldH_mousePos)
+        scenePos = QPoint(scenePos.x(), oldMousePos.y());
+    //if "V" is pressed, keep the previous horizontal position (vertical segment)
+    else if(use_oldV_mousePos)
+        scenePos = QPoint(oldMousePos.x(), scenePos.y());
+    oldMousePos = scenePos;
+    currentDiagram->addPointToLine(scenePos);
 }
 
 
@@ -588,25 +567,18 @@ void Widget::resizeEvent(QResizeEvent *event)
 
 void Widget::keyPressEvent(QKeyEvent *event)
 {
-    qreal scaleFactor=1;
-    int scaledWidth;
-    int scaledHeight;
+    if(event->key() != Qt::Key_Shift)
+        shiftAlone = false; // Shift usado como modificador de outra tecla
     switch(event->key())
     {
     case Qt::Key_Escape:
         qDebug() << "Key_Escape";
         break;
     case Qt::Key_Shift:
-        qDebug() << "Key_Shift";
-        if(this->state == States::Off)
-        {
-            setState(States::WaitingFor);
-        }
-        else if(this->state == States::AddingPoints)
-        {
-            setState(States::Off);
-
-        }
+        // o modo de edição alterna ao SOLTAR o Shift (keyReleaseEvent), para
+        // que Shift+clique nos botões de fase não entre no modo sem querer
+        if(!event->isAutoRepeat())
+            shiftAlone = true;
         break;
     case Qt::Key_Plus:
 
@@ -640,36 +612,6 @@ void Widget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_V:
         use_oldV_mousePos = true;
         break;
-    case Qt::Key_9:
-        scaleFactor=0.1;
-        for(Diagram* diagram : diagrams)
-        {
-            scaledWidth = diagram->width() + (scaleFactor * this->defaultDiagramWidth);
-            scaledHeight = diagram->height() + (scaleFactor * this->defaultDiagramHeight);
-            diagram->setFixedSize(scaledWidth,scaledHeight);
-        }
-        qDebug() << "diagramWidth" << scaledWidth;
-        qDebug() << "diagramHeight" << scaledHeight;
-        gridLayout->setHorizontalSpacing(gridLayout->horizontalSpacing()+(scaleFactor * this->defaultSpaceWidth));
-        gridLayout->setVerticalSpacing(gridLayout->verticalSpacing()+(scaleFactor * this->defaultSpaceHeight));
-        qDebug() << "horizontalSpacing" << gridLayout->horizontalSpacing();
-        qDebug() << "verticalSpacing" << gridLayout->verticalSpacing();
-        break;
-    case Qt::Key_6:
-        scaleFactor=-0.1;
-        for(Diagram* diagram : diagrams)
-        {
-            scaledWidth = diagram->width() + (scaleFactor * this->defaultDiagramWidth);
-            scaledHeight = diagram->height() + (scaleFactor * this->defaultDiagramHeight);
-            diagram->setFixedSize(scaledWidth,scaledHeight);
-        }
-        qDebug() << "diagramWidth" << scaledWidth;
-        qDebug() << "diagramHeight" << scaledHeight;
-        gridLayout->setHorizontalSpacing(gridLayout->horizontalSpacing()+(scaleFactor * this->defaultSpaceWidth));
-        gridLayout->setVerticalSpacing(gridLayout->verticalSpacing()+(scaleFactor * this->defaultSpaceHeight));
-        qDebug() << "horizontalSpacing" << gridLayout->horizontalSpacing();
-        qDebug() << "verticalSpacing" << gridLayout->verticalSpacing();
-        break;
     case Qt::Key_C:
         clearLines();
         break;
@@ -686,6 +628,20 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 {
     switch(event->key())
     {
+    case Qt::Key_Shift:
+        if(!event->isAutoRepeat() && shiftAlone)
+        {
+            qDebug() << "Key_Shift";
+            if(this->state == States::Off)
+            {
+                setState(States::WaitingFor);
+            }
+            else if(this->state == States::AddingPoints)
+            {
+                setState(States::Off);
+            }
+        }
+        shiftAlone = false;
         break;
     case Qt::Key_H:
         use_oldH_mousePos = false;
@@ -744,33 +700,99 @@ void Widget:: initPrerequisites()
     DAS_5511->setPrerequisites(new QVector<Diagram*>{DAS_5501});
 
 }
-void Widget::wheelEvent(QWheelEvent *event)
-{
-    event->accept();
-}
-
 bool Widget::eventFilter(QObject *watched, QEvent *evt)
 {
-    if (evt->type() == QEvent::Wheel)
+    if(watched == container && evt->type() == QEvent::Resize)
     {
-        // ignore the event (this effectively
-        // makes it "skip" one object)
-        //  evt->ignore();
-        return true;
+        // as linhas cobrem exatamente o container
+        for(Diagram* diagram : diagrams)
+            for(ConnectingLine* l : diagram->lines)
+                l->setGeometry(container->rect());
     }
-
-    // return false to continue event propagation
-    // for all events
-    return false;
-}
-void Widget::mouseMoveEvent(QMouseEvent *event) {
-    mousePos = event->pos(); // Update mouse position
-    qDebug("MouseMove");
-    update(); // Trigger a repaint
-    if(scrollArea!=nullptr)
-    {scrollArea->viewport()->update();
-        scrollArea->update();
-
+    else if(view != nullptr && watched == view->viewport()
+            && evt->type() == QEvent::MouseButtonPress && this->state == AddingPoints)
+    {
+        QMouseEvent* me = static_cast<QMouseEvent*>(evt);
+        if(me->button() == Qt::LeftButton)
+        {
+            addPointAt(view->mapToScene(me->pos()).toPoint());
+            return true; // não repassa o clique para os diagramas
+        }
     }
+    return QWidget::eventFilter(watched, evt);
 }
 
+QRectF Widget::faseRect(int firstCol, int lastCol)
+{
+    QRectF r;
+    for(int c = firstCol; c <= lastCol; c++)
+        for(int row = 0; row < gridLayout->rowCount(); row++)
+            r |= QRectF(gridLayout->cellRect(row, c));
+    return r;
+}
+
+QLayout* Widget::buildToolbar()
+{
+    QHBoxLayout* bar = new QHBoxLayout;
+    bar->setSpacing(4);
+
+    QToolButton* all = new QToolButton;
+    all->setText("Ver tudo");
+    all->setToolTip("Enquadrar todas as fases (Ctrl+0)");
+    connect(all, &QToolButton::clicked, this, [this]() { view->fitAll(); });
+    bar->addWidget(all);
+
+    QToolButton* out = new QToolButton;
+    out->setText(QString::fromUtf8("\u2212"));
+    out->setToolTip("Diminuir zoom (Ctrl+-, ou Ctrl+roda do mouse)");
+    connect(out, &QToolButton::clicked, this, [this]() { view->zoomOut(); });
+    bar->addWidget(out);
+
+    QToolButton* in = new QToolButton;
+    in->setText("+");
+    in->setToolTip("Aumentar zoom (Ctrl+=, ou Ctrl+roda do mouse)");
+    connect(in, &QToolButton::clicked, this, [this]() { view->zoomIn(); });
+    bar->addWidget(in);
+
+    zoomLabel = new QLabel("100%");
+    zoomLabel->setMinimumWidth(48);
+    zoomLabel->setAlignment(Qt::AlignCenter);
+    connect(view, &ZoomView::zoomChanged, this, [this](qreal s) {
+        zoomLabel->setText(QString::number(qRound(s * 100)) + "%");
+    });
+    bar->addWidget(zoomLabel);
+    bar->addSpacing(16);
+
+    const int nFases = gridLayout->columnCount();
+    for(int c = 0; c < nFases; c++)
+    {
+        QToolButton* b = new QToolButton;
+        b->setText(QString::number(c + 1) + QString::fromUtf8("\u00aa"));
+        b->setToolTip(QString::fromUtf8("Enquadrar a %1\u00aa fase (Shift+clique: intervalo de fases)").arg(c + 1));
+        connect(b, &QToolButton::clicked, this, [this, c]() {
+            bool shift = QApplication::keyboardModifiers() & Qt::ShiftModifier;
+            if(shift)
+                shiftAlone = false; // foi Shift+clique, não alterna o modo de edição
+            bool range = shift && lastFase >= 0;
+            if(range)
+                view->focusColumns(faseRect(qMin(lastFase, c), qMax(lastFase, c)));
+            else
+            {
+                view->focusColumns(faseRect(c, c));
+                lastFase = c;
+            }
+        });
+        bar->addWidget(b);
+    }
+    bar->addStretch();
+
+    QLabel* hint = new QLabel(QString::fromUtf8("Ctrl+roda: zoom \u00b7 bot\u00e3o do meio: arrastar"));
+    hint->setEnabled(false);
+    bar->addWidget(hint);
+
+    connect(new QShortcut(QKeySequence("Ctrl+0"), this), &QShortcut::activated, this, [this]() { view->fitAll(); });
+    connect(new QShortcut(QKeySequence("Ctrl+="), this), &QShortcut::activated, this, [this]() { view->zoomIn(); });
+    connect(new QShortcut(QKeySequence::ZoomIn, this), &QShortcut::activated, this, [this]() { view->zoomIn(); });
+    connect(new QShortcut(QKeySequence::ZoomOut, this), &QShortcut::activated, this, [this]() { view->zoomOut(); });
+    return bar;
+}

@@ -4,8 +4,8 @@ ConnectingLine::ConnectingLine(QWidget *parent)
     : QWidget(parent)
 {
    // this->name = name;
-    this->setGeometry(parent->geometry());
-     this->setGeometry(QRect(0,0,QWIDGETSIZE_MAX,QWIDGETSIZE_MAX));
+    // cobre exatamente o container; Widget reajusta ao redimensionar
+    this->setGeometry(parent->rect());
     //qDebug() << "Geometry:: " <<this->geometry();
     this->setAttribute(Qt::WA_TransparentForMouseEvents);
     this->points = new QList<QPoint>();
@@ -22,6 +22,7 @@ void ConnectingLine::setColor(Qt::GlobalColor color)
 {
    // qDebug()<< "Line Color is set to " << color;
 this->color = color;
+update();
 }
 void ConnectingLine::setPoints(QList<QPoint> points)
 {
@@ -33,6 +34,7 @@ void ConnectingLine::setPoints(QList<QPoint> points)
                 this->points->append(point);
               //  qDebug() << point;
             }
+            update();
         }
 
 
@@ -49,11 +51,13 @@ void ConnectingLine::addPoint(QPoint point)
 {
     this->points->append(point);
     // qDebug() << "points size" << points->size();
+    update();
 }
 
 void ConnectingLine::clearPoints()
 {
     this->points->clear();
+    update();
 }
 
 void ConnectingLine::paintEvent(QPaintEvent *event)
@@ -84,6 +88,5 @@ void ConnectingLine::paintEvent(QPaintEvent *event)
           painter.drawLine(line);
 
        }
-update();
 
 }

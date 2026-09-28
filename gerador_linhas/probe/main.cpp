@@ -2,7 +2,9 @@
 #include "diagram.h"
 #include <QApplication>
 #include <QTimer>
-#include <QScrollArea>
+#include <QGraphicsProxyWidget>
+#include <QGraphicsScene>
+#include "zoomview.h"
 #include <QGridLayout>
 #include <QStyle>
 #include <cstdio>
@@ -15,15 +17,18 @@ int main(int argc, char *argv[])
     Widget w;
     w.show();
     QTimer::singleShot(2500, [&]() {
-        QList<Diagram*> ds = w.findChildren<Diagram*>();
-        QWidget* container = ds.first()->parentWidget();
-        QScrollArea* sa = w.findChild<QScrollArea*>();
+        // o container fica dentro de um QGraphicsProxyWidget da ZoomView
+        ZoomView* view = w.findChild<ZoomView*>();
+        QWidget* container = nullptr;
+        for (QGraphicsItem* it : view->scene()->items())
+            if (QGraphicsProxyWidget* px = qgraphicsitem_cast<QGraphicsProxyWidget*>(it))
+                container = px->widget();
+        QList<Diagram*> ds = container->findChildren<Diagram*>();
         QGridLayout* gl = qobject_cast<QGridLayout*>(container->layout());
         printf("STYLE %s\n", qPrintable(a.style()->objectName()));
         printf("WINDOW %d %d %d %d\n", w.geometry().x(), w.geometry().y(), w.width(), w.height());
-        printf("VIEWPORT %d %d\n", sa->viewport()->width(), sa->viewport()->height());
+        printf("VIEWPORT %d %d zoom %.3f\n", view->viewport()->width(), view->viewport()->height(), view->zoom());
         printf("CONTAINER %d %d %d %d\n", container->x(), container->y(), container->width(), container->height());
-        printf("SCROLLAREA_IN_WIDGET %d %d frame %d\n", sa->x(), sa->y(), sa->frameWidth());
         printf("CONTAINER_MIN %d %d\n", container->minimumSizeHint().width(), container->minimumSizeHint().height());
         int l,t,r,b; gl->getContentsMargins(&l,&t,&r,&b);
         printf("GRID margins %d %d %d %d hsp %d vsp %d rows %d cols %d\n", l,t,r,b, gl->horizontalSpacing(), gl->verticalSpacing(), gl->rowCount(), gl->columnCount());
@@ -35,6 +40,7 @@ int main(int argc, char *argv[])
             printf("DIAG\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n", d->name.toUtf8().constData(), row, col, d->x(), d->y(), d->width(), d->height());
         }
         QString out = QProcessEnvironment::systemEnvironment().value("PROBE_PNG");
+        // grab() do container: renderização 1:1, independente do zoom da vista
         if (!out.isEmpty()) { container->grab().save(out); printf("SAVED %s\n", qPrintable(out)); }
         fflush(stdout);
         a.quit();

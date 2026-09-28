@@ -14,7 +14,7 @@ if [ ! -x "$B/Diagramas2" ]; then
   rm -f "$B"/moc_* "$B"/qrc_* "$B"/ui_* "$B"/diagramas2_plugin_import.cpp
   cp "$HERE/probe/main.cpp" "$B/main.cpp"
   touch "$B/files/saved.txt"
-  (cd "$B" && "$QMAKE" Diagramas2.pro >/dev/null && make -j"$(nproc)" >/dev/null 2>&1)
+  (cd "$B" && "$QMAKE" Diagramas2.pro >/dev/null && make -j"$(nproc)" 2>&1 | { grep -E " error" >&2 || true; }; test -x Diagramas2)
 fi
 cp "$1" "$B/files/saved.txt"
 OUT=$(cd "$(dirname "$2")" && pwd)/$(basename "$2")

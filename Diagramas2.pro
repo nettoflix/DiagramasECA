@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     customscrollarea.cpp \
+    zoomview.cpp \
     main.cpp \
     widget.cpp \
     connectingline.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 HEADERS += \
     CustomViewport.h \
     customscrollarea.h \
+    zoomview.h \
     widget.h \
     connectingline.h \
     diagram.h \
