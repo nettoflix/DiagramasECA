@@ -24,6 +24,15 @@ prereq = {}
 for tgt, lst in re.findall(r'(\w+)->setPrerequisites\(new QVector<Diagram\*>\{([^}]*)\}\)', code):
     prereq[tgt] = [x.strip() for x in lst.split(',') if x.strip()]
 
+# horas-aula: X->setCargaHoraria(72) ou X->setCargaHoraria(144, false) (optativa)
+horas = {}
+for var, ha, opt in re.findall(r'(\w+)->setCargaHoraria\((\d+)\s*(?:,\s*(false|true))?\)', code):
+    horas[var] = (int(ha), opt != 'false')
+preCH = {var: int(h) for var, h in re.findall(r'(\w+)->setPreCH\((\d+)\)', code)}
+faltando = set(var2name) - set(horas)
+if faltando:
+    raise SystemExit(f'sem carga horária em widget.cpp: {sorted(faltando)}')
+
 geo = {}
 for line in open(os.path.join(PROJ, 'gerador_linhas', 'dados', 'geometria_medida.txt'), encoding='utf-8'):
     if line.startswith('DIAG\t'):
@@ -47,6 +56,9 @@ for var, name in var2name.items():
         'x': g['x'],
         'y': g['y'] + 50,          # topo da caixa visível (margin-top: 50px no Qt)
         'pre': prereq.get(var, []),
+        'ha': horas[var][0],
+        'ob': horas[var][1],
+        'preCH': preCH.get(var, 0),
     })
 disciplinas.sort(key=lambda d: (d['fase'], d['y']))
 

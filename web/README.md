@@ -10,7 +10,14 @@ navegador, inclusive no celular.
 
 - Clicar numa disciplina marca ou desmarca como concluída. Desmarcar uma
   disciplina também desmarca, em cascata, as que dependem dela.
-- Clicar numa disciplina bloqueada mostra quais pré-requisitos faltam.
+- Clicar numa disciplina bloqueada mostra quais pré-requisitos faltam e,
+  quando for o caso, quantas horas-aula obrigatórias ainda faltam.
+- Carga horária: cada disciplina mostra as suas horas-aula (H/A). Três
+  disciplinas também exigem um mínimo de horas-aula **obrigatórias**
+  concluídas, que é o "Pré CH" do currículo 20241: Ética e Aspectos de
+  Segurança (2.300), Gestão Econômica e de Investimentos (900) e Projeto
+  de Fim de Curso (3.000). Optativas não entram nessa soma. As horas vêm
+  de `setCargaHoraria()`/`setPreCH()` em `../widget.cpp`.
 - Passar o mouse numa disciplina destaca os pré-requisitos e os
   dependentes dela.
 - Zoom:

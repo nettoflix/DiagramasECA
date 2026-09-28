@@ -2,6 +2,7 @@
 #include "./ui_diagram.h"
 #include <QDebug>
 #include <QPalette>
+#include <QFontMetrics>
 
 
 class Widget;
@@ -63,9 +64,23 @@ Diagram::~Diagram()
     return this->active;
 }
 
+int Diagram::faltamHoras() const
+{
+    if(preCH <= 0)
+        return 0;
+    Widget* w = dynamic_cast<Widget*>(mainWidget);
+    if(w == nullptr)
+        return 0;
+    // as horas da própria disciplina não contam para liberá-la
+    int horas = w->horasObrigatoriasConcluidas();
+    if(active && obrigatoria)
+        horas -= cargaHoraria;
+    return qMax(0, preCH - horas);
+}
+
 bool Diagram::isOpen() const
 {
-    bool open=true;
+    bool open = faltamHoras() == 0;
        // qDebug()<< "ISS OPEN?:";
         if(prerequisites != nullptr)
            {
@@ -81,17 +96,70 @@ bool Diagram::isOpen() const
                     }
                }
            }
-           else
-           {
-               open = true;
-               //qDebug("PREREQUISITES IS NULLPTR");
-           }
+            // sem pré-requisitos: vale só a exigência de carga horária
             return open;
 }
 
 void Diagram::setPrerequisites(QVector<Diagram*> *prerequisites)
 {
     this->prerequisites = prerequisites;
+    atualizarTexto();
+}
+
+void Diagram::setCargaHoraria(int horasAula, bool obrigatoria)
+{
+    this->cargaHoraria = horasAula;
+    this->obrigatoria = obrigatoria;
+    atualizarTexto();
+}
+
+void Diagram::setPreCH(int horasAula)
+{
+    this->preCH = horasAula;
+    atualizarTexto();
+}
+
+void Diagram::atualizarTexto()
+{
+    QString info = QString::number(cargaHoraria) + " h/a";
+    if(!obrigatoria)
+        info += " · optativa";
+    // nomes longos: reduz a fonte até caberem em 3 linhas, sobrando espaço
+    // para a linha de horas-aula
+    QFont fonte = ui->label->font();
+    int pontos = fonte.pointSize();
+    const int larguraUtil = width() - 30;
+    while(pontos > 9)
+    {
+        fonte.setPointSize(pontos);
+        QFontMetrics fm(fonte);
+        QRect r = fm.boundingRect(QRect(0, 0, larguraUtil, 1000), Qt::TextWordWrap | Qt::AlignCenter, name);
+        int palavraMaisLarga = 0;
+        for(const QString& palavra : name.split(' ', QString::SkipEmptyParts))
+            palavraMaisLarga = qMax(palavraMaisLarga, fm.width(palavra));
+        if(r.height() <= 3 * fm.lineSpacing() && palavraMaisLarga <= larguraUtil)
+            break;
+        pontos--;
+    }
+    QString html = QString("<span style='font-size:%1pt;'>").arg(pontos) + name.toHtmlEscaped() + "</span>"
+            + "<br><span style='font-size:9pt; font-weight:normal;'>" + info;
+    if(preCH > 0)
+        html += "<br>requer " + QString::number(preCH) + " h/a obrig.";
+    html += "</span>";
+    ui->label->setText(html);
+
+    QString dica = name + "\n" + QString::number(cargaHoraria) + " horas-aula"
+            + (obrigatoria ? "" : " (optativa)");
+    if(prerequisites != nullptr && !prerequisites->isEmpty())
+    {
+        QStringList nomes;
+        for(Diagram* p : *prerequisites)
+            nomes << p->name;
+        dica += "\nPré-requisitos: " + nomes.join(", ");
+    }
+    if(preCH > 0)
+        dica += "\nExige " + QString::number(preCH) + " horas-aula obrigatórias concluídas";
+    setToolTip(dica);
 }
 
 void Diagram::addPointToLine(QPoint point)

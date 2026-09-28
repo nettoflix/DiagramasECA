@@ -41,6 +41,8 @@ public:
     void saveLines();
     void loadLines();
     void initPrerequisites();
+    void initCargaHoraria();
+    int horasObrigatoriasConcluidas() const;
 public slots:
     void checkPrerequisitesEvent();
 
@@ -48,6 +50,7 @@ private:
     QGraphicsScene* scene=nullptr;
     ZoomView* view=nullptr;
     QLabel* zoomLabel=nullptr;
+    QLabel* horasLabel=nullptr;
     int lastFase=-1;
     bool firstShow=true;
     bool shiftAlone=false;
@@ -72,7 +75,7 @@ private:
 
 
     Diagram* DAS_5334;
-    Diagram* DAS_5411;
+    Diagram* DAS_5412;
     Diagram* ECZ_5102;
     Diagram*EGR_5606;
     //SEGUNDA FASE
@@ -92,12 +95,12 @@ private:
     Diagram* DAS_5307;
     Diagram* DAS_5308;
     Diagram* DAS_5103;
-    Diagram* DAS_5114;
+    Diagram* DAS_5214;
     Diagram* EEL_7540;
     Diagram* INE_5108;
     //QUINTA FASE
     Diagram* DAS_5203;
-    Diagram* DAS_5312;
+    Diagram* DAS_5320;
     Diagram* EMC_5425;
     Diagram* DAS_5109;
     Diagram* EEL_7550;
@@ -109,23 +112,24 @@ private:
     Diagram* DAS_5120;
     Diagram* EEL_5193;
     Diagram* DAS_5151;
+    Diagram* EPS_2351;
     //SÉTIMA FASE
     Diagram* EMC_5258;
-    Diagram* DAS_5104;
+    Diagram* DAS_5105;
     Diagram* DAS_5142;
     Diagram* EMC_5251;
     Diagram* EEL_5354;
-    Diagram* DAS_5310;
+    Diagram* DAS_5318;
     //OITAVA FASE
-    Diagram* DAS_5501;
-    Diagram* DAS_5401;
+    Diagram* DAS_5502;
+    Diagram* DAS_5402;
     Diagram* OPT_PROF8;
-    Diagram* EPS_5211;
+    Diagram* EPS_7076;
     //NONA FASE
     Diagram* OPT_PROF16;
     Diagram* OPT_LIVR;
     //DÉCIMA
-    Diagram* DAS_5511;
+    Diagram* DAS_5512;
 
 
 

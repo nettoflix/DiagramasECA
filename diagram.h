@@ -31,6 +31,12 @@ public:
     bool isActive () const;
     bool isOpen() const;
     void setPrerequisites( QVector<Diagram*>* prerequisites);
+    void setCargaHoraria(int horasAula, bool obrigatoria = true);
+    void setPreCH(int horasAula);
+    int cargaHoraria = 0;      // horas-aula (H/A) da disciplina
+    bool obrigatoria = true;   // optativas não contam para o "Pré CH"
+    int preCH = 0;             // H/A obrigatórias concluídas exigidas (0 = nenhuma)
+    int faltamHoras() const;   // quanto falta para atender preCH (0 = atendido)
     void addPointToLine(QPoint point);
     void addNewLine();
     void incIndex();
@@ -54,6 +60,7 @@ protected:
 
 private:
     bool active=false;
+    void atualizarTexto();
 };
 
 #endif // DIAGRAM_H

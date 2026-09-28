@@ -4,49 +4,8 @@
             "isActive": false,
             "lines": []
         },
-        "Algebra Linear": {
-            "isActive": false,
-            "lines": [
-                [
-                    {
-                        "x": 480,
-                        "y": 1126
-                    },
-                    {
-                        "x": 626,
-                        "y": 1126
-                    }
-                ],
-                [
-                    {
-                        "x": 480,
-                        "y": 1126
-                    },
-                    {
-                        "x": 553,
-                        "y": 1126
-                    },
-                    {
-                        "x": 553,
-                        "y": 1062
-                    },
-                    {
-                        "x": 849,
-                        "y": 1062
-                    },
-                    {
-                        "x": 849,
-                        "y": 850
-                    },
-                    {
-                        "x": 936,
-                        "y": 850
-                    }
-                ]
-            ]
-        },
         "Arquit. e Prog. de Sist. Microcontrolados": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -54,188 +13,30 @@
                         "y": 319
                     },
                     {
-                        "x": 877,
+                        "x": 835,
                         "y": 319
                     },
                     {
-                        "x": 877,
-                        "y": 631
+                        "x": 835,
+                        "y": 613
                     },
                     {
                         "x": 936,
-                        "y": 631
+                        "y": 613
                     }
                 ]
             ]
         },
-        "Aspectos Econômic. Sociais da Aut.": {
+        "Aspectos Econômicos e Sociais da Automação": {
             "isActive": false,
             "lines": []
         },
-        "Aspectos de Seg. em Sist. de Cont. e Automação": {
+        "Avaliação de Desemp. de Processos de Sist. Organizacionais": {
             "isActive": false,
             "lines": []
-        },
-        "Avaliação de Des. de Sist. da Automação Discreta": {
-            "isActive": false,
-            "lines": []
-        },
-        "Calculo 1": {
-            "isActive": false,
-            "lines": [
-                [
-                    {
-                        "x": 170,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1327
-                    },
-                    {
-                        "x": 316,
-                        "y": 1327
-                    }
-                ],
-                [
-                    {
-                        "x": 170,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1438
-                    },
-                    {
-                        "x": 316,
-                        "y": 1438
-                    }
-                ],
-                [
-                    {
-                        "x": 170,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 979
-                    },
-                    {
-                        "x": 626,
-                        "y": 979
-                    }
-                ],
-                [
-                    {
-                        "x": 170,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 814
-                    },
-                    {
-                        "x": 936,
-                        "y": 814
-                    }
-                ],
-                [
-                    {
-                        "x": 170,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1309
-                    },
-                    {
-                        "x": 229,
-                        "y": 1804
-                    },
-                    {
-                        "x": 936,
-                        "y": 1804
-                    }
-                ]
-            ]
-        },
-        "Calculo 2": {
-            "isActive": false,
-            "lines": [
-                [
-                    {
-                        "x": 480,
-                        "y": 1327
-                    },
-                    {
-                        "x": 567,
-                        "y": 1327
-                    },
-                    {
-                        "x": 567,
-                        "y": 1162
-                    },
-                    {
-                        "x": 626,
-                        "y": 1162
-                    }
-                ],
-                [
-                    {
-                        "x": 480,
-                        "y": 1327
-                    },
-                    {
-                        "x": 567,
-                        "y": 1327
-                    },
-                    {
-                        "x": 567,
-                        "y": 1309
-                    },
-                    {
-                        "x": 626,
-                        "y": 1309
-                    }
-                ],
-                [
-                    {
-                        "x": 480,
-                        "y": 1327
-                    },
-                    {
-                        "x": 567,
-                        "y": 1327
-                    },
-                    {
-                        "x": 567,
-                        "y": 1675
-                    },
-                    {
-                        "x": 626,
-                        "y": 1675
-                    }
-                ]
-            ]
         },
         "Circuitos Elétricos para Automação": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -248,11 +49,11 @@
                     },
                     {
                         "x": 1229,
-                        "y": 1162
+                        "y": 1180
                     },
                     {
                         "x": 1246,
-                        "y": 1162
+                        "y": 1180
                     }
                 ],
                 [
@@ -266,11 +67,11 @@
                     },
                     {
                         "x": 1229,
-                        "y": 1291
+                        "y": 1309
                     },
                     {
                         "x": 1246,
-                        "y": 1291
+                        "y": 1309
                     }
                 ],
                 [
@@ -294,6 +95,22 @@
                 [
                     {
                         "x": 1100,
+                        "y": 1474
+                    },
+                    {
+                        "x": 1229,
+                        "y": 1474
+                    },
+                    {
+                        "x": 1229,
+                        "y": 1392
+                    },
+                    {
+                        "x": 1539,
+                        "y": 1392
+                    },
+                    {
+                        "x": 1539,
                         "y": 1474
                     },
                     {
@@ -307,19 +124,19 @@
                         "y": 1474
                     },
                     {
-                        "x": 1539,
+                        "x": 1229,
                         "y": 1474
                     },
                     {
-                        "x": 1539,
+                        "x": 1229,
                         "y": 1392
                     },
                     {
-                        "x": 1821,
+                        "x": 1793,
                         "y": 1392
                     },
                     {
-                        "x": 1821,
+                        "x": 1793,
                         "y": 1456
                     },
                     {
@@ -330,7 +147,7 @@
             ]
         },
         "Circuitos e Técnicas Digitais": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -361,25 +178,206 @@
                     },
                     {
                         "x": 863,
-                        "y": 283
+                        "y": 301
                     },
                     {
                         "x": 936,
-                        "y": 283
+                        "y": 301
                     }
                 ]
             ]
         },
-        "Conservação dos Recursos Naturais": {
+        "Conservação de Recursos Naturais": {
+            "isActive": false,
+            "lines": [
+                [
+                    {
+                        "x": 170,
+                        "y": 796
+                    },
+                    {
+                        "x": 243,
+                        "y": 796
+                    },
+                    {
+                        "x": 243,
+                        "y": 732
+                    },
+                    {
+                        "x": 1159,
+                        "y": 732
+                    },
+                    {
+                        "x": 1159,
+                        "y": 778
+                    },
+                    {
+                        "x": 1556,
+                        "y": 778
+                    }
+                ]
+            ]
+        },
+        "Cálc. Numérico para Controle e Automação": {
             "isActive": false,
             "lines": []
         },
-        "Cálc. Numérico para Automação": {
-            "isActive": false,
-            "lines": []
+        "Cálculo 1": {
+            "isActive": true,
+            "lines": [
+                [
+                    {
+                        "x": 170,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1327
+                    },
+                    {
+                        "x": 316,
+                        "y": 1327
+                    }
+                ],
+                [
+                    {
+                        "x": 170,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1492
+                    },
+                    {
+                        "x": 316,
+                        "y": 1492
+                    }
+                ],
+                [
+                    {
+                        "x": 170,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 979
+                    },
+                    {
+                        "x": 626,
+                        "y": 979
+                    }
+                ],
+                [
+                    {
+                        "x": 170,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 814
+                    },
+                    {
+                        "x": 936,
+                        "y": 814
+                    }
+                ],
+                [
+                    {
+                        "x": 170,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1309
+                    },
+                    {
+                        "x": 229,
+                        "y": 1804
+                    },
+                    {
+                        "x": 936,
+                        "y": 1804
+                    }
+                ]
+            ]
+        },
+        "Cálculo 2": {
+            "isActive": true,
+            "lines": [
+                [
+                    {
+                        "x": 480,
+                        "y": 1309
+                    },
+                    {
+                        "x": 567,
+                        "y": 1309
+                    },
+                    {
+                        "x": 567,
+                        "y": 1162
+                    },
+                    {
+                        "x": 626,
+                        "y": 1162
+                    }
+                ],
+                [
+                    {
+                        "x": 480,
+                        "y": 1309
+                    },
+                    {
+                        "x": 567,
+                        "y": 1309
+                    },
+                    {
+                        "x": 567,
+                        "y": 1327
+                    },
+                    {
+                        "x": 626,
+                        "y": 1327
+                    }
+                ],
+                [
+                    {
+                        "x": 480,
+                        "y": 1309
+                    },
+                    {
+                        "x": 567,
+                        "y": 1309
+                    },
+                    {
+                        "x": 567,
+                        "y": 1657
+                    },
+                    {
+                        "x": 626,
+                        "y": 1657
+                    }
+                ]
+            ]
         },
         "Cálculo 3": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -402,10 +400,10 @@
             ]
         },
         "Desenho Técnico para Automação": {
-            "isActive": false,
+            "isActive": true,
             "lines": []
         },
-        "Eletrotécnica para automação": {
+        "Eletrotécnica para Automação": {
             "isActive": false,
             "lines": []
         },
@@ -418,22 +416,40 @@
                         "y": 1309
                     },
                     {
-                        "x": 1455,
+                        "x": 1469,
                         "y": 1309
                     },
                     {
-                        "x": 1455,
+                        "x": 1469,
                         "y": 1639
                     },
                     {
                         "x": 1556,
                         "y": 1639
                     }
+                ],
+                [
+                    {
+                        "x": 1410,
+                        "y": 1309
+                    },
+                    {
+                        "x": 1779,
+                        "y": 1309
+                    },
+                    {
+                        "x": 1779,
+                        "y": 850
+                    },
+                    {
+                        "x": 1866,
+                        "y": 850
+                    }
                 ]
             ]
         },
         "Equações Diferenciais Ordinárias": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -446,11 +462,11 @@
                     },
                     {
                         "x": 835,
-                        "y": 1327
+                        "y": 1345
                     },
                     {
                         "x": 936,
-                        "y": 1327
+                        "y": 1345
                     }
                 ],
                 [
@@ -474,8 +490,26 @@
             ]
         },
         "Estatística e Probabilidade": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
+                [
+                    {
+                        "x": 1100,
+                        "y": 1822
+                    },
+                    {
+                        "x": 1187,
+                        "y": 1822
+                    },
+                    {
+                        "x": 1187,
+                        "y": 850
+                    },
+                    {
+                        "x": 1556,
+                        "y": 850
+                    }
+                ],
                 [
                     {
                         "x": 1100,
@@ -503,8 +537,23 @@
                 ]
             ]
         },
-        "Fundamentos da Estrutura da Informação": {
+        "Fenômenos de Transportes": {
             "isActive": false,
+            "lines": [
+                [
+                    {
+                        "x": 1410,
+                        "y": 979
+                    },
+                    {
+                        "x": 1556,
+                        "y": 979
+                    }
+                ]
+            ]
+        },
+        "Fundamentos da Estrutura da Informação": {
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -512,16 +561,16 @@
                         "y": 484
                     },
                     {
-                        "x": 835,
+                        "x": 595,
                         "y": 484
                     },
                     {
-                        "x": 835,
-                        "y": 667
+                        "x": 595,
+                        "y": 685
                     },
                     {
                         "x": 936,
-                        "y": 667
+                        "y": 685
                     }
                 ],
                 [
@@ -530,11 +579,11 @@
                         "y": 484
                     },
                     {
-                        "x": 835,
+                        "x": 595,
                         "y": 484
                     },
                     {
-                        "x": 835,
+                        "x": 595,
                         "y": 778
                     },
                     {
@@ -544,23 +593,8 @@
                 ]
             ]
         },
-        "Fênenomenos de Transporte": {
-            "isActive": false,
-            "lines": [
-                [
-                    {
-                        "x": 1410,
-                        "y": 997
-                    },
-                    {
-                        "x": 1556,
-                        "y": 997
-                    }
-                ]
-            ]
-        },
         "Física 1": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -573,11 +607,11 @@
                     },
                     {
                         "x": 271,
-                        "y": 1510
+                        "y": 1456
                     },
                     {
                         "x": 316,
-                        "y": 1510
+                        "y": 1456
                     }
                 ],
                 [
@@ -619,7 +653,7 @@
             ]
         },
         "Física 2": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -642,11 +676,11 @@
                     },
                     {
                         "x": 609,
-                        "y": 1603
+                        "y": 1621
                     },
                     {
                         "x": 626,
-                        "y": 1603
+                        "y": 1621
                     }
                 ],
                 [
@@ -678,7 +712,7 @@
             ]
         },
         "Física 3": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -693,34 +727,34 @@
             ]
         },
         "Física Experimental": {
-            "isActive": false,
+            "isActive": true,
             "lines": []
         },
-        "Instrumentação em Controle": {
+        "Gerenciamento de Projetos": {
             "isActive": false,
             "lines": [
                 [
                     {
                         "x": 1720,
-                        "y": 1639
-                    },
-                    {
-                        "x": 1765,
-                        "y": 1639
-                    },
-                    {
-                        "x": 1765,
-                        "y": 832
+                        "y": 814
                     },
                     {
                         "x": 1866,
-                        "y": 832
+                        "y": 814
                     }
                 ]
             ]
         },
-        "Introdução ao Controle de Processos": {
+        "Gestão Econômica e de Investimentos": {
             "isActive": false,
+            "lines": []
+        },
+        "Instrumentação em Controle": {
+            "isActive": false,
+            "lines": []
+        },
+        "Introdução ao Controle de Processos": {
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -733,21 +767,21 @@
                     },
                     {
                         "x": 919,
-                        "y": 1291
+                        "y": 1273
                     },
                     {
                         "x": 936,
-                        "y": 1291
+                        "y": 1273
                     }
                 ]
             ]
         },
-        "Introdução à Automação da Manafatura": {
+        "Introdução à Automação da Manufatura": {
             "isActive": false,
             "lines": []
         },
-        "Introdução à Engenheria de Controle e Automação": {
-            "isActive": false,
+        "Introdução à Engenharia de Controle e Automação": {
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -755,11 +789,11 @@
                         "y": 649
                     },
                     {
-                        "x": 609,
+                        "x": 553,
                         "y": 649
                     },
                     {
-                        "x": 609,
+                        "x": 553,
                         "y": 943
                     },
                     {
@@ -773,27 +807,41 @@
                         "y": 649
                     },
                     {
-                        "x": 807,
+                        "x": 877,
                         "y": 649
                     },
                     {
-                        "x": 807,
-                        "y": 355
+                        "x": 877,
+                        "y": 337
                     },
                     {
                         "x": 936,
-                        "y": 355
+                        "y": 337
                     }
                 ]
             ]
         },
-        "Introdução à Robótica Industrial": {
-            "isActive": false,
-            "lines": []
-        },
-        "Introdução à informática para Automação": {
-            "isActive": false,
+        "Introdução à Informática para Automação": {
+            "isActive": true,
             "lines": [
+                [
+                    {
+                        "x": 170,
+                        "y": 484
+                    },
+                    {
+                        "x": 243,
+                        "y": 484
+                    },
+                    {
+                        "x": 243,
+                        "y": 319
+                    },
+                    {
+                        "x": 316,
+                        "y": 319
+                    }
+                ],
                 [
                     {
                         "x": 170,
@@ -806,29 +854,41 @@
                 ]
             ]
         },
-        "Mecânica dos Sólidos 1": {
+        "Introdução à Robótica Industrial": {
             "isActive": false,
             "lines": []
         },
-        "Metodolodia para Desenv. de Sistemas": {
-            "isActive": false,
+        "Mecânica dos Sólidos 1": {
+            "isActive": true,
+            "lines": []
+        },
+        "Metodologia para Desenv. de Sistemas": {
+            "isActive": true,
             "lines": [
                 [
                     {
                         "x": 1410,
-                        "y": 667
+                        "y": 649
                     },
                     {
-                        "x": 1469,
-                        "y": 667
+                        "x": 1441,
+                        "y": 649
                     },
                     {
-                        "x": 1469,
-                        "y": 796
+                        "x": 1441,
+                        "y": 732
+                    },
+                    {
+                        "x": 1793,
+                        "y": 732
+                    },
+                    {
+                        "x": 1793,
+                        "y": 778
                     },
                     {
                         "x": 1866,
-                        "y": 796
+                        "y": 778
                     }
                 ]
             ]
@@ -857,24 +917,24 @@
                         "y": 484
                     },
                     {
-                        "x": 1497,
+                        "x": 1441,
                         "y": 484
                     },
                     {
-                        "x": 1497,
-                        "y": 567
+                        "x": 1441,
+                        "y": 402
                     },
                     {
-                        "x": 1793,
-                        "y": 567
+                        "x": 1821,
+                        "y": 402
                     },
                     {
-                        "x": 1793,
-                        "y": 814
+                        "x": 1821,
+                        "y": 796
                     },
                     {
                         "x": 1866,
-                        "y": 814
+                        "y": 796
                     }
                 ],
                 [
@@ -883,19 +943,19 @@
                         "y": 484
                     },
                     {
-                        "x": 1497,
+                        "x": 1441,
                         "y": 484
                     },
                     {
-                        "x": 1497,
-                        "y": 567
+                        "x": 1441,
+                        "y": 402
                     },
                     {
-                        "x": 1793,
-                        "y": 567
+                        "x": 1821,
+                        "y": 402
                     },
                     {
-                        "x": 1793,
+                        "x": 1821,
                         "y": 1786
                     },
                     {
@@ -911,6 +971,14 @@
                 [
                     {
                         "x": 1410,
+                        "y": 1126
+                    },
+                    {
+                        "x": 1511,
+                        "y": 1126
+                    },
+                    {
+                        "x": 1511,
                         "y": 1144
                     },
                     {
@@ -921,24 +989,50 @@
                 [
                     {
                         "x": 1410,
-                        "y": 1144
+                        "y": 1126
                     },
                     {
-                        "x": 1497,
-                        "y": 1144
+                        "x": 1511,
+                        "y": 1126
                     },
                     {
-                        "x": 1497,
+                        "x": 1511,
                         "y": 1603
                     },
                     {
                         "x": 1556,
                         "y": 1603
                     }
+                ],
+                [
+                    {
+                        "x": 1410,
+                        "y": 1126
+                    },
+                    {
+                        "x": 1511,
+                        "y": 1126
+                    },
+                    {
+                        "x": 1511,
+                        "y": 1076
+                    },
+                    {
+                        "x": 1737,
+                        "y": 1076
+                    },
+                    {
+                        "x": 1737,
+                        "y": 832
+                    },
+                    {
+                        "x": 1866,
+                        "y": 832
+                    }
                 ]
             ]
         },
-        "Máquina e Acionamen. Elétricos-": {
+        "Máquinas e Acionamentos Elétricos": {
             "isActive": false,
             "lines": [
                 [
@@ -957,20 +1051,16 @@
             "isActive": false,
             "lines": []
         },
-        "Optativas Prof.": {
+        "Optativas Profissionalizantes": {
             "isActive": false,
             "lines": []
         },
-        "Optativas Prof.(16)": {
-            "isActive": false,
-            "lines": []
-        },
-        "Programação Econômica e Financeira": {
+        "Optativas Profissionalizantes (16)": {
             "isActive": false,
             "lines": []
         },
         "Programação de Sist. Automatizados": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -988,104 +1078,130 @@
                         "y": 649
                     },
                     {
-                        "x": 1215,
+                        "x": 1173,
                         "y": 649
                     },
                     {
-                        "x": 1215,
-                        "y": 581
+                        "x": 1173,
+                        "y": 567
                     },
                     {
-                        "x": 1483,
-                        "y": 581
+                        "x": 1525,
+                        "y": 567
                     },
                     {
-                        "x": 1483,
-                        "y": 649
+                        "x": 1525,
+                        "y": 613
                     },
                     {
                         "x": 1556,
-                        "y": 649
+                        "y": 613
                     }
                 ]
             ]
         },
         "Projeto Integrador": {
             "isActive": false,
-            "lines": []
+            "lines": [
+                [
+                    {
+                        "x": 2030,
+                        "y": 814
+                    },
+                    {
+                        "x": 2103,
+                        "y": 814
+                    },
+                    {
+                        "x": 2103,
+                        "y": 484
+                    },
+                    {
+                        "x": 2176,
+                        "y": 484
+                    }
+                ]
+            ]
         },
         "Projeto de Fim de Curso": {
             "isActive": false,
             "lines": []
         },
-        "Redes de Comp. para Automação Ind.": {
+        "Redes de Comp. para Automação": {
             "isActive": false,
-            "lines": [
-                [
-                    {
-                        "x": 1720,
-                        "y": 649
-                    },
-                    {
-                        "x": 1835,
-                        "y": 649
-                    },
-                    {
-                        "x": 1835,
-                        "y": 778
-                    },
-                    {
-                        "x": 1866,
-                        "y": 778
-                    }
-                ]
-            ]
+            "lines": []
         },
         "Sinais e Sistemas Lineares": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
                         "x": 1100,
-                        "y": 1309
+                        "y": 1291
                     },
                     {
-                        "x": 1187,
-                        "y": 1309
+                        "x": 1215,
+                        "y": 1291
                     },
                     {
-                        "x": 1187,
-                        "y": 1126
+                        "x": 1215,
+                        "y": 1108
                     },
                     {
                         "x": 1246,
-                        "y": 1126
+                        "y": 1108
                     }
                 ],
                 [
                     {
                         "x": 1100,
-                        "y": 1309
+                        "y": 1291
                     },
                     {
-                        "x": 1187,
-                        "y": 1309
+                        "x": 1215,
+                        "y": 1291
                     },
                     {
-                        "x": 1187,
+                        "x": 1215,
+                        "y": 1062
+                    },
+                    {
+                        "x": 1497,
+                        "y": 1062
+                    },
+                    {
+                        "x": 1497,
+                        "y": 1015
+                    },
+                    {
+                        "x": 1556,
+                        "y": 1015
+                    }
+                ],
+                [
+                    {
+                        "x": 1100,
+                        "y": 1291
+                    },
+                    {
+                        "x": 1215,
+                        "y": 1291
+                    },
+                    {
+                        "x": 1215,
                         "y": 1227
                     },
                     {
-                        "x": 1835,
+                        "x": 1849,
                         "y": 1227
                     },
                     {
-                        "x": 1835,
-                        "y": 1309
+                        "x": 1849,
+                        "y": 1291
                     },
                     {
                         "x": 1866,
-                        "y": 1309
+                        "y": 1291
                     }
                 ]
             ]
@@ -1095,7 +1211,7 @@
             "lines": []
         },
         "Sistemas de Automação Discreta": {
-            "isActive": false,
+            "isActive": true,
             "lines": [
                 [
                     {
@@ -1103,11 +1219,11 @@
                         "y": 319
                     },
                     {
-                        "x": 1173,
+                        "x": 1187,
                         "y": 319
                     },
                     {
-                        "x": 1173,
+                        "x": 1187,
                         "y": 484
                     },
                     {
@@ -1121,24 +1237,34 @@
                         "y": 319
                     },
                     {
-                        "x": 1173,
+                        "x": 1483,
                         "y": 319
                     },
                     {
-                        "x": 1173,
-                        "y": 897
-                    },
-                    {
                         "x": 1483,
-                        "y": 897
-                    },
-                    {
-                        "x": 1483,
-                        "y": 961
+                        "y": 685
                     },
                     {
                         "x": 1556,
-                        "y": 961
+                        "y": 685
+                    }
+                ],
+                [
+                    {
+                        "x": 1100,
+                        "y": 319
+                    },
+                    {
+                        "x": 1483,
+                        "y": 319
+                    },
+                    {
+                        "x": 1483,
+                        "y": 943
+                    },
+                    {
+                        "x": 1556,
+                        "y": 943
                     }
                 ],
                 [
@@ -1162,29 +1288,56 @@
                         "y": 1144
                     },
                     {
-                        "x": 1849,
-                        "y": 1144
-                    },
-                    {
-                        "x": 1849,
-                        "y": 850
-                    },
-                    {
-                        "x": 1866,
-                        "y": 850
-                    }
-                ],
-                [
-                    {
-                        "x": 1720,
-                        "y": 1144
-                    },
-                    {
                         "x": 1866,
                         "y": 1144
                     }
                 ]
             ]
+        },
+        "Álgebra Linear": {
+            "isActive": true,
+            "lines": [
+                [
+                    {
+                        "x": 480,
+                        "y": 1126
+                    },
+                    {
+                        "x": 626,
+                        "y": 1126
+                    }
+                ],
+                [
+                    {
+                        "x": 480,
+                        "y": 1126
+                    },
+                    {
+                        "x": 553,
+                        "y": 1126
+                    },
+                    {
+                        "x": 553,
+                        "y": 1062
+                    },
+                    {
+                        "x": 849,
+                        "y": 1062
+                    },
+                    {
+                        "x": 849,
+                        "y": 850
+                    },
+                    {
+                        "x": 936,
+                        "y": 850
+                    }
+                ]
+            ]
+        },
+        "Ética e Aspectos de Seg. em Sist. de Controle e Automação": {
+            "isActive": false,
+            "lines": []
         }
     }
 }

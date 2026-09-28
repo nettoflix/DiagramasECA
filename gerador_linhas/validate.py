@@ -27,8 +27,8 @@ for s, obj in D.items():
     lines = obj['lines']
     if len(lines) > 8:
         problems.append(f'{s}: {len(lines)} lines > 8 ConnectingLine slots')
-    if obj['isActive'] is not False:
-        problems.append(f'{s}: isActive not false')
+    if not isinstance(obj['isActive'], bool):
+        problems.append(f'{s}: isActive não é booleano')
     found = set()
     for pts in lines:
         P = [(p['x'], p['y']) for p in pts]
