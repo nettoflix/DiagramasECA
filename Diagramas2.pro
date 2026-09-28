@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    customscrollarea.cpp \
     main.cpp \
     widget.cpp \
     connectingline.cpp \
@@ -32,6 +33,8 @@ SOURCES += \
     fasetitle.cpp
 
 HEADERS += \
+    CustomViewport.h \
+    customscrollarea.h \
     widget.h \
     connectingline.h \
     diagram.h \
@@ -40,8 +43,7 @@ HEADERS += \
 
 FORMS += \
     widget.ui \
-    diagram.ui \
-    widget.ui
+    diagram.ui
 
 RESOURCES += \
     resources.qrc

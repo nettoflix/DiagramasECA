@@ -9,30 +9,32 @@ Diagram::Diagram(QWidget *parent, QWidget *mainWidget, QString name) :
     QPushButton(parent),
     ui(new Ui::Diagram)
 {
-    //ui->setupUi(this);
+    ui->setupUi(this);
     this->mainWidget = mainWidget;//dynamic_cast<Widget*>(parent);
     this->parent = parent;
     this->name = name;
     this->paintDiagramColor(MyConstants::my_green);
     //this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    this->setFixedSize(130,120);
+    this->setFixedSize(159,159);
     //this->setMinimumSize(50,40);
-   // this->setMaximumSize(600,480);
+  //  this->setMaximumHeight(300);
 
-    QVBoxLayout* layout = new QVBoxLayout(this);  // Create a vertical layout
+   // QVBoxLayout* layout = new QVBoxLayout(this);  // Create a vertical layout
     //layout->setContentsMargins(5, 0, 5, 0);
 
 
-    QLabel* label = new QLabel(this);
+    //QLabel* label = new QLabel(this);
+
+    QLabel* label = ui->label;
     label->setStyleSheet("border: none;");
-    QFont f( "Arial", 11);
-    label->setFont( f);
+    //QFont f( "Arial", 11, QFont::ExtraBold);
+    //label->setFont( f);
     label->setWordWrap(true); //break line if text is too big
 
     label->setText(name);
     label->setAlignment(Qt::AlignCenter);
-    layout->addWidget(label);
+    //layout->addWidget(label);
 
     //ui->label->setText(name);
     connect(this, SIGNAL(clicked()), this, SLOT(setActive_slot()));

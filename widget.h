@@ -19,7 +19,7 @@
 #include <QTextStream>
 #include <QScrollArea>
 #include <QScrollBar>
-
+#include "CustomViewport.h"
 #include "fasetitle.h"
 class Diagram;
 namespace Ui { class Widget; }
@@ -42,7 +42,8 @@ public slots:
     void checkPrerequisitesEvent();
 
 private:
-
+    QScrollArea* scrollArea=nullptr;
+    QPoint mousePos;
     QString path="";
     QGridLayout* gridLayout;
 
@@ -166,6 +167,9 @@ protected:
         void keyReleaseEvent(QKeyEvent *event) override;
         void mousePressEvent(QMouseEvent *event) override;
         void wheelEvent(QWheelEvent *event) override;
+        void mouseMoveEvent(QMouseEvent *event) override;
+
+
 
 
 };

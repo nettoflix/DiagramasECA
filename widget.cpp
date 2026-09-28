@@ -22,7 +22,7 @@ Widget::Widget(QWidget *parent)
     this->defaultDiagramHeight= 120;
     this->defaultSpaceWidth = 10;
     this->defaultSpaceHeight = 10;
-   // path = "/home/nettoflix/Netto/Desenvolvimento/DiagramasECA/test.txt";
+    // path = "/home/nettoflix/Netto/Desenvolvimento/DiagramasECA/test.txt";
     path = QCoreApplication::applicationDirPath() + "/files/saved.txt";
     qDebug("path: [%s]", path.toLatin1().data());
     QBoxLayout* mainLayout = new QVBoxLayout;
@@ -37,7 +37,9 @@ Widget::Widget(QWidget *parent)
     this->gridLayout = new QGridLayout;
     container->setLayout(gridLayout);
 
-    QScrollArea* scrollArea = new QScrollArea;
+    QScrollArea* scrollArea = new QScrollArea();
+    CustomViewport* viewPort = new CustomViewport();
+    scrollArea->setViewport(viewPort);
     scrollArea->setWidget(container);
     scrollArea->setWidgetResizable(true);
     // scrollArea->viewport()->installEventFilter(this);
@@ -107,7 +109,7 @@ Widget::Widget(QWidget *parent)
     this->initPrerequisites();
 
     gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
-    gridLayout->setVerticalSpacing(this->defaultSpaceHeight);
+    //gridLayout->setVerticalSpacing(this->defaultSpaceHeight);
     QWidget *spacer = new QWidget(); //spacer->setFixedSize(250,200);
     //PRIMEIRA FASE (coluna 0)
     QWidget* fase1 = new FaseTitle(this, "1º fase");
@@ -291,9 +293,11 @@ Widget::Widget(QWidget *parent)
 
     loadLines();
     checkPrerequisitesEvent();
-    // Access the width and height
-    //containerWidth = combinedRect.width();
-    //containerHeight = combinedRect.height();
+    scrollArea->setMouseTracking(true);
+    container->setMouseTracking(true);
+    setMouseTracking(true);
+    scrollArea->viewport()->setMouseTracking(true);
+
 
 }
 void Widget::showEvent(QShowEvent *event){
@@ -504,9 +508,9 @@ void Widget::writeFile(QString fileName, QString content)
     QFile file(fileName);
     // Trying to open in WriteOnly and Text mode
     if(!file.open(QFile::WriteOnly |
-                  QFile::Text))
+                   QFile::Text))
     {
-        qDebug() << " Could not open file for writing";
+        qDebug() << " Could not open file for writing "<< fileName;
         return;
     }
 
@@ -525,9 +529,9 @@ QByteArray Widget::readFile(QString fileName)
 {
     QFile file(fileName);
     if(!file.open(QFile::ReadOnly |
-                  QFile::Text))
+                   QFile::Text))
     {
-        qDebug() << " Could not open the file for reading";
+        qDebug() << " Could not open the file for reading " << fileName;
         return nullptr;
     }
 
@@ -556,10 +560,14 @@ void Widget::clearLines()
 
 void Widget::paintEvent(QPaintEvent *)
 {
+    //    qDebug("void Widget::paintEvent(QPaintEvent *)");
+    //if(scrollArea==nullptr) return;
 
-    // Get the current scroll positions
-    QPainter painter(this);
-    //painter.drawLine(QLineF(200,300,400,400));
+    // QPainter painter(scrollArea);
+    // painter.setPen(Qt::white); // Set the text color
+    // QString text = "Hello, Mouse!"; // Text to display
+    // painter.drawText(mousePos, text); // Draw text at the mouse position
+
 }
 void Widget::resizeEvent(QResizeEvent *event)
 {
@@ -678,7 +686,7 @@ void Widget::keyReleaseEvent(QKeyEvent *event)
 {
     switch(event->key())
     {
-    break;
+        break;
     case Qt::Key_H:
         use_oldH_mousePos = false;
         break;
@@ -750,8 +758,19 @@ bool Widget::eventFilter(QObject *watched, QEvent *evt)
         //  evt->ignore();
         return true;
     }
+
     // return false to continue event propagation
     // for all events
     return false;
+}
+void Widget::mouseMoveEvent(QMouseEvent *event) {
+    mousePos = event->pos(); // Update mouse position
+    qDebug("MouseMove");
+    update(); // Trigger a repaint
+    if(scrollArea!=nullptr)
+    {scrollArea->viewport()->update();
+        scrollArea->update();
+
+    }
 }
 
