@@ -14,7 +14,7 @@ public:
 
      QList<QPoint>* points;
 
-    void setColor(Qt::GlobalColor color);
+    void setColor(const QColor& color);
     void setStartPoint(QPoint start) { m_start = start; }
     void setEndPoint(QPoint end) { m_end = end; }
     void setPoints(QList<QPoint> points);
@@ -40,7 +40,7 @@ private:
     QPoint m_start;
     QPoint m_end;
 
-    Qt::GlobalColor color;
+    QColor color;
 
 };
 

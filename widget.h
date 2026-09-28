@@ -42,6 +42,7 @@ public:
     void loadLines();
     void initPrerequisites();
     void initCargaHoraria();
+    void initGrupos();
     int horasObrigatoriasConcluidas() const;
 public slots:
     void checkPrerequisitesEvent();

@@ -9,6 +9,8 @@
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QShortcut>
+#include <QIcon>
+#include <QPainter>
 
 
 
@@ -112,6 +114,7 @@ Widget::Widget(QWidget *parent)
     //setPrerequisites
     this->initPrerequisites();
     this->initCargaHoraria();
+    this->initGrupos();
 
     gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
     // dentro do QGraphicsProxyWidget o container vira janela de topo, e o estilo
@@ -476,7 +479,7 @@ void Widget::checkPrerequisitesEvent()
         if(diagram->isActive())
             continue; // verde, pintado por setActive(true)
         diagram->setActive(false); // linhas vermelhas
-        diagram->paintDiagramColor(diagram->isOpen() ? MyConstants::my_blue : MyConstants::my_red);
+        diagram->aplicarEstado(diagram->isOpen() ? Diagram::Disponivel : Diagram::Bloqueada);
     }
 
     if(horasLabel != nullptr)
@@ -745,6 +748,32 @@ void Widget::initCargaHoraria()
     DAS_5512->setPreCH(3000);
 }
 
+void Widget::initGrupos()
+{
+    // grupos temáticos (cores em Diagram::corDoGrupo). Códigos corrigidos em
+    // relação à anotação original: ECV5115 -> ECV5215, FS5113 -> FSC5113,
+    // EMC5151 -> EMC5251, EEL5314 -> EEL5354, DAS6505 -> DAS5105 (Projeto
+    // Integrador, em controle e em automação).
+    const QStringList informatica{"informatica"}, controle{"controle"}, automacao{"automacao"},
+            mecanica{"mecanica"}, eletrica{"eletrica"}, fisica{"fisica_calculo"},
+            controleAutomacao{"controle", "automacao"};
+    for(Diagram* d : {DAS_5334, DAS_5102, DAS_5332, DAS_5308, DAS_5320, DAS_5314})
+        d->setGrupos(informatica);
+    for(Diagram* d : {DAS_5210, DAS_5214, DAS_5109, DAS_5151, DAS_5120, DAS_5142})
+        d->setGrupos(controle);
+    for(Diagram* d : {DAS_5307, DAS_5203, DAS_5318})
+        d->setGrupos(automacao);
+    for(Diagram* d : {DAS_5412, DAS_5105, DAS_5502, DAS_5512})
+        d->setGrupos(controleAutomacao);
+    for(Diagram* d : {ECV_5215, EMC_5425, EMC_5235, EMC_5467, EMC_5258, EMC_5251})
+        d->setGrupos(mecanica);
+    for(Diagram* d : {EEL_7540, EEL_7550, EEL_5193, EEL_5354, EEL_5105})
+        d->setGrupos(eletrica);
+    for(Diagram* d : {FSC_5101, MTM_3110, FSC_5122, FSC_5002, MTM_3121, MTM_3120, MTM_3103,
+                      MTM_3131, FSC_5113, DAS_5103, INE_5108})
+        d->setGrupos(fisica);
+}
+
 int Widget::horasObrigatoriasConcluidas() const
 {
     int total = 0;
@@ -786,7 +815,10 @@ QRectF Widget::faseRect(int firstCol, int lastCol)
 
 QLayout* Widget::buildToolbar()
 {
+    QVBoxLayout* barras = new QVBoxLayout;
+    barras->setSpacing(2);
     QHBoxLayout* bar = new QHBoxLayout;
+    barras->addLayout(bar);
     bar->setSpacing(4);
 
     QToolButton* all = new QToolButton;
@@ -847,9 +879,129 @@ QLayout* Widget::buildToolbar()
     hint->setEnabled(false);
     bar->addWidget(hint);
 
+    // "Colorir por": Situação (padrão) ou Grupo, com legenda própria para cada modo
+    QHBoxLayout* legenda = new QHBoxLayout;
+    legenda->setSpacing(10);
+    legenda->addWidget(new QLabel("Colorir por:"));
+    QToolButton* btSituacao = new QToolButton;
+    btSituacao->setText(QString::fromUtf8("Situação"));
+    btSituacao->setToolTip(QString::fromUtf8("Verde = concluída, azul = disponível, cinza = bloqueada"));
+    QToolButton* btGrupo = new QToolButton;
+    btGrupo->setText("Grupo");
+    btGrupo->setToolTip(QString::fromUtf8("Cor da área de cada disciplina; clique num grupo para destacá-lo"));
+    for(QToolButton* b : {btSituacao, btGrupo})
+    {
+        b->setCheckable(true);
+        b->setAutoExclusive(true);
+        legenda->addWidget(b);
+    }
+    btSituacao->setChecked(true);
+    legenda->addSpacing(12);
+
+    auto quadrado = [](const QColor& fundo, const QColor& borda = Qt::transparent) {
+        QPixmap px(16, 16);
+        px.fill(Qt::transparent);
+        QPainter p(&px);
+        p.setPen(borda == Qt::transparent ? Qt::NoPen : QPen(borda, 2));
+        p.setBrush(fundo);
+        p.drawRect(1, 1, 14, 14);
+        return px;
+    };
+    auto item = [&](const QPixmap& px, const QString& texto, QWidget* pai) {
+        QHBoxLayout* h = new QHBoxLayout;
+        h->setSpacing(5);
+        QLabel* ic = new QLabel; ic->setPixmap(px);
+        h->addWidget(ic);
+        h->addWidget(new QLabel(texto));
+        static_cast<QHBoxLayout*>(pai->layout())->addLayout(h);
+    };
+
+    // legenda do modo Situação
+    QWidget* legSituacao = new QWidget;
+    legSituacao->setLayout(new QHBoxLayout);
+    legSituacao->layout()->setContentsMargins(0, 0, 0, 0);
+    legSituacao->layout()->setSpacing(16);
+    item(quadrado(QColor("#1f9d55")), QString::fromUtf8("Concluída ✓"), legSituacao);
+    item(quadrado(QColor("#2563eb")), QString::fromUtf8("Disponível para cursar"), legSituacao);
+    item(quadrado(QColor("#e4e8ec"), QColor("#c3cad2")), "Bloqueada", legSituacao);
+    legenda->addWidget(legSituacao);
+
+    // legenda do modo Grupo: cada grupo é um botão que destaca só as suas disciplinas
+    QWidget* legGrupo = new QWidget;
+    QHBoxLayout* lg = new QHBoxLayout(legGrupo);
+    lg->setContentsMargins(0, 0, 0, 0);
+    lg->setSpacing(6);
+    QList<QToolButton*> botoesGrupo;
+    for(const QString& g : {"informatica", "controle", "automacao", "mecanica", "eletrica", "fisica_calculo"})
+    {
+        QToolButton* b = new QToolButton;
+        b->setText(Diagram::nomeDoGrupo(g));
+        b->setIcon(QIcon(quadrado(QColor(Diagram::corDoGrupo(g)))));
+        b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        b->setCheckable(true);
+        b->setToolTip(QString::fromUtf8("Destacar só %1 (clique de novo para mostrar todos)").arg(Diagram::nomeDoGrupo(g)));
+        b->setProperty("grupo", g);
+        lg->addWidget(b);
+        botoesGrupo << b;
+    }
+    QLabel* ambos = new QLabel;
+    ambos->setPixmap([]() {
+        QPixmap px(22, 16);
+        px.fill(Qt::transparent);
+        QPainter p(&px);
+        QPolygon a, b;
+        a << QPoint(0, 0) << QPoint(22, 0) << QPoint(0, 16);
+        b << QPoint(22, 0) << QPoint(22, 16) << QPoint(0, 16);
+        p.setPen(Qt::NoPen);
+        p.setBrush(QColor(Diagram::corDoGrupo("controle"))); p.drawPolygon(a);
+        p.setBrush(QColor(Diagram::corDoGrupo("automacao"))); p.drawPolygon(b);
+        return px;
+    }());
+    lg->addSpacing(8);
+    lg->addWidget(ambos);
+    lg->addWidget(new QLabel(QString::fromUtf8("Controle + Automação")));
+    QLabel* sem = new QLabel; sem->setPixmap(quadrado(QColor(Diagram::corDoGrupo(""))));
+    lg->addWidget(sem);
+    lg->addWidget(new QLabel("Sem grupo"));
+    lg->addSpacing(12);
+    lg->addWidget(new QLabel(QString::fromUtf8("<span style='color:#6b7480'>✓ concluída · esmaecida = bloqueada</span>")));
+    legGrupo->hide();
+    legenda->addWidget(legGrupo);
+    legenda->addStretch();
+    barras->addLayout(legenda);
+
+    auto reaplicarTodos = [this]() {
+        for(Diagram* d : diagrams)
+            d->reaplicar();
+    };
+    connect(btSituacao, &QToolButton::toggled, this, [=](bool on) {
+        if(!on) return;
+        Diagram::modoGrupo = false;
+        legGrupo->hide();
+        legSituacao->show();
+        reaplicarTodos();
+    });
+    connect(btGrupo, &QToolButton::toggled, this, [=](bool on) {
+        if(!on) return;
+        Diagram::modoGrupo = true;
+        legSituacao->hide();
+        legGrupo->show();
+        reaplicarTodos();
+    });
+    for(QToolButton* b : botoesGrupo)
+    {
+        connect(b, &QToolButton::clicked, this, [=](bool marcado) {
+            // destaque exclusivo: um grupo por vez; clicar de novo limpa
+            for(QToolButton* o : botoesGrupo)
+                if(o != b) o->setChecked(false);
+            Diagram::grupoFoco = marcado ? b->property("grupo").toString() : QString();
+            reaplicarTodos();
+        });
+    }
+
     connect(new QShortcut(QKeySequence("Ctrl+0"), this), &QShortcut::activated, this, [this]() { view->fitAll(); });
     connect(new QShortcut(QKeySequence("Ctrl+="), this), &QShortcut::activated, this, [this]() { view->zoomIn(); });
     connect(new QShortcut(QKeySequence::ZoomIn, this), &QShortcut::activated, this, [this]() { view->zoomIn(); });
     connect(new QShortcut(QKeySequence::ZoomOut, this), &QShortcut::activated, this, [this]() { view->zoomOut(); });
-    return bar;
+    return barras;
 }

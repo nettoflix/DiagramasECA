@@ -27,6 +27,27 @@
   --destaque: #e0900e;
   --foco: #2a60d0;
   --barra: #f7f9fa;
+  --g-informatica: #b9a5e6;
+  --g-controle: #76c9bd;
+  --g-automacao: #f3b75c;
+  --g-mecanica: #e79b87;
+  --g-eletrica: #efdb6c;
+  --g-fisica_calculo: #9dc0e7;
+  --g-sem: #dfe3e8;
+  --texto-caixa: #16202a;
+  --veu: #f4f6f8;
+  --gd-informatica: #6a52b8;
+  --gd-controle: #1d8577;
+  --gd-automacao: #b86f0c;
+  --gd-mecanica: #b0523d;
+  --gd-eletrica: #94790b;
+  --gd-fisica_calculo: #356fb4;
+  --gd-sem: #5d6875;
+  --s-feita: #1f9d55;
+  --s-feita-borda: #157a41;
+  --s-aberta: #2563eb;
+  --s-aberta-borda: #1a47b8;
+  --s-bloq: #e4e8ec;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -48,6 +69,20 @@
     --destaque: #f1b43c;
     --foco: #6f9bf2;
     --barra: #141b22;
+    --g-informatica: #9c86d4;
+    --g-controle: #5bb3a6;
+    --g-automacao: #dea24a;
+    --g-mecanica: #d18471;
+    --g-eletrica: #d8c457;
+    --g-fisica_calculo: #7fa6d6;
+    --g-sem: #c5ccd4;
+    --texto-caixa: #10161c;
+    --veu: #0f151b;
+    --s-feita: #23a45b;
+    --s-feita-borda: #3cc77a;
+    --s-aberta: #2f6df0;
+    --s-aberta-borda: #7aa2ff;
+    --s-bloq: #232c36;
     color-scheme: dark;
   }
 }
@@ -69,9 +104,24 @@
   --destaque: #f1b43c;
   --foco: #6f9bf2;
   --barra: #141b22;
+  --g-informatica: #9c86d4;
+  --g-controle: #5bb3a6;
+  --g-automacao: #dea24a;
+  --g-mecanica: #d18471;
+  --g-eletrica: #d8c457;
+  --g-fisica_calculo: #7fa6d6;
+  --g-sem: #c5ccd4;
+  --texto-caixa: #10161c;
+  --veu: #0f151b;
+  --s-feita: #23a45b;
+  --s-feita-borda: #3cc77a;
+  --s-aberta: #2f6df0;
+  --s-aberta-borda: #7aa2ff;
+  --s-bloq: #232c36;
   color-scheme: dark;
 }
 
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 body {
   margin: 0;
@@ -135,10 +185,22 @@ h1 small {
 .legenda {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 4px 14px;
   color: var(--suave);
-  margin-left: auto;
+  font-size: 13px;
 }
+.legenda .rotulo { color: var(--tinta); }
+.leg { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.leg > span { display: inline-flex; align-items: center; gap: 6px; }
+.leg .nota { font-size: 12px; }
+.segmentado { display: inline-flex; }
+.segmentado button { min-height: 26px; padding: 2px 10px; border-radius: 0; }
+.segmentado button:first-child { border-radius: 6px 0 0 6px; }
+.segmentado button:last-child { border-radius: 0 6px 6px 0; margin-left: -1px; }
+.segmentado button[aria-pressed="true"] { background: var(--tinta); color: var(--barra); border-color: var(--tinta); }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; padding: 2px 8px; font-size: 13px; color: var(--suave); }
+.chip[aria-pressed="true"] { color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
 .legenda span { display: inline-flex; align-items: center; gap: 6px; }
 .legenda i {
   width: 14px;
@@ -146,12 +208,10 @@ h1 small {
   border-radius: 2px;
   display: inline-block;
 }
-.legenda .l-feita i { background: var(--feita); border: 1.5px solid var(--feita-borda); }
-.legenda .l-aberta i { background: var(--aberta-fundo); border: 2px solid var(--aberta); }
-.legenda .l-bloq i { background: var(--bloq-fundo); border: 1.5px solid var(--bloq-borda); }
+
 
 .credito {
-  margin: 0;
+  margin: 0 0 0 auto;
   font-size: 13px;
   color: var(--suave);
 }
@@ -237,13 +297,25 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
 .disc .nome { font: 600 16px "IBM Plex Sans Condensed", "Arial Narrow", sans-serif; }
 .disc .cod { font: 500 11px "IBM Plex Mono", ui-monospace, monospace; letter-spacing: 0.02em; }
 .disc .req { font-size: 10.5px; }
-.disc.bloq rect.caixa { fill: var(--bloq-fundo); stroke: var(--bloq-borda); }
-.disc.bloq text { fill: var(--bloq-texto); }
-.disc.aberta rect.caixa { fill: var(--aberta-fundo); stroke: var(--aberta); }
-.disc.aberta .nome { fill: var(--tinta); }
-.disc.aberta .cod { fill: var(--aberta); }
-.disc.feita rect.caixa { fill: var(--feita); stroke: var(--feita-borda); }
-.disc.feita text { fill: var(--sobre-feita); }
+.disc text { fill: var(--texto-caixa); }
+.disc rect.veu { fill: var(--veu); opacity: 0; pointer-events: none; transition: opacity 150ms; }
+.disc .check { font: 700 15px "IBM Plex Sans Condensed", sans-serif; fill: var(--feita); opacity: 0; }
+/* "Colorir por: Situação": uma cor forte por estado, sem grupos */
+#mapa.modo-situacao .disc.feita rect.caixa { stroke: var(--s-feita-borda); stroke-width: 3; }
+#mapa.modo-situacao .disc.aberta rect.caixa { stroke: var(--s-aberta-borda); stroke-width: 3; }
+#mapa.modo-situacao .disc.bloq rect.caixa { stroke: var(--bloq-borda); stroke-width: 2; }
+#mapa.modo-situacao .disc.feita text, #mapa.modo-situacao .disc.aberta text { fill: #ffffff; }
+#mapa.modo-situacao .disc.bloq text { fill: var(--bloq-texto); }
+#mapa.modo-situacao .disc.feita .check { opacity: 1; fill: #ffffff; }
+/* "Colorir por: Grupo": cor da área; estado só de leve; foco apaga os outros grupos */
+#mapa.modo-grupo .disc rect.caixa { stroke: rgb(0 0 0 / 0.3); stroke-width: 2; }
+#mapa.modo-grupo .disc.feita rect.caixa { stroke: #2b333d; stroke-width: 3; }
+#mapa.modo-grupo .disc.feita .check { opacity: 1; fill: #16202a; }
+#mapa.modo-grupo .disc.bloq rect.veu { opacity: 0.6; }
+#mapa.modo-grupo .disc.bloq text { fill: var(--bloq-texto); }
+#mapa.modo-grupo .disc.fora rect.veu { opacity: 0.85; }
+#mapa.modo-grupo .disc.fora rect.caixa { stroke: var(--bloq-borda); }
+#mapa.modo-grupo .disc.fora text { fill: var(--bloq-texto); }
 .disc rect.anel { fill: none; stroke: var(--foco); stroke-width: 3; opacity: 0; }
 .disc:focus-visible rect.anel { opacity: 1; }
 #mapa.focando .disc.rel rect.caixa { stroke: var(--destaque); }
@@ -283,7 +355,7 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
   .ferramentas { flex-wrap: wrap; }
   .ferramentas .sep { display: none; }
   .fases { order: 5; flex-basis: 100%; padding-bottom: 2px; }
-  .legenda { margin-left: 0; }
+
   .dica { display: none; }
   h1 small { display: none; }
 }
@@ -301,12 +373,30 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
       <div class="trilho" aria-hidden="true"><span id="barra"></span></div>
       <span><strong id="feitas">0</strong> de <strong id="total">0</strong> concluídas · <strong id="abertas">0</strong> disponíveis · <strong id="horas">0</strong> de <strong id="horas-total">0</strong> h/a obrigatórias</span>
     </div>
-    <div class="legenda">
-      <span class="l-feita"><i></i>Concluída</span>
-      <span class="l-aberta"><i></i>Disponível</span>
-      <span class="l-bloq"><i></i>Bloqueada</span>
-    </div>
     <p class="credito">feito por <a href="https://github.com/nettoflix" target="_blank" rel="noopener">Nettoflix</a></p>
+  </div>
+  <div class="legenda" aria-label="Legenda">
+    <span class="rotulo">Colorir por:</span>
+    <div class="segmentado" role="group" aria-label="Colorir por">
+      <button type="button" id="modo-situacao" aria-pressed="true">Situação</button>
+      <button type="button" id="modo-grupo" aria-pressed="false">Grupo</button>
+    </div>
+    <span id="leg-situacao" class="leg">
+      <span><i style="background: var(--s-feita)"></i>Concluída ✓</span>
+      <span><i style="background: var(--s-aberta)"></i>Disponível para cursar</span>
+      <span><i style="background: var(--s-bloq); box-shadow: inset 0 0 0 1.5px var(--bloq-borda)"></i>Bloqueada</span>
+    </span>
+    <span id="leg-grupo" class="leg" hidden>
+      <button type="button" class="chip" data-grupo="informatica" aria-pressed="false"><i style="background: var(--g-informatica)"></i>Informática</button>
+      <button type="button" class="chip" data-grupo="controle" aria-pressed="false"><i style="background: var(--g-controle)"></i>Controle</button>
+      <button type="button" class="chip" data-grupo="automacao" aria-pressed="false"><i style="background: var(--g-automacao)"></i>Automação</button>
+      <button type="button" class="chip" data-grupo="mecanica" aria-pressed="false"><i style="background: var(--g-mecanica)"></i>Mecânica</button>
+      <button type="button" class="chip" data-grupo="eletrica" aria-pressed="false"><i style="background: var(--g-eletrica)"></i>Elétrica</button>
+      <button type="button" class="chip" data-grupo="fisica_calculo" aria-pressed="false"><i style="background: var(--g-fisica_calculo)"></i>Física e Cálculo</button>
+      <span><i style="background: linear-gradient(to bottom right, var(--g-controle) 50%, var(--g-automacao) 50%)"></i>Controle + Automação</span>
+      <span><i style="background: var(--g-sem)"></i>Sem grupo</span>
+      <span class="nota">clique num grupo para destacá-lo · ✓ concluída · esmaecida = bloqueada</span>
+    </span>
   </div>
   <div class="ferramentas">
     <button id="tudo" type="button" title="Mostrar todas as fases (0)">Ver tudo</button>
@@ -332,7 +422,7 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
 </main>
 
 <script>
-const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"disciplinas":[{"id":"DAS_5334","codigo":"DAS5334","nome":"Introdução à Informática para Automação","fase":1,"x":9,"y":430,"pre":[],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5412","codigo":"DAS5412","nome":"Introdução à Engenharia de Controle e Automação","fase":1,"x":9,"y":595,"pre":[],"ha":72,"ob":true,"preCH":0},{"id":"ECZ_5102","codigo":"ECZ5102","nome":"Conservação de Recursos Naturais","fase":1,"x":9,"y":760,"pre":[],"ha":36,"ob":true,"preCH":0},{"id":"EGR_5606","codigo":"EGR5606","nome":"Desenho Técnico para Automação","fase":1,"x":9,"y":925,"pre":[],"ha":72,"ob":true,"preCH":0},{"id":"MTM_3110","codigo":"MTM3110","nome":"Cálculo 1","fase":1,"x":9,"y":1255,"pre":[],"ha":72,"ob":true,"preCH":0},{"id":"FSC_5101","codigo":"FSC5101","nome":"Física 1","fase":1,"x":9,"y":1420,"pre":[],"ha":72,"ob":true,"preCH":0},{"id":"EEL_5105","codigo":"EEL5105","nome":"Circuitos e Técnicas Digitais","fase":2,"x":319,"y":265,"pre":["DAS_5334"],"ha":90,"ob":true,"preCH":0},{"id":"DAS_5102","codigo":"DAS5102","nome":"Fundamentos da Estrutura da Informação","fase":2,"x":319,"y":430,"pre":["DAS_5334"],"ha":72,"ob":true,"preCH":0},{"id":"MTM_3121","codigo":"MTM3121","nome":"Álgebra Linear","fase":2,"x":319,"y":1090,"pre":[],"ha":72,"ob":true,"preCH":0},{"id":"MTM_3120","codigo":"MTM3120","nome":"Cálculo 2","fase":2,"x":319,"y":1255,"pre":["MTM_3110"],"ha":72,"ob":true,"preCH":0},{"id":"FSC_5002","codigo":"FSC5002","nome":"Física 2","fase":2,"x":319,"y":1420,"pre":["FSC_5101","MTM_3110"],"ha":72,"ob":true,"preCH":0},{"id":"FSC_5122","codigo":"FSC5122","nome":"Física Experimental","fase":2,"x":319,"y":1585,"pre":["FSC_5101"],"ha":54,"ob":true,"preCH":0},{"id":"DAS_5332","codigo":"DAS5332","nome":"Arquit. e Prog. de Sist. Microcontrolados","fase":3,"x":629,"y":265,"pre":["EEL_5105"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5210","codigo":"DAS5210","nome":"Introdução ao Controle de Processos","fase":3,"x":629,"y":925,"pre":["DAS_5412","FSC_5101","MTM_3110"],"ha":54,"ob":true,"preCH":0},{"id":"MTM_3131","codigo":"MTM3131","nome":"Equações Diferenciais Ordinárias","fase":3,"x":629,"y":1090,"pre":["MTM_3120","MTM_3121"],"ha":72,"ob":true,"preCH":0},{"id":"MTM_3103","codigo":"MTM3103","nome":"Cálculo 3","fase":3,"x":629,"y":1255,"pre":["MTM_3120"],"ha":72,"ob":true,"preCH":0},{"id":"FSC_5113","codigo":"FSC5113","nome":"Física 3","fase":3,"x":629,"y":1420,"pre":["FSC_5002"],"ha":72,"ob":true,"preCH":0},{"id":"ECV_5215","codigo":"ECV5215","nome":"Mecânica dos Sólidos 1","fase":3,"x":629,"y":1585,"pre":["FSC_5002","MTM_3120"],"ha":90,"ob":true,"preCH":0},{"id":"DAS_5307","codigo":"DAS5307","nome":"Sistemas de Automação Discreta","fase":4,"x":939,"y":265,"pre":["DAS_5412","EEL_5105"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5308","codigo":"DAS5308","nome":"Programação de Sist. Automatizados","fase":4,"x":939,"y":595,"pre":["DAS_5102","DAS_5332"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5103","codigo":"DAS5103","nome":"Cálc. Numérico para Controle e Automação","fase":4,"x":939,"y":760,"pre":["DAS_5102","MTM_3110","MTM_3121"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5214","codigo":"DAS5214","nome":"Sinais e Sistemas Lineares","fase":4,"x":939,"y":1255,"pre":["DAS_5210","MTM_3131"],"ha":108,"ob":true,"preCH":0},{"id":"EEL_7540","codigo":"EEL7540","nome":"Circuitos Elétricos para Automação","fase":4,"x":939,"y":1420,"pre":["FSC_5113","MTM_3131"],"ha":72,"ob":true,"preCH":0},{"id":"INE_5108","codigo":"INE5108","nome":"Estatística e Probabilidade","fase":4,"x":939,"y":1750,"pre":["MTM_3110"],"ha":54,"ob":true,"preCH":0},{"id":"DAS_5203","codigo":"DAS5203","nome":"Modelagem e Contr. de Sist. a Eventos Discr.","fase":5,"x":1249,"y":430,"pre":["DAS_5307"],"ha":90,"ob":true,"preCH":0},{"id":"DAS_5320","codigo":"DAS5320","nome":"Metodologia para Desenv. de Sistemas","fase":5,"x":1249,"y":595,"pre":["DAS_5308"],"ha":54,"ob":true,"preCH":0},{"id":"EMC_5425","codigo":"EMC5425","nome":"Fenômenos de Transportes","fase":5,"x":1249,"y":925,"pre":["FSC_5002","MTM_3103"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5109","codigo":"DAS5109","nome":"Modelagem e Simulação de Processos","fase":5,"x":1249,"y":1090,"pre":["DAS_5214","EEL_7540"],"ha":72,"ob":true,"preCH":0},{"id":"EEL_7550","codigo":"EEL7550","nome":"Eletrônica Aplicada","fase":5,"x":1249,"y":1255,"pre":["EEL_7540"],"ha":72,"ob":true,"preCH":0},{"id":"EMC_5235","codigo":"EMC5235","nome":"Metrologia Industrial","fase":5,"x":1249,"y":1585,"pre":["EEL_7540"],"ha":72,"ob":true,"preCH":0},{"id":"CNM_7820","codigo":"CNM7820","nome":"Aspectos Econômicos e Sociais da Automação","fase":6,"x":1559,"y":430,"pre":[],"ha":36,"ob":true,"preCH":0},{"id":"DAS_5314","codigo":"DAS5314","nome":"Redes de Comp. para Automação","fase":6,"x":1559,"y":595,"pre":["DAS_5307","DAS_5308"],"ha":72,"ob":true,"preCH":0},{"id":"EPS_2351","codigo":"EPS2351","nome":"Gerenciamento de Projetos","fase":6,"x":1559,"y":760,"pre":["ECZ_5102","INE_5108"],"ha":72,"ob":true,"preCH":0},{"id":"EMC_5467","codigo":"EMC5467","nome":"Aci. Hidráulic. e Pneum. para Automação","fase":6,"x":1559,"y":925,"pre":["DAS_5214","DAS_5307","EMC_5425"],"ha":54,"ob":true,"preCH":0},{"id":"DAS_5120","codigo":"DAS5120","nome":"Sistemas de Controle","fase":6,"x":1559,"y":1090,"pre":["DAS_5109"],"ha":108,"ob":true,"preCH":0},{"id":"EEL_5193","codigo":"EEL5193","nome":"Máquinas e Acionamentos Elétricos","fase":6,"x":1559,"y":1420,"pre":["EEL_7540"],"ha":54,"ob":true,"preCH":0},{"id":"DAS_5151","codigo":"DAS5151","nome":"Instrumentação em Controle","fase":6,"x":1559,"y":1585,"pre":["DAS_5109","EEL_7550","EMC_5235"],"ha":72,"ob":true,"preCH":0},{"id":"EMC_5258","codigo":"EMC5258","nome":"Introdução à Automação da Manufatura","fase":7,"x":1869,"y":265,"pre":["DAS_5307"],"ha":108,"ob":true,"preCH":0},{"id":"DAS_5105","codigo":"DAS5105","nome":"Projeto Integrador","fase":7,"x":1869,"y":760,"pre":["DAS_5109","DAS_5203","DAS_5320","EEL_7550","EPS_2351"],"ha":108,"ob":true,"preCH":0},{"id":"DAS_5142","codigo":"DAS5142","nome":"Sistemas Dinâmicos","fase":7,"x":1869,"y":1090,"pre":["DAS_5120"],"ha":72,"ob":true,"preCH":0},{"id":"EMC_5251","codigo":"EMC5251","nome":"Introdução à Robótica Industrial","fase":7,"x":1869,"y":1255,"pre":["DAS_5214"],"ha":72,"ob":true,"preCH":0},{"id":"EEL_5354","codigo":"EEL5354","nome":"Eletrotécnica para Automação","fase":7,"x":1869,"y":1420,"pre":["EEL_5193","EEL_7540"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5318","codigo":"DAS5318","nome":"Avaliação de Desemp. de Processos de Sist. Organizacionais","fase":7,"x":1869,"y":1750,"pre":["DAS_5203","INE_5108"],"ha":72,"ob":true,"preCH":0},{"id":"DAS_5502","codigo":"DAS5502","nome":"Estágio em Controle e Automação","fase":8,"x":2179,"y":430,"pre":["DAS_5105"],"ha":216,"ob":true,"preCH":0},{"id":"DAS_5402","codigo":"DAS5402","nome":"Ética e Aspectos de Seg. em Sist. de Controle e Automação","fase":8,"x":2179,"y":1585,"pre":[],"ha":36,"ob":true,"preCH":2300},{"id":"OPT_PROF8","codigo":"","nome":"Optativas Profissionalizantes","fase":8,"x":2179,"y":1750,"pre":[],"ha":144,"ob":false,"preCH":0},{"id":"EPS_7076","codigo":"EPS7076","nome":"Gestão Econômica e de Investimentos","fase":8,"x":2179,"y":1915,"pre":[],"ha":54,"ob":true,"preCH":900},{"id":"OPT_PROF16","codigo":"","nome":"Optativas Profissionalizantes (16)","fase":9,"x":2489,"y":1420,"pre":[],"ha":288,"ob":false,"preCH":0},{"id":"OPT_LIVR","codigo":"","nome":"Optativas Livres","fase":9,"x":2489,"y":1585,"pre":[],"ha":36,"ob":false,"preCH":0},{"id":"DAS_5512","codigo":"DAS5512","nome":"Projeto de Fim de Curso","fase":10,"x":2799,"y":430,"pre":["DAS_5502"],"ha":360,"ob":true,"preCH":3000}],"linhas":[{"de":"DAS_5332","para":"DAS_5308","pts":[[790,319],[835,319],[835,613],[936,613]]},{"de":"EEL_7540","para":"DAS_5109","pts":[[1100,1474],[1229,1474],[1229,1180],[1246,1180]]},{"de":"EEL_7540","para":"EEL_7550","pts":[[1100,1474],[1229,1474],[1229,1309],[1246,1309]]},{"de":"EEL_7540","para":"EMC_5235","pts":[[1100,1474],[1229,1474],[1229,1639],[1246,1639]]},{"de":"EEL_7540","para":"EEL_5193","pts":[[1100,1474],[1229,1474],[1229,1392],[1539,1392],[1539,1474],[1556,1474]]},{"de":"EEL_7540","para":"EEL_5354","pts":[[1100,1474],[1229,1474],[1229,1392],[1793,1392],[1793,1456],[1866,1456]]},{"de":"EEL_5105","para":"DAS_5332","pts":[[480,319],[626,319]]},{"de":"EEL_5105","para":"DAS_5307","pts":[[480,319],[553,319],[553,237],[863,237],[863,301],[936,301]]},{"de":"ECZ_5102","para":"EPS_2351","pts":[[170,796],[243,796],[243,732],[1159,732],[1159,778],[1556,778]]},{"de":"MTM_3110","para":"MTM_3120","pts":[[170,1309],[229,1309],[229,1327],[316,1327]]},{"de":"MTM_3110","para":"FSC_5002","pts":[[170,1309],[229,1309],[229,1492],[316,1492]]},{"de":"MTM_3110","para":"DAS_5210","pts":[[170,1309],[229,1309],[229,979],[626,979]]},{"de":"MTM_3110","para":"DAS_5103","pts":[[170,1309],[229,1309],[229,814],[936,814]]},{"de":"MTM_3110","para":"INE_5108","pts":[[170,1309],[229,1309],[229,1804],[936,1804]]},{"de":"MTM_3120","para":"MTM_3131","pts":[[480,1309],[567,1309],[567,1162],[626,1162]]},{"de":"MTM_3120","para":"MTM_3103","pts":[[480,1309],[567,1309],[567,1327],[626,1327]]},{"de":"MTM_3120","para":"ECV_5215","pts":[[480,1309],[567,1309],[567,1657],[626,1657]]},{"de":"MTM_3103","para":"EMC_5425","pts":[[790,1309],[877,1309],[877,943],[1246,943]]},{"de":"EEL_7550","para":"DAS_5151","pts":[[1410,1309],[1469,1309],[1469,1639],[1556,1639]]},{"de":"EEL_7550","para":"DAS_5105","pts":[[1410,1309],[1779,1309],[1779,850],[1866,850]]},{"de":"MTM_3131","para":"DAS_5214","pts":[[790,1144],[835,1144],[835,1345],[936,1345]]},{"de":"MTM_3131","para":"EEL_7540","pts":[[790,1144],[835,1144],[835,1456],[936,1456]]},{"de":"INE_5108","para":"EPS_2351","pts":[[1100,1822],[1187,1822],[1187,850],[1556,850]]},{"de":"INE_5108","para":"DAS_5318","pts":[[1100,1822],[1866,1822]]},{"de":"DAS_5502","para":"DAS_5512","pts":[[2340,484],[2796,484]]},{"de":"EMC_5425","para":"EMC_5467","pts":[[1410,979],[1556,979]]},{"de":"DAS_5102","para":"DAS_5308","pts":[[480,484],[595,484],[595,685],[936,685]]},{"de":"DAS_5102","para":"DAS_5103","pts":[[480,484],[595,484],[595,778],[936,778]]},{"de":"FSC_5101","para":"FSC_5002","pts":[[170,1474],[271,1474],[271,1456],[316,1456]]},{"de":"FSC_5101","para":"FSC_5122","pts":[[170,1474],[271,1474],[271,1639],[316,1639]]},{"de":"FSC_5101","para":"DAS_5210","pts":[[170,1474],[271,1474],[271,1015],[626,1015]]},{"de":"FSC_5002","para":"FSC_5113","pts":[[480,1474],[626,1474]]},{"de":"FSC_5002","para":"ECV_5215","pts":[[480,1474],[609,1474],[609,1621],[626,1621]]},{"de":"FSC_5002","para":"EMC_5425","pts":[[480,1474],[609,1474],[609,1557],[1145,1557],[1145,1015],[1246,1015]]},{"de":"FSC_5113","para":"EEL_7540","pts":[[790,1492],[936,1492]]},{"de":"EPS_2351","para":"DAS_5105","pts":[[1720,814],[1866,814]]},{"de":"DAS_5210","para":"DAS_5214","pts":[[790,979],[919,979],[919,1273],[936,1273]]},{"de":"DAS_5412","para":"DAS_5210","pts":[[170,649],[553,649],[553,943],[626,943]]},{"de":"DAS_5412","para":"DAS_5307","pts":[[170,649],[877,649],[877,337],[936,337]]},{"de":"DAS_5334","para":"EEL_5105","pts":[[170,484],[243,484],[243,319],[316,319]]},{"de":"DAS_5334","para":"DAS_5102","pts":[[170,484],[316,484]]},{"de":"DAS_5320","para":"DAS_5105","pts":[[1410,649],[1441,649],[1441,732],[1793,732],[1793,778],[1866,778]]},{"de":"EMC_5235","para":"DAS_5151","pts":[[1410,1675],[1556,1675]]},{"de":"DAS_5203","para":"DAS_5105","pts":[[1410,484],[1441,484],[1441,402],[1821,402],[1821,796],[1866,796]]},{"de":"DAS_5203","para":"DAS_5318","pts":[[1410,484],[1441,484],[1441,402],[1821,402],[1821,1786],[1866,1786]]},{"de":"DAS_5109","para":"DAS_5120","pts":[[1410,1126],[1511,1126],[1511,1144],[1556,1144]]},{"de":"DAS_5109","para":"DAS_5151","pts":[[1410,1126],[1511,1126],[1511,1603],[1556,1603]]},{"de":"DAS_5109","para":"DAS_5105","pts":[[1410,1126],[1511,1126],[1511,1076],[1737,1076],[1737,832],[1866,832]]},{"de":"EEL_5193","para":"EEL_5354","pts":[[1720,1492],[1866,1492]]},{"de":"DAS_5308","para":"DAS_5320","pts":[[1100,649],[1246,649]]},{"de":"DAS_5308","para":"DAS_5314","pts":[[1100,649],[1173,649],[1173,567],[1525,567],[1525,613],[1556,613]]},{"de":"DAS_5105","para":"DAS_5502","pts":[[2030,814],[2103,814],[2103,484],[2176,484]]},{"de":"DAS_5214","para":"DAS_5109","pts":[[1100,1291],[1215,1291],[1215,1108],[1246,1108]]},{"de":"DAS_5214","para":"EMC_5467","pts":[[1100,1291],[1215,1291],[1215,1062],[1497,1062],[1497,1015],[1556,1015]]},{"de":"DAS_5214","para":"EMC_5251","pts":[[1100,1291],[1215,1291],[1215,1227],[1849,1227],[1849,1291],[1866,1291]]},{"de":"DAS_5307","para":"DAS_5203","pts":[[1100,319],[1187,319],[1187,484],[1246,484]]},{"de":"DAS_5307","para":"DAS_5314","pts":[[1100,319],[1483,319],[1483,685],[1556,685]]},{"de":"DAS_5307","para":"EMC_5467","pts":[[1100,319],[1483,319],[1483,943],[1556,943]]},{"de":"DAS_5307","para":"EMC_5258","pts":[[1100,319],[1866,319]]},{"de":"DAS_5120","para":"DAS_5142","pts":[[1720,1144],[1866,1144]]},{"de":"MTM_3121","para":"MTM_3131","pts":[[480,1126],[626,1126]]},{"de":"MTM_3121","para":"DAS_5103","pts":[[480,1126],[553,1126],[553,1062],[849,1062],[849,850],[936,850]]}]}/*DADOS-FIM*/;
+const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"disciplinas":[{"id":"DAS_5334","codigo":"DAS5334","nome":"Introdução à Informática para Automação","fase":1,"x":9,"y":430,"pre":[],"ha":72,"ob":true,"preCH":0,"grupos":["informatica"]},{"id":"DAS_5412","codigo":"DAS5412","nome":"Introdução à Engenharia de Controle e Automação","fase":1,"x":9,"y":595,"pre":[],"ha":72,"ob":true,"preCH":0,"grupos":["controle","automacao"]},{"id":"ECZ_5102","codigo":"ECZ5102","nome":"Conservação de Recursos Naturais","fase":1,"x":9,"y":760,"pre":[],"ha":36,"ob":true,"preCH":0,"grupos":[]},{"id":"EGR_5606","codigo":"EGR5606","nome":"Desenho Técnico para Automação","fase":1,"x":9,"y":925,"pre":[],"ha":72,"ob":true,"preCH":0,"grupos":[]},{"id":"MTM_3110","codigo":"MTM3110","nome":"Cálculo 1","fase":1,"x":9,"y":1255,"pre":[],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"FSC_5101","codigo":"FSC5101","nome":"Física 1","fase":1,"x":9,"y":1420,"pre":[],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"EEL_5105","codigo":"EEL5105","nome":"Circuitos e Técnicas Digitais","fase":2,"x":319,"y":265,"pre":["DAS_5334"],"ha":90,"ob":true,"preCH":0,"grupos":["eletrica"]},{"id":"DAS_5102","codigo":"DAS5102","nome":"Fundamentos da Estrutura da Informação","fase":2,"x":319,"y":430,"pre":["DAS_5334"],"ha":72,"ob":true,"preCH":0,"grupos":["informatica"]},{"id":"MTM_3121","codigo":"MTM3121","nome":"Álgebra Linear","fase":2,"x":319,"y":1090,"pre":[],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"MTM_3120","codigo":"MTM3120","nome":"Cálculo 2","fase":2,"x":319,"y":1255,"pre":["MTM_3110"],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"FSC_5002","codigo":"FSC5002","nome":"Física 2","fase":2,"x":319,"y":1420,"pre":["FSC_5101","MTM_3110"],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"FSC_5122","codigo":"FSC5122","nome":"Física Experimental","fase":2,"x":319,"y":1585,"pre":["FSC_5101"],"ha":54,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"DAS_5332","codigo":"DAS5332","nome":"Arquit. e Prog. de Sist. Microcontrolados","fase":3,"x":629,"y":265,"pre":["EEL_5105"],"ha":72,"ob":true,"preCH":0,"grupos":["informatica"]},{"id":"DAS_5210","codigo":"DAS5210","nome":"Introdução ao Controle de Processos","fase":3,"x":629,"y":925,"pre":["DAS_5412","FSC_5101","MTM_3110"],"ha":54,"ob":true,"preCH":0,"grupos":["controle"]},{"id":"MTM_3131","codigo":"MTM3131","nome":"Equações Diferenciais Ordinárias","fase":3,"x":629,"y":1090,"pre":["MTM_3120","MTM_3121"],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"MTM_3103","codigo":"MTM3103","nome":"Cálculo 3","fase":3,"x":629,"y":1255,"pre":["MTM_3120"],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"FSC_5113","codigo":"FSC5113","nome":"Física 3","fase":3,"x":629,"y":1420,"pre":["FSC_5002"],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"ECV_5215","codigo":"ECV5215","nome":"Mecânica dos Sólidos 1","fase":3,"x":629,"y":1585,"pre":["FSC_5002","MTM_3120"],"ha":90,"ob":true,"preCH":0,"grupos":["mecanica"]},{"id":"DAS_5307","codigo":"DAS5307","nome":"Sistemas de Automação Discreta","fase":4,"x":939,"y":265,"pre":["DAS_5412","EEL_5105"],"ha":72,"ob":true,"preCH":0,"grupos":["automacao"]},{"id":"DAS_5308","codigo":"DAS5308","nome":"Programação de Sist. Automatizados","fase":4,"x":939,"y":595,"pre":["DAS_5102","DAS_5332"],"ha":72,"ob":true,"preCH":0,"grupos":["informatica"]},{"id":"DAS_5103","codigo":"DAS5103","nome":"Cálc. Numérico para Controle e Automação","fase":4,"x":939,"y":760,"pre":["DAS_5102","MTM_3110","MTM_3121"],"ha":72,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"DAS_5214","codigo":"DAS5214","nome":"Sinais e Sistemas Lineares","fase":4,"x":939,"y":1255,"pre":["DAS_5210","MTM_3131"],"ha":108,"ob":true,"preCH":0,"grupos":["controle"]},{"id":"EEL_7540","codigo":"EEL7540","nome":"Circuitos Elétricos para Automação","fase":4,"x":939,"y":1420,"pre":["FSC_5113","MTM_3131"],"ha":72,"ob":true,"preCH":0,"grupos":["eletrica"]},{"id":"INE_5108","codigo":"INE5108","nome":"Estatística e Probabilidade","fase":4,"x":939,"y":1750,"pre":["MTM_3110"],"ha":54,"ob":true,"preCH":0,"grupos":["fisica_calculo"]},{"id":"DAS_5203","codigo":"DAS5203","nome":"Modelagem e Contr. de Sist. a Eventos Discr.","fase":5,"x":1249,"y":430,"pre":["DAS_5307"],"ha":90,"ob":true,"preCH":0,"grupos":["automacao"]},{"id":"DAS_5320","codigo":"DAS5320","nome":"Metodologia para Desenv. de Sistemas","fase":5,"x":1249,"y":595,"pre":["DAS_5308"],"ha":54,"ob":true,"preCH":0,"grupos":["informatica"]},{"id":"EMC_5425","codigo":"EMC5425","nome":"Fenômenos de Transportes","fase":5,"x":1249,"y":925,"pre":["FSC_5002","MTM_3103"],"ha":72,"ob":true,"preCH":0,"grupos":["mecanica"]},{"id":"DAS_5109","codigo":"DAS5109","nome":"Modelagem e Simulação de Processos","fase":5,"x":1249,"y":1090,"pre":["DAS_5214","EEL_7540"],"ha":72,"ob":true,"preCH":0,"grupos":["controle"]},{"id":"EEL_7550","codigo":"EEL7550","nome":"Eletrônica Aplicada","fase":5,"x":1249,"y":1255,"pre":["EEL_7540"],"ha":72,"ob":true,"preCH":0,"grupos":["eletrica"]},{"id":"EMC_5235","codigo":"EMC5235","nome":"Metrologia Industrial","fase":5,"x":1249,"y":1585,"pre":["EEL_7540"],"ha":72,"ob":true,"preCH":0,"grupos":["mecanica"]},{"id":"CNM_7820","codigo":"CNM7820","nome":"Aspectos Econômicos e Sociais da Automação","fase":6,"x":1559,"y":430,"pre":[],"ha":36,"ob":true,"preCH":0,"grupos":[]},{"id":"DAS_5314","codigo":"DAS5314","nome":"Redes de Comp. para Automação","fase":6,"x":1559,"y":595,"pre":["DAS_5307","DAS_5308"],"ha":72,"ob":true,"preCH":0,"grupos":["informatica"]},{"id":"EPS_2351","codigo":"EPS2351","nome":"Gerenciamento de Projetos","fase":6,"x":1559,"y":760,"pre":["ECZ_5102","INE_5108"],"ha":72,"ob":true,"preCH":0,"grupos":[]},{"id":"EMC_5467","codigo":"EMC5467","nome":"Aci. Hidráulic. e Pneum. para Automação","fase":6,"x":1559,"y":925,"pre":["DAS_5214","DAS_5307","EMC_5425"],"ha":54,"ob":true,"preCH":0,"grupos":["mecanica"]},{"id":"DAS_5120","codigo":"DAS5120","nome":"Sistemas de Controle","fase":6,"x":1559,"y":1090,"pre":["DAS_5109"],"ha":108,"ob":true,"preCH":0,"grupos":["controle"]},{"id":"EEL_5193","codigo":"EEL5193","nome":"Máquinas e Acionamentos Elétricos","fase":6,"x":1559,"y":1420,"pre":["EEL_7540"],"ha":54,"ob":true,"preCH":0,"grupos":["eletrica"]},{"id":"DAS_5151","codigo":"DAS5151","nome":"Instrumentação em Controle","fase":6,"x":1559,"y":1585,"pre":["DAS_5109","EEL_7550","EMC_5235"],"ha":72,"ob":true,"preCH":0,"grupos":["controle"]},{"id":"EMC_5258","codigo":"EMC5258","nome":"Introdução à Automação da Manufatura","fase":7,"x":1869,"y":265,"pre":["DAS_5307"],"ha":108,"ob":true,"preCH":0,"grupos":["mecanica"]},{"id":"DAS_5105","codigo":"DAS5105","nome":"Projeto Integrador","fase":7,"x":1869,"y":760,"pre":["DAS_5109","DAS_5203","DAS_5320","EEL_7550","EPS_2351"],"ha":108,"ob":true,"preCH":0,"grupos":["controle","automacao"]},{"id":"DAS_5142","codigo":"DAS5142","nome":"Sistemas Dinâmicos","fase":7,"x":1869,"y":1090,"pre":["DAS_5120"],"ha":72,"ob":true,"preCH":0,"grupos":["controle"]},{"id":"EMC_5251","codigo":"EMC5251","nome":"Introdução à Robótica Industrial","fase":7,"x":1869,"y":1255,"pre":["DAS_5214"],"ha":72,"ob":true,"preCH":0,"grupos":["mecanica"]},{"id":"EEL_5354","codigo":"EEL5354","nome":"Eletrotécnica para Automação","fase":7,"x":1869,"y":1420,"pre":["EEL_5193","EEL_7540"],"ha":72,"ob":true,"preCH":0,"grupos":["eletrica"]},{"id":"DAS_5318","codigo":"DAS5318","nome":"Avaliação de Desemp. de Processos de Sist. Organizacionais","fase":7,"x":1869,"y":1750,"pre":["DAS_5203","INE_5108"],"ha":72,"ob":true,"preCH":0,"grupos":["automacao"]},{"id":"DAS_5502","codigo":"DAS5502","nome":"Estágio em Controle e Automação","fase":8,"x":2179,"y":430,"pre":["DAS_5105"],"ha":216,"ob":true,"preCH":0,"grupos":["controle","automacao"]},{"id":"DAS_5402","codigo":"DAS5402","nome":"Ética e Aspectos de Seg. em Sist. de Controle e Automação","fase":8,"x":2179,"y":1585,"pre":[],"ha":36,"ob":true,"preCH":2300,"grupos":[]},{"id":"OPT_PROF8","codigo":"","nome":"Optativas Profissionalizantes","fase":8,"x":2179,"y":1750,"pre":[],"ha":144,"ob":false,"preCH":0,"grupos":[]},{"id":"EPS_7076","codigo":"EPS7076","nome":"Gestão Econômica e de Investimentos","fase":8,"x":2179,"y":1915,"pre":[],"ha":54,"ob":true,"preCH":900,"grupos":[]},{"id":"OPT_PROF16","codigo":"","nome":"Optativas Profissionalizantes (16)","fase":9,"x":2489,"y":1420,"pre":[],"ha":288,"ob":false,"preCH":0,"grupos":[]},{"id":"OPT_LIVR","codigo":"","nome":"Optativas Livres","fase":9,"x":2489,"y":1585,"pre":[],"ha":36,"ob":false,"preCH":0,"grupos":[]},{"id":"DAS_5512","codigo":"DAS5512","nome":"Projeto de Fim de Curso","fase":10,"x":2799,"y":430,"pre":["DAS_5502"],"ha":360,"ob":true,"preCH":3000,"grupos":["controle","automacao"]}],"linhas":[{"de":"DAS_5332","para":"DAS_5308","pts":[[790,319],[835,319],[835,613],[936,613]]},{"de":"EEL_7540","para":"DAS_5109","pts":[[1100,1474],[1229,1474],[1229,1180],[1246,1180]]},{"de":"EEL_7540","para":"EEL_7550","pts":[[1100,1474],[1229,1474],[1229,1309],[1246,1309]]},{"de":"EEL_7540","para":"EMC_5235","pts":[[1100,1474],[1229,1474],[1229,1639],[1246,1639]]},{"de":"EEL_7540","para":"EEL_5193","pts":[[1100,1474],[1229,1474],[1229,1392],[1539,1392],[1539,1474],[1556,1474]]},{"de":"EEL_7540","para":"EEL_5354","pts":[[1100,1474],[1229,1474],[1229,1392],[1793,1392],[1793,1456],[1866,1456]]},{"de":"EEL_5105","para":"DAS_5332","pts":[[480,319],[626,319]]},{"de":"EEL_5105","para":"DAS_5307","pts":[[480,319],[553,319],[553,237],[863,237],[863,301],[936,301]]},{"de":"ECZ_5102","para":"EPS_2351","pts":[[170,796],[243,796],[243,732],[1159,732],[1159,778],[1556,778]]},{"de":"MTM_3110","para":"MTM_3120","pts":[[170,1309],[229,1309],[229,1327],[316,1327]]},{"de":"MTM_3110","para":"FSC_5002","pts":[[170,1309],[229,1309],[229,1492],[316,1492]]},{"de":"MTM_3110","para":"DAS_5210","pts":[[170,1309],[229,1309],[229,979],[626,979]]},{"de":"MTM_3110","para":"DAS_5103","pts":[[170,1309],[229,1309],[229,814],[936,814]]},{"de":"MTM_3110","para":"INE_5108","pts":[[170,1309],[229,1309],[229,1804],[936,1804]]},{"de":"MTM_3120","para":"MTM_3131","pts":[[480,1309],[567,1309],[567,1162],[626,1162]]},{"de":"MTM_3120","para":"MTM_3103","pts":[[480,1309],[567,1309],[567,1327],[626,1327]]},{"de":"MTM_3120","para":"ECV_5215","pts":[[480,1309],[567,1309],[567,1657],[626,1657]]},{"de":"MTM_3103","para":"EMC_5425","pts":[[790,1309],[877,1309],[877,943],[1246,943]]},{"de":"EEL_7550","para":"DAS_5151","pts":[[1410,1309],[1469,1309],[1469,1639],[1556,1639]]},{"de":"EEL_7550","para":"DAS_5105","pts":[[1410,1309],[1779,1309],[1779,850],[1866,850]]},{"de":"MTM_3131","para":"DAS_5214","pts":[[790,1144],[835,1144],[835,1345],[936,1345]]},{"de":"MTM_3131","para":"EEL_7540","pts":[[790,1144],[835,1144],[835,1456],[936,1456]]},{"de":"INE_5108","para":"EPS_2351","pts":[[1100,1822],[1187,1822],[1187,850],[1556,850]]},{"de":"INE_5108","para":"DAS_5318","pts":[[1100,1822],[1866,1822]]},{"de":"DAS_5502","para":"DAS_5512","pts":[[2340,484],[2796,484]]},{"de":"EMC_5425","para":"EMC_5467","pts":[[1410,979],[1556,979]]},{"de":"DAS_5102","para":"DAS_5308","pts":[[480,484],[595,484],[595,685],[936,685]]},{"de":"DAS_5102","para":"DAS_5103","pts":[[480,484],[595,484],[595,778],[936,778]]},{"de":"FSC_5101","para":"FSC_5002","pts":[[170,1474],[271,1474],[271,1456],[316,1456]]},{"de":"FSC_5101","para":"FSC_5122","pts":[[170,1474],[271,1474],[271,1639],[316,1639]]},{"de":"FSC_5101","para":"DAS_5210","pts":[[170,1474],[271,1474],[271,1015],[626,1015]]},{"de":"FSC_5002","para":"FSC_5113","pts":[[480,1474],[626,1474]]},{"de":"FSC_5002","para":"ECV_5215","pts":[[480,1474],[609,1474],[609,1621],[626,1621]]},{"de":"FSC_5002","para":"EMC_5425","pts":[[480,1474],[609,1474],[609,1557],[1145,1557],[1145,1015],[1246,1015]]},{"de":"FSC_5113","para":"EEL_7540","pts":[[790,1492],[936,1492]]},{"de":"EPS_2351","para":"DAS_5105","pts":[[1720,814],[1866,814]]},{"de":"DAS_5210","para":"DAS_5214","pts":[[790,979],[919,979],[919,1273],[936,1273]]},{"de":"DAS_5412","para":"DAS_5210","pts":[[170,649],[553,649],[553,943],[626,943]]},{"de":"DAS_5412","para":"DAS_5307","pts":[[170,649],[877,649],[877,337],[936,337]]},{"de":"DAS_5334","para":"EEL_5105","pts":[[170,484],[243,484],[243,319],[316,319]]},{"de":"DAS_5334","para":"DAS_5102","pts":[[170,484],[316,484]]},{"de":"DAS_5320","para":"DAS_5105","pts":[[1410,649],[1441,649],[1441,732],[1793,732],[1793,778],[1866,778]]},{"de":"EMC_5235","para":"DAS_5151","pts":[[1410,1675],[1556,1675]]},{"de":"DAS_5203","para":"DAS_5105","pts":[[1410,484],[1441,484],[1441,402],[1821,402],[1821,796],[1866,796]]},{"de":"DAS_5203","para":"DAS_5318","pts":[[1410,484],[1441,484],[1441,402],[1821,402],[1821,1786],[1866,1786]]},{"de":"DAS_5109","para":"DAS_5120","pts":[[1410,1126],[1511,1126],[1511,1144],[1556,1144]]},{"de":"DAS_5109","para":"DAS_5151","pts":[[1410,1126],[1511,1126],[1511,1603],[1556,1603]]},{"de":"DAS_5109","para":"DAS_5105","pts":[[1410,1126],[1511,1126],[1511,1076],[1737,1076],[1737,832],[1866,832]]},{"de":"EEL_5193","para":"EEL_5354","pts":[[1720,1492],[1866,1492]]},{"de":"DAS_5308","para":"DAS_5320","pts":[[1100,649],[1246,649]]},{"de":"DAS_5308","para":"DAS_5314","pts":[[1100,649],[1173,649],[1173,567],[1525,567],[1525,613],[1556,613]]},{"de":"DAS_5105","para":"DAS_5502","pts":[[2030,814],[2103,814],[2103,484],[2176,484]]},{"de":"DAS_5214","para":"DAS_5109","pts":[[1100,1291],[1215,1291],[1215,1108],[1246,1108]]},{"de":"DAS_5214","para":"EMC_5467","pts":[[1100,1291],[1215,1291],[1215,1062],[1497,1062],[1497,1015],[1556,1015]]},{"de":"DAS_5214","para":"EMC_5251","pts":[[1100,1291],[1215,1291],[1215,1227],[1849,1227],[1849,1291],[1866,1291]]},{"de":"DAS_5307","para":"DAS_5203","pts":[[1100,319],[1187,319],[1187,484],[1246,484]]},{"de":"DAS_5307","para":"DAS_5314","pts":[[1100,319],[1483,319],[1483,685],[1556,685]]},{"de":"DAS_5307","para":"EMC_5467","pts":[[1100,319],[1483,319],[1483,943],[1556,943]]},{"de":"DAS_5307","para":"EMC_5258","pts":[[1100,319],[1866,319]]},{"de":"DAS_5120","para":"DAS_5142","pts":[[1720,1144],[1866,1144]]},{"de":"MTM_3121","para":"MTM_3131","pts":[[480,1126],[626,1126]]},{"de":"MTM_3121","para":"DAS_5103","pts":[[480,1126],[553,1126],[553,1062],[849,1062],[849,850],[936,850]]}]}/*DADOS-FIM*/;
 </script>
 <script>
 (() => {
@@ -412,6 +502,33 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"d
     return linhas;
   }
 
+  // um grupo: cor lisa; dois ou mais: faixas diagonais com borda nítida
+  // (gradiente de paradas duras, do canto superior esquerdo ao inferior direito)
+  const defs = el('defs', {}, mapa);
+  const gradientes = new Map();
+  function preenchimento(lista, escuro = false) {
+    const pre = escuro ? '--gd-' : '--g-';
+    if (lista.length === 0) return `var(${pre}sem)`;
+    if (lista.length === 1) return `var(${pre}${lista[0]})`;
+    const id = (escuro ? 'grd-' : 'gr-') + lista.join('-');
+    if (!gradientes.has(id)) {
+      const lg = el('linearGradient', { id, x1: 0, y1: 0, x2: 1, y2: 1 }, defs);
+      lista.forEach((g, i) => {
+        el('stop', { offset: i / lista.length, style: `stop-color: var(${pre}${g})` }, lg);
+        el('stop', { offset: (i + 1) / lista.length, style: `stop-color: var(${pre}${g})` }, lg);
+      });
+      gradientes.set(id, lg);
+    }
+    return `url(#${id})`;
+  }
+  // "Colorir por": situação (padrão) ou grupo; foco destaca um grupo
+  const CHAVE_MODO = 'fluxograma-eca:modo:v1';
+  let modo = 'situacao';
+  try { if (localStorage.getItem(CHAVE_MODO) === 'grupo') modo = 'grupo'; } catch (e) {}
+  let foco = null;
+  const NOME_GRUPO = { informatica: 'Informática', controle: 'Controle', automacao: 'Automação',
+                       mecanica: 'Mecânica', eletrica: 'Elétrica', fisica_calculo: 'Física e Cálculo' };
+
   const grupos = new Map();
   function desenharCaixas() {
     gDisc.textContent = '';
@@ -419,7 +536,9 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"d
       const g = el('g', { class: 'disc', tabindex: '0', role: 'button' }, gDisc);
       g.dataset.id = d.id;
       g.style.transformOrigin = `${d.x + BW / 2}px ${d.y + BH / 2}px`;
-      el('rect', { class: 'caixa', x: d.x + 1.5, y: d.y + 1.5, width: BW - 3, height: BH - 3, rx: 3 }, g);
+      el('rect', { class: 'caixa', x: d.x + 1.5, y: d.y + 1.5, width: BW - 3, height: BH - 3, rx: 3, fill: preenchimento(d.grupos) }, g);
+      el('rect', { class: 'veu', x: d.x + 1.5, y: d.y + 1.5, width: BW - 3, height: BH - 3, rx: 3 }, g);
+      el('text', { class: 'check', x: d.x + BW - 9, y: d.y + 19, 'text-anchor': 'end' }, g).textContent = '✓';
       el('rect', { class: 'anel', x: d.x - 4, y: d.y - 4, width: BW + 8, height: BH + 8, rx: 6 }, g);
       const topoNome = d.y + 26;
       const c = el('text', { class: 'cod', x: d.x + BW / 2, y: d.y + 19, 'text-anchor': 'middle' }, g);
@@ -444,7 +563,8 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"d
         s.textContent = ln;
       });
       el('title', {}, g).textContent = d.nome + (d.codigo ? ` (${d.codigo})` : '') + ` · ${d.ha} horas-aula`
-        + (d.ob ? '' : ' (optativa)') + (d.preCH ? ` · exige ${fmt(d.preCH)} h/a obrigatórias concluídas` : '');
+        + (d.ob ? '' : ' (optativa)') + (d.preCH ? ` · exige ${fmt(d.preCH)} h/a obrigatórias concluídas` : '')
+        + (d.grupos.length ? ' · grupo: ' + d.grupos.map(g => NOME_GRUPO[g]).join(' + ') : '');
       grupos.set(d.id, g);
     }
   }
@@ -467,6 +587,9 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"d
       g.classList.toggle('feita', feita);
       g.classList.toggle('aberta', ab);
       g.classList.toggle('bloq', !feita && !ab);
+      g.classList.toggle('fora', modo === 'grupo' && foco !== null && !d.grupos.includes(foco));
+      g.querySelector('rect.caixa').setAttribute('fill', modo === 'grupo' ? preenchimento(d.grupos)
+        : feita ? 'var(--s-feita)' : ab ? 'var(--s-aberta)' : 'var(--s-bloq)');
       g.setAttribute('aria-pressed', feita);
       g.setAttribute('aria-label', `${d.nome}, ${d.fase}ª fase, ${feita ? 'concluída' : ab ? 'disponível' : 'bloqueada'}`);
     }
@@ -607,6 +730,31 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"d
     zoomEm(r.left + r.width / 2, r.top + r.height / 2, fator);
   }
 
+  // ---------- colorir por ----------
+  const btSituacao = document.getElementById('modo-situacao');
+  const btGrupo = document.getElementById('modo-grupo');
+  const legSituacao = document.getElementById('leg-situacao');
+  const legGrupo = document.getElementById('leg-grupo');
+  const chips = [...document.querySelectorAll('.chip')];
+  function definirModo(m) {
+    modo = m;
+    try { localStorage.setItem(CHAVE_MODO, m); } catch (e) {}
+    mapa.classList.toggle('modo-grupo', m === 'grupo');
+    mapa.classList.toggle('modo-situacao', m === 'situacao');
+    btSituacao.setAttribute('aria-pressed', m === 'situacao');
+    btGrupo.setAttribute('aria-pressed', m === 'grupo');
+    legSituacao.hidden = m !== 'situacao';
+    legGrupo.hidden = m !== 'grupo';
+    atualizar();
+  }
+  btSituacao.addEventListener('click', () => definirModo('situacao'));
+  btGrupo.addEventListener('click', () => definirModo('grupo'));
+  chips.forEach(c => c.addEventListener('click', () => {
+    foco = foco === c.dataset.grupo ? null : c.dataset.grupo;   // clicar de novo limpa
+    chips.forEach(o => o.setAttribute('aria-pressed', o.dataset.grupo === foco));
+    atualizar();
+  }));
+
   // ---------- barra de ferramentas ----------
   const elFases = document.getElementById('fases');
   const botoesFase = [];
@@ -745,7 +893,7 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"d
         new Promise(r => setTimeout(r, 2500)),
       ]).catch(() => {})
     : Promise.resolve();
-  desenharCaixas(); atualizar(); verTudo(false);   // desenha já, com a fonte de reserva
+  desenharCaixas(); definirModo(modo); verTudo(false);   // desenha já, com a fonte de reserva
   fontes.then(() => { desenharCaixas(); atualizar(); });  // e refaz a quebra de linha com a fonte certa
 })();
 </script>

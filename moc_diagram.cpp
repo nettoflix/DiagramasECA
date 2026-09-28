@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Diagram_t {
-    QByteArrayData data[11];
-    char stringdata0[126];
+    QByteArrayData data[10];
+    char stringdata0[110];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,13 +40,12 @@ QT_MOC_LITERAL(5, 53, 3), // "set"
 QT_MOC_LITERAL(6, 57, 10), // "buildLines"
 QT_MOC_LITERAL(7, 68, 17), // "paintDiagramColor"
 QT_MOC_LITERAL(8, 86, 5), // "color"
-QT_MOC_LITERAL(9, 92, 17), // "paintDiagramLines"
-QT_MOC_LITERAL(10, 110, 15) // "Qt::GlobalColor"
+QT_MOC_LITERAL(9, 92, 17) // "paintDiagramLines"
 
     },
     "Diagram\0checkPrerequisites\0\0setActive_slot\0"
     "setActive\0set\0buildLines\0paintDiagramColor\0"
-    "color\0paintDiagramLines\0Qt::GlobalColor"
+    "color\0paintDiagramLines"
 };
 #undef QT_MOC_LITERAL
 
@@ -81,7 +80,7 @@ static const uint qt_meta_data_Diagram[] = {
     QMetaType::Void, QMetaType::Bool,    5,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    8,
-    QMetaType::Void, 0x80000000 | 10,    8,
+    QMetaType::Void, QMetaType::QColor,    8,
 
        0        // eod
 };
@@ -97,7 +96,7 @@ void Diagram::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 2: _t->setActive((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->buildLines(); break;
         case 4: _t->paintDiagramColor((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 5: _t->paintDiagramLines((*reinterpret_cast< Qt::GlobalColor(*)>(_a[1]))); break;
+        case 5: _t->paintDiagramLines((*reinterpret_cast< const QColor(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

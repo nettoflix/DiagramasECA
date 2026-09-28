@@ -33,6 +33,17 @@ faltando = set(var2name) - set(horas)
 if faltando:
     raise SystemExit(f'sem carga horária em widget.cpp: {sorted(faltando)}')
 
+# grupos: listas "const QStringList nome{"grupo", ...}" e laços
+# "for(Diagram* d : {A, B}) d->setGrupos(nome);" em Widget::initGrupos()
+ini = code[code.index('void Widget::initGrupos()'):]
+ini = ini[:ini.index('\n}\n')]
+listas = {nome: re.findall(r'"(\w+)"', conteudo)
+          for nome, conteudo in re.findall(r'(\w+)\{((?:"\w+"\s*,?\s*)+)\}', ini)}
+grupos = {}
+for membros, lista in re.findall(r'for\s*\(\s*Diagram\*\s*\w+\s*:\s*\{([^}]*)\}\s*\)\s*\w+->setGrupos\((\w+)\)', ini):
+    for var in re.findall(r'\w+', membros):
+        grupos[var] = listas[lista]
+
 geo = {}
 for line in open(os.path.join(PROJ, 'gerador_linhas', 'dados', 'geometria_medida.txt'), encoding='utf-8'):
     if line.startswith('DIAG\t'):
@@ -59,6 +70,7 @@ for var, name in var2name.items():
         'ha': horas[var][0],
         'ob': horas[var][1],
         'preCH': preCH.get(var, 0),
+        'grupos': grupos.get(var, []),
     })
 disciplinas.sort(key=lambda d: (d['fase'], d['y']))
 

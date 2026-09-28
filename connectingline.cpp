@@ -9,7 +9,7 @@ ConnectingLine::ConnectingLine(QWidget *parent)
     //qDebug() << "Geometry:: " <<this->geometry();
     this->setAttribute(Qt::WA_TransparentForMouseEvents);
     this->points = new QList<QPoint>();
-    color = Qt::red;
+    color = QColor("#a3acb6"); // cinza: origem ainda não concluída
 
 }
 
@@ -18,7 +18,7 @@ ConnectingLine::~ConnectingLine()
    points->clear();
    delete points;
 }
-void ConnectingLine::setColor(Qt::GlobalColor color)
+void ConnectingLine::setColor(const QColor& color)
 {
    // qDebug()<< "Line Color is set to " << color;
 this->color = color;
