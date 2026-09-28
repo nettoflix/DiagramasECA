@@ -1,0 +1,78 @@
+STYLE fusion
+WINDOW 70 64 1850 1016
+VIEWPORT 1812 978
+CONTAINER 0 0 3108 2033
+SCROLLAREA_IN_WIDGET 11 11 frame 1
+CONTAINER_MIN 3108 2033
+GRID margins 9 9 9 9 hsp 10 vsp 6 rows 12 cols 10
+ROW 0 y 9 h 200
+ROW 1 y 215 h 159
+ROW 2 y 380 h 159
+ROW 3 y 545 h 159
+ROW 4 y 710 h 159
+ROW 5 y 875 h 159
+ROW 6 y 1040 h 159
+ROW 7 y 1205 h 159
+ROW 8 y 1370 h 159
+ROW 9 y 1535 h 159
+ROW 10 y 1700 h 159
+ROW 11 y 1865 h 159
+COL 0 x 9 w 300
+COL 1 x 319 w 300
+COL 2 x 629 w 300
+COL 3 x 939 w 300
+COL 4 x 1249 w 300
+COL 5 x 1559 w 300
+COL 6 x 1869 w 300
+COL 7 x 2179 w 300
+COL 8 x 2489 w 300
+COL 9 x 2799 w 300
+DIAG	Calculo 1	7	0	9	1205	159	159
+DIAG	Física 1	8	0	9	1370	159	159
+DIAG	Introdução à informática para Automação	2	0	9	380	159	159
+DIAG	Introdução à Engenheria de Controle e Automação	3	0	9	545	159	159
+DIAG	Conservação dos Recursos Naturais	4	0	9	710	159	159
+DIAG	Desenho Técnico para Automação	5	0	9	875	159	159
+DIAG	Física 2	8	1	319	1370	159	159
+DIAG	Circuitos e Técnicas Digitais	1	1	319	215	159	159
+DIAG	Fundamentos da Estrutura da Informação	2	1	319	380	159	159
+DIAG	Algebra Linear	6	1	319	1040	159	159
+DIAG	Calculo 2	7	1	319	1205	159	159
+DIAG	Física Experimental	9	1	319	1535	159	159
+DIAG	Arquit. e Prog. de Sist. Microcontrolados	1	2	629	215	159	159
+DIAG	Introdução ao Controle de Processos	5	2	629	875	159	159
+DIAG	Equações Diferenciais Ordinárias	6	2	629	1040	159	159
+DIAG	Cálculo 3	7	2	629	1205	159	159
+DIAG	Física 3	8	2	629	1370	159	159
+DIAG	Mecânica dos Sólidos 1	9	2	629	1535	159	159
+DIAG	Sistemas de Automação Discreta	1	3	939	215	159	159
+DIAG	Programação de Sist. Automatizados	3	3	939	545	159	159
+DIAG	Cálc. Numérico para Automação	4	3	939	710	159	159
+DIAG	Sinais e Sistemas Lineares	7	3	939	1205	159	159
+DIAG	Circuitos Elétricos para Automação	8	3	939	1370	159	159
+DIAG	Estatística e Probabilidade	10	3	939	1700	159	159
+DIAG	Modelagem e Contr. de Sist. a Eventos Discr.	2	4	1249	380	159	159
+DIAG	Metodolodia para Desenv. de Sistemas	3	4	1249	545	159	159
+DIAG	Fênenomenos de Transporte	5	4	1249	875	159	159
+DIAG	Modelagem e Simulação de Processos	6	4	1249	1040	159	159
+DIAG	Eletrônica Aplicada	7	4	1249	1205	159	159
+DIAG	Metrologia Industrial	9	4	1249	1535	159	159
+DIAG	Aspectos Econômic. Sociais da Aut.	2	5	1559	380	159	159
+DIAG	Redes de Comp. para Automação Ind.	3	5	1559	545	159	159
+DIAG	Aci. Hidráulic. e Pneum. para Automação	5	5	1559	875	159	159
+DIAG	Sistemas de Controle	6	5	1559	1040	159	159
+DIAG	Máquina e Acionamen. Elétricos-	8	5	1559	1370	159	159
+DIAG	Instrumentação em Controle	9	5	1559	1535	159	159
+DIAG	Introdução à Automação da Manafatura	1	6	1869	215	159	159
+DIAG	Projeto Integrador	4	6	1869	710	159	159
+DIAG	Sistemas Dinâmicos	6	6	1869	1040	159	159
+DIAG	Introdução à Robótica Industrial	7	6	1869	1205	159	159
+DIAG	Eletrotécnica para automação	8	6	1869	1370	159	159
+DIAG	Avaliação de Des. de Sist. da Automação Discreta	10	6	1869	1700	159	159
+DIAG	Estágio em Controle e Automação	2	7	2179	380	159	159
+DIAG	Aspectos de Seg. em Sist. de Cont. e Automação	9	7	2179	1535	159	159
+DIAG	Optativas Prof.	10	7	2179	1700	159	159
+DIAG	Programação Econômica e Financeira	11	7	2179	1865	159	159
+DIAG	Optativas Prof.(16)	8	8	2489	1370	159	159
+DIAG	Optativas Livres	9	8	2489	1535	159	159
+DIAG	Projeto de Fim de Curso	2	9	2799	380	159	159

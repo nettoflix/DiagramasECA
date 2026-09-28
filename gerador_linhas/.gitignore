@@ -1,0 +1,4 @@
+build/
+__pycache__/
+saida/
+saved_v1.json
