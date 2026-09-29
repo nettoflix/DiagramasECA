@@ -22,6 +22,9 @@
 #   - INE7011 (Atividades Complementares 1, 36 h/a, obrigatória) não tem
 #     fase no PDF; ficou na 8ª.
 
+[Grupos]
+informatica    | Informática      | cor: #b9a5e6
+
 [Fase 1]
 EEL5105 | Circuitos e Técnicas Digitais                   | linha: 1 | ha: 90
 INE5402 | Programação Orientada a Objetos I               | linha: 2 | ha: 108
@@ -30,7 +33,7 @@ MTM3110 | Cálculo 1                                       | linha: 4 | ha: 72
 INE5401 | Introdução à Computação                         | linha: 5 | ha: 36
 
 [Fase 2]
-INE5406 | Sistemas Digitais                               | linha: 1 | ha: 90  | pre: EEL5105
+INE5406 | Sistemas Digitais                               | linha: 1 | ha: 90  | pre: EEL5105 | grupos: informatica
 INE5404 | Programação Orientada a Objetos II              | linha: 2 | ha: 108 | pre: INE5402
 INE5407 | Ciência, Tecnologia e Sociedade                 | linha: 3 | ha: 54
 MTM3120 | Cálculo 2                                       | linha: 4 | ha: 72  | pre: MTM3110

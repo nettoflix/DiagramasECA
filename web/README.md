@@ -10,9 +10,10 @@ navegador, inclusive no celular, e também direto do disco (`file://`).
 | Arquivo | O que é |
 |---|---|
 | `index.html` | A página, com os dados padrão embutidos (gerados por `gerar_dados.py`). |
-| `curriculo.js` | Lê um `disciplinas.txt`, monta a grade como o app Qt e chama o roteador. |
+| `editor.html` | Editor de currículo em formulário: lê e grava um `disciplinas.txt` sem precisar mexer no texto. |
+| `curriculo.js` | Lê e escreve um `disciplinas.txt`, monta a grade como o app Qt e chama o roteador. |
 | `roteador.js` | Calcula as linhas entre as disciplinas. É o mesmo arquivo usado pelo app Qt. |
-| `gerar_dados.py` | Embute os dados padrão em `index.html`. |
+| `gerar_dados.py` | Embute os dados padrão (e o texto de `disciplinas.txt`, para o editor) em `index.html`. |
 
 ## O que faz
 
@@ -63,6 +64,38 @@ O botão **Carregar currículo…** abre um arquivo no formato de
 
 **Currículo padrão** volta aos dados embutidos. O progresso marcado é o
 mesmo nos dois casos: fica salvo pelo código de cada disciplina.
+
+## Editar um currículo (sem mexer no texto)
+
+**Editar currículo** abre `editor.html` com o currículo que está na tela
+(o padrão ou o carregado). O editor também abre qualquer `.txt` pelo botão
+**Abrir arquivo…**, ou começa do zero com **Novo**. É pensado para a
+coordenação e a secretaria manterem o arquivo oficial, e para o estudante
+fazer a própria versão.
+
+- Cada fase é um bloco, com uma linha de formulário por disciplina:
+  código, nome, horas-aula, obrigatória ou optativa, Pré CH, fase e linha
+  da grade (a posição na coluna; ↑ e ↓ trocam com a vizinha).
+- Pré-requisitos: digite o código ou o nome e escolha na lista, que só
+  oferece disciplinas de fases anteriores. Mudar o código de uma
+  disciplina oferece trocar também nos pré-requisitos das outras; remover
+  uma disciplina tira ela dos pré-requisitos.
+- Grupos temáticos: nome, identificador e cor; cada disciplina marca os
+  seus.
+- Os problemas aparecem na hora, na própria disciplina e numa lista no
+  topo (código repetido, pré-requisito numa fase igual ou posterior, linha
+  ocupada...). O editor confere o resultado também com `Curriculo.ler()`,
+  o mesmo leitor do botão *Carregar currículo…*.
+- **Baixar .txt** salva o arquivo; **Ver no fluxograma** mostra o
+  currículo na página (fica guardado só no navegador, como um arquivo
+  carregado). Enquanto isso, o trabalho fica num rascunho no navegador.
+- As "Observações" são os comentários do topo do arquivo. Comentários no
+  meio do arquivo se perdem ao salvar pelo editor, e as colunas são
+  realinhadas.
+
+Para trocar o currículo oficial, baixe o `.txt`, substitua
+`../files/disciplinas.txt` e siga "Atualizar o currículo" no README
+principal.
 
 Para que as linhas saiam idênticas às do app Qt, `curriculo.js` reproduz o
 leitor de `widget.cpp` e a geometria do `QGridLayout`: margens de 9 px,

@@ -41,6 +41,7 @@ var Curriculo = (function () {
      * Retorna {disciplinas: [...], fases: [números com cabeçalho],
      *          grupos: [{id, nome, cor}], erros: [...]}.
      * Cada disciplina: {id, nome, fase, linha, ha, ob, preCH, pre, grupos}.
+ * Também devolve cabecalho: os comentários do topo do arquivo, sem o "#".
      */
     function ler(texto) {
         var disciplinas = [], fases = [], grupos = [], porGrupo = {}, erros = [];
@@ -48,11 +49,14 @@ var Curriculo = (function () {
         var porId = {}, nomes = {}, ultimaLinha = {}, ocupado = {}, numLinhaDe = {};
         var fase = 0;
         var linhas = texto.split(/\r\n|\r|\n/);
+        var cabecalho = [], noCabecalho = true;  // comentários do topo, até o primeiro dado
         function erro(n, msg) { erros.push('linha ' + n + ': ' + msg); }
 
         for (var n = 1; n <= linhas.length; n++) {
             var linha = linhas[n - 1].trim();
+            if (noCabecalho && linha.charAt(0) === '#') cabecalho.push(linha.replace(/^# ?/, ''));
             if (!linha || linha.charAt(0) === '#') continue;
+            noCabecalho = false;
             if (/^\[\s*grupos\s*\]$/i.test(linha)) { emGrupos = true; continue; }
             var m = /^\[\s*fase\s+(\d+)\s*\]$/i.exec(linha);
             if (m) {
@@ -145,7 +149,84 @@ var Curriculo = (function () {
                     erro(numLinhaDe[dj.id], 'o pré-requisito ' + pr.id + ' precisa estar numa fase anterior à ' + dj.fase);
             }
         }
-        return {disciplinas: disciplinas, fases: fases, grupos: grupos, erros: erros};
+        return {disciplinas: disciplinas, fases: fases, grupos: grupos, erros: erros,
+                cabecalho: cabecalho.join('\n')};
+    }
+
+    function preencher(texto, largura) {
+        while (texto.length < largura) texto += ' ';
+        return texto;
+    }
+
+    /*
+     * O inverso de ler(): {disciplinas, fases, grupos, cabecalho} -> texto
+     * no formato de files/disciplinas.txt, com as colunas alinhadas. Cada
+     * fase sai com as disciplinas na ordem de "linha:". "linha:" só é
+     * escrito se alguma disciplina não estiver logo abaixo da anterior (aí
+     * vai em todas, para as colunas ficarem alinhadas). Os comentários fora
+     * do cabeçalho se perdem.
+     */
+    function escrever(lido) {
+        var out = [], i, j;
+        var cabecalho = (lido.cabecalho || '').replace(/\s+$/, '');
+        if (cabecalho) {
+            var cl = cabecalho.split('\n');
+            for (i = 0; i < cl.length; i++) out.push(cl[i] ? '# ' + cl[i] : '#');
+            out.push('');
+        }
+
+        var grupos = lido.grupos || [];
+        if (grupos.length) {
+            var gId = 0, gNome = 0;
+            for (i = 0; i < grupos.length; i++) {
+                gId = Math.max(gId, grupos[i].id.length);
+                gNome = Math.max(gNome, (grupos[i].nome || grupos[i].id).length);
+            }
+            out.push('[Grupos]');
+            for (i = 0; i < grupos.length; i++) {
+                var g = grupos[i];
+                out.push(preencher(g.id, gId) + ' | ' + preencher(g.nome || g.id, gNome) +
+                         (g.cor ? ' | cor: ' + g.cor : ''));
+            }
+            out.push('');
+        }
+
+        var porFase = {}, fases = (lido.fases || []).slice();
+        for (i = 0; i < lido.disciplinas.length; i++) {
+            var d = lido.disciplinas[i];
+            if (!porFase[d.fase]) porFase[d.fase] = [];
+            porFase[d.fase].push(d);
+            if (fases.indexOf(d.fase) < 0) fases.push(d.fase);
+        }
+        fases.sort(function (a, b) { return a - b; });
+        var comLinha = false, wId = 0, wNome = 0, wLinha = 0, wHa = 0;
+        for (i = 0; i < fases.length; i++) {
+            var ordem = (porFase[fases[i]] || []).sort(function (a, b) { return a.linha - b.linha; });
+            for (j = 0; j < ordem.length; j++) {
+                if (ordem[j].linha !== (j ? ordem[j - 1].linha : 0) + 1) comLinha = true;
+                wId = Math.max(wId, ordem[j].id.length);
+                wNome = Math.max(wNome, ordem[j].nome.length);
+                wLinha = Math.max(wLinha, ('linha: ' + ordem[j].linha).length);
+                wHa = Math.max(wHa, ('ha: ' + ordem[j].ha).length);
+            }
+        }
+        for (i = 0; i < fases.length; i++) {
+            out.push('[Fase ' + fases[i] + ']');
+            var ds = porFase[fases[i]] || [];
+            for (j = 0; j < ds.length; j++) {
+                var dj = ds[j];
+                var campos = [preencher(dj.id, wId), preencher(dj.nome, wNome)];
+                if (comLinha) campos.push(preencher('linha: ' + dj.linha, wLinha));
+                campos.push(preencher('ha: ' + dj.ha, wHa));
+                if (dj.preCH) campos.push('preCH: ' + dj.preCH);
+                if (dj.pre && dj.pre.length) campos.push('pre: ' + dj.pre.join(', '));
+                if (dj.grupos && dj.grupos.length) campos.push('grupos: ' + dj.grupos.join(', '));
+                if (dj.ob === false) campos.push('optativa');
+                out.push(campos.join(' | ').replace(/\s+$/, ''));
+            }
+            out.push('');
+        }
+        return out.join('\n');
     }
 
     /*
@@ -224,8 +305,9 @@ var Curriculo = (function () {
         };
     }
 
-    return {ler: ler, montarGrade: montarGrade, entradaRoteador: entradaRoteador,
-            codigoDisciplina: codigoDisciplina, gerar: gerar, OPCOES_ROTEADOR: OPCOES_ROTEADOR};
+    return {ler: ler, escrever: escrever, montarGrade: montarGrade, entradaRoteador: entradaRoteador,
+            codigoDisciplina: codigoDisciplina, gerar: gerar, OPCOES_ROTEADOR: OPCOES_ROTEADOR,
+            PALETA: PALETA};
 })();
 
 if (typeof module !== 'undefined' && module.exports)

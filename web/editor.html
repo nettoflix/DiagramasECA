@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Editor de currículo</title>
+<meta name="author" content="Nettoflix">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+:root {
+  --chao: #e9edf1;
+  --superficie: #ffffff;
+  --campo: #ffffff;
+  --tinta: #15202b;
+  --suave: #5a6774;
+  --borda: #cbd3db;
+  --barra: #f7f9fa;
+  --foco: #2a60d0;
+  --sobre-foco: #ffffff;
+  --erro: #b8322a;
+  --erro-fundo: #fbeceb;
+  --ok: #1b8656;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --chao: #0f151b;
+    --superficie: #18212a;
+    --campo: #111920;
+    --tinta: #e4e9ee;
+    --suave: #93a0ad;
+    --borda: #2b3642;
+    --barra: #141b22;
+    --foco: #6f9bf2;
+    --sobre-foco: #0b1220;
+    --erro: #f08a80;
+    --erro-fundo: #3a1d1b;
+    --ok: #3cc184;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --chao: #0f151b;
+  --superficie: #18212a;
+  --campo: #111920;
+  --tinta: #e4e9ee;
+  --suave: #93a0ad;
+  --borda: #2b3642;
+  --barra: #141b22;
+  --foco: #6f9bf2;
+  --sobre-foco: #0b1220;
+  --erro: #f08a80;
+  --erro-fundo: #3a1d1b;
+  --ok: #3cc184;
+  color-scheme: dark;
+}
+
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--chao);
+  color: var(--tinta);
+  font: 500 14px/1.4 "IBM Plex Sans Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+}
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--barra);
+  border-bottom: 1px solid var(--borda);
+  padding: 10px 16px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+h1 { margin: 0; font-size: 20px; font-weight: 700; }
+h1 a { color: var(--suave); text-decoration: none; font-size: 14px; font-weight: 500; margin-right: 8px; }
+h1 a:hover { color: var(--tinta); }
+.acoes { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.estado { width: 100%; font-size: 13px; color: var(--suave); font-variant-numeric: tabular-nums; }
+.estado strong { color: var(--ok); }
+.estado strong.ruim { color: var(--erro); }
+
+button {
+  font: inherit;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 4px 10px;
+  min-height: 30px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+button:hover { border-color: var(--suave); }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 1px;
+}
+button.principal { background: var(--foco); border-color: var(--foco); color: var(--sobre-foco); }
+button.leve { color: var(--suave); }
+button.icone { min-width: 30px; padding: 4px 6px; }
+
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+h2 { margin: 0; font-size: 17px; font-weight: 700; }
+.cab-cartao { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.cab-cartao .dica { flex: 1 1 20em; }
+.dica { color: var(--suave); font-size: 12.5px; margin: 4px 0 0; }
+
+input, select, textarea {
+  font: inherit;
+  color: var(--tinta);
+  background: var(--campo);
+  border: 1px solid var(--borda);
+  border-radius: 5px;
+  padding: 4px 6px;
+  min-height: 30px;
+  box-sizing: border-box;
+  width: 100%;
+}
+textarea { font: 500 12.5px/1.45 "IBM Plex Mono", ui-monospace, monospace; resize: vertical; }
+input.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; }
+input[type="color"] { padding: 2px; width: 44px; }
+.ruim input, .ruim select, input.ruim { border-color: var(--erro); box-shadow: inset 0 0 0 1px var(--erro); }
+
+.campos { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 8px; }
+label.campo { display: flex; flex-direction: column; gap: 2px; font-size: 11.5px; color: var(--suave); }
+label.campo > input, label.campo > select { font-size: 14px; }
+label.campo > input.mono { font-size: 13px; }
+.w-cod { flex: 0 0 8.5em; }
+.w-nome { flex: 1 1 16em; }
+.w-num { flex: 0 0 4.8em; }
+.w-tipo { flex: 0 0 8.2em; }
+.w-fase { flex: 0 0 6.2em; }
+.w-arq { flex: 0 1 22em; }
+.w-gnome { flex: 0 1 22em; }
+.w-gid { flex: 0 1 13em; }
+
+.disc { border-top: 1px solid var(--borda); padding: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+.disc:first-of-type { margin-top: 10px; }
+.disc.foco { animation: piscar 1.2s ease-out; }
+@keyframes piscar { from { background: color-mix(in srgb, var(--foco) 18%, transparent); } to { background: transparent; } }
+.mover { display: flex; gap: 2px; }
+.linha2 { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+.rotulo { font-size: 12px; color: var(--suave); }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  padding: 1px 2px 1px 9px;
+  font: 500 12.5px "IBM Plex Mono", ui-monospace, monospace;
+  background: var(--chao);
+}
+.chip.ruim { border-color: var(--erro); color: var(--erro); }
+.chip button { min-height: 22px; padding: 0 6px; border: none; background: none; color: var(--suave); border-radius: 999px; }
+.chip button:hover { color: var(--erro); }
+.add-pre { width: 16em; min-height: 26px; padding: 2px 6px; font-size: 13px; }
+.grupo-tog { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; padding: 2px 8px; font-size: 13px; color: var(--suave); }
+.grupo-tog i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.2); }
+.grupo-tog[aria-pressed="true"] { color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
+.erros { margin: 0; padding: 6px 10px; list-style: none; color: var(--erro); background: var(--erro-fundo); border-radius: 6px; font-size: 13px; }
+.erros:empty { display: none; }
+.vazio { color: var(--suave); font-size: 13px; margin: 10px 0 4px; }
+.rodape-fase { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+.grupo { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--borda); padding: 8px 0; }
+.grupo:first-of-type { margin-top: 8px; }
+
+#problemas ul { margin: 6px 0 0; padding-left: 18px; }
+#problemas li { margin: 2px 0; }
+#problemas a { color: var(--erro); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+#problemas h2 { color: var(--erro); }
+
+details summary { cursor: pointer; font-weight: 600; }
+pre#texto {
+  margin: 10px 0 0;
+  padding: 10px;
+  max-height: 60vh;
+  overflow: auto;
+  background: var(--chao);
+  border-radius: 6px;
+  font: 500 12px/1.45 "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.msg {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  margin: 0 auto;
+  width: fit-content;
+  max-width: 70ch;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.14);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms;
+}
+.msg.visivel { opacity: 1; }
+
+@media (max-width: 640px) {
+  .acoes { margin-left: 0; }
+  .w-cod, .w-nome, .w-arq, .w-gnome, .w-gid { flex: 1 1 100%; }
+  .add-pre { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <h1><a href="index.html" title="Voltar ao fluxograma">← Fluxograma</a>Editor de currículo</h1>
+  <div class="acoes">
+    <button id="abrir" type="button" title="Abrir um arquivo .txt de currículo para editar">Abrir arquivo…</button>
+    <input id="arquivo" type="file" accept=".txt,text/plain" hidden>
+    <button id="novo" type="button" class="leve" title="Começar um currículo vazio">Novo</button>
+    <button id="ver" type="button" title="Mostrar este currículo no fluxograma (fica guardado só neste navegador)">Ver no fluxograma</button>
+    <button id="baixar" type="button" class="principal" title="Salvar o currículo num arquivo .txt">Baixar .txt</button>
+  </div>
+  <div class="estado" id="estado" role="status" aria-live="polite"></div>
+</header>
+
+<main>
+  <section class="cartao" id="problemas" hidden aria-live="polite">
+    <h2>Problemas para corrigir</h2>
+    <ul id="lista-problemas"></ul>
+  </section>
+
+  <section class="cartao">
+    <div class="cab-cartao">
+      <h2>Arquivo</h2>
+      <p class="dica">As alterações ficam guardadas neste navegador enquanto você edita. Para publicar ou mandar para alguém, use <b>Baixar .txt</b>.</p>
+    </div>
+    <div class="campos" style="margin-top: 8px">
+      <label class="campo w-arq">Nome do arquivo
+        <input id="nome-arquivo" data-k="arquivo" class="mono" spellcheck="false">
+      </label>
+    </div>
+    <label class="campo" style="margin-top: 8px">Observações (vão no topo do arquivo: curso, currículo, de onde veio, decisões tomadas…)
+      <textarea id="cabecalho" data-k="cab" rows="5" spellcheck="true"></textarea>
+    </label>
+  </section>
+
+  <section class="cartao" id="cartao-grupos">
+    <div class="cab-cartao">
+      <h2>Grupos temáticos</h2>
+      <p class="dica">Opcional. Cada grupo tem uma cor e aparece no modo “Colorir por: Grupo” do fluxograma. Marque os grupos de cada disciplina na lista abaixo.</p>
+      <button id="add-grupo" type="button">+ Grupo</button>
+    </div>
+    <div id="grupos"></div>
+  </section>
+
+  <div id="fases"></div>
+  <div><button id="add-fase" type="button">+ Fase</button></div>
+
+  <section class="cartao">
+    <details id="ver-texto">
+      <summary>Ver o arquivo .txt que vai ser gerado</summary>
+      <pre id="texto"></pre>
+    </details>
+  </section>
+</main>
+
+<div class="msg" id="msg" role="status" aria-live="polite"></div>
+
+<script src="curriculo.js"></script>
+<script>
+const CHAVE_CURRICULO = 'fluxograma-eca:curriculo:v1';        // a mesma de index.html
+const CHAVE_ABRIR = 'fluxograma-eca:editor-abrir:v1';         // posta pelo botão "Editar currículo" de index.html
+const CHAVE_RASCUNHO = 'fluxograma-eca:editor-rascunho:v1';
+const RE_CODIGO = /^[A-Za-z0-9_.-]+$/;
+const RE_GRUPO = /^[A-Za-z0-9_-]+$/;
+
+// est: o currículo em edição, no formato de Curriculo.ler(), mas com os
+// campos numéricos como texto (o que está digitado) e um uid em cada
+// disciplina e grupo, para achar a linha do formulário
+let est, alterado = false, proxUid = 1;
+
+const $ = id => document.getElementById(id);
+function h(tag, attrs, ...filhos) {
+  const n = document.createElement(tag);
+  for (const k in attrs || {}) {
+    const v = attrs[k];
+    if (v === undefined || v === null || v === false) continue;
+    if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+    else if (k === 'dataset') Object.assign(n.dataset, v);
+    else if (k in n && k !== 'list' && k !== 'spellcheck') n[k] = v;
+    else n.setAttribute(k, v === true ? '' : v);
+  }
+  for (const f of filhos.flat()) if (f !== null && f !== undefined && f !== false) n.append(f);
+  return n;
+}
+let tMsg;
+function mensagem(texto) {
+  const m = $('msg');
+  m.textContent = texto;
+  m.classList.add('visivel');
+  clearTimeout(tMsg);
+  tMsg = setTimeout(() => m.classList.remove('visivel'), 6000);
+}
+const ordinal = f => f + 'ª';
+
+// ---------- conversão texto <-> est ----------
+function deTexto(nome, texto) {
+  const l = Curriculo.ler(texto);
+  return {
+    est: {
+      nome, cabecalho: l.cabecalho,
+      grupos: l.grupos.map(g => ({ uid: proxUid++, id: g.id, nome: g.nome, cor: g.cor })),
+      fases: l.fases.slice().sort((a, b) => a - b),
+      disciplinas: l.disciplinas.map(d => ({
+        uid: proxUid++, id: d.id, nome: d.nome, fase: d.fase, linha: String(d.linha),
+        ha: String(d.ha), ob: d.ob, preCH: d.preCH ? String(d.preCH) : '', pre: d.pre.slice(), grupos: d.grupos.slice(),
+      })),
+    },
+    erros: l.erros,
+  };
+}
+function paraTexto() {
+  return Curriculo.escrever({
+    cabecalho: est.cabecalho,
+    grupos: est.grupos.map(g => ({ id: g.id.trim(), nome: g.nome.trim(), cor: g.cor })),
+    fases: est.fases,
+    disciplinas: est.disciplinas.map(d => ({
+      id: d.id.trim(), nome: d.nome.trim(), fase: d.fase, linha: parseInt(d.linha, 10) || 0,
+      ha: d.ha.trim(), ob: d.ob, preCH: parseInt(d.preCH, 10) || 0, pre: d.pre, grupos: d.grupos,
+    })),
+  });
+}
+function vazio() {
+  return { nome: 'curriculo.txt', cabecalho: '', grupos: [], fases: [1], disciplinas: [] };
+}
+
+// ---------- consultas ----------
+const daFase = f => est.disciplinas.filter(d => d.fase === f)
+  .sort((a, b) => (parseInt(a.linha, 10) || 1e9) - (parseInt(b.linha, 10) || 1e9));
+const proximaLinha = f => Math.max(0, ...est.disciplinas.filter(d => d.fase === f).map(d => parseInt(d.linha, 10) || 0)) + 1;
+const porCodigo = id => est.disciplinas.find(d => d.id.trim() === id);
+const rotuloDisc = d => (d.id.trim() || '(sem código)') + (d.nome.trim() ? ' · ' + d.nome.trim() : '');
+const dependentes = id => est.disciplinas.filter(d => d.pre.includes(id));
+
+// ---------- validação ----------
+// mesmas regras de Curriculo.ler(), mas presas à disciplina ou ao grupo,
+// em vez de ao número da linha do arquivo
+function validar() {
+  const porUid = new Map(), gerais = [];
+  const add = (uid, msg) => { if (!porUid.has(uid)) porUid.set(uid, []); porUid.get(uid).push(msg); };
+
+  const ids = new Map();
+  est.grupos.forEach(g => {
+    const id = g.id.trim();
+    if (!id) add(g.uid, 'falta o identificador');
+    else if (!RE_GRUPO.test(id)) add(g.uid, 'o identificador só pode ter letras sem acento, números, _ ou -');
+    else if (ids.has(id)) add(g.uid, `identificador repetido (o mesmo de “${ids.get(id).nome}”)`);
+    else ids.set(id, g);
+    if (g.nome.includes('|')) add(g.uid, 'o nome não pode ter o caractere |');
+  });
+
+  const codigos = new Map(), nomes = new Map(), posicoes = new Map();
+  for (const d of est.disciplinas) {
+    const id = d.id.trim(), nome = d.nome.trim(), linha = d.linha.trim();
+    if (!id) add(d.uid, 'falta o código');
+    else if (!RE_CODIGO.test(id)) add(d.uid, 'o código só pode ter letras sem acento, números, _, - ou . (sem espaços)');
+    else if (codigos.has(id)) add(d.uid, `código repetido: ${id} também é “${codigos.get(id).nome.trim()}”`);
+    else codigos.set(id, d);
+    if (!nome) add(d.uid, 'falta o nome');
+    else if (nome.includes('|')) add(d.uid, 'o nome não pode ter o caractere |');
+    else if (nomes.has(nome)) add(d.uid, `nome repetido: “${nome}” também é ${nomes.get(nome).id.trim() || 'outra disciplina'}`);
+    else nomes.set(nome, d);
+    if (!/^\d+$/.test(d.ha.trim()) || +d.ha === 0) add(d.uid, 'H/A precisa ser um número inteiro maior que zero');
+    if (d.preCH.trim() && !/^\d+$/.test(d.preCH.trim())) add(d.uid, 'Pré CH precisa ser um número inteiro (ou ficar vazio)');
+    if (!/^\d+$/.test(linha) || +linha < 1) add(d.uid, 'a linha precisa ser um número inteiro, 1 ou maior');
+    else {
+      const k = d.fase + ',' + (+linha), outra = posicoes.get(k);
+      if (outra) add(d.uid, `a linha ${+linha} da ${ordinal(d.fase)} fase já é de ${rotuloDisc(outra)}`);
+      else posicoes.set(k, d);
+    }
+    for (const g of d.grupos) if (!ids.has(g)) add(d.uid, `grupo que não existe mais: ${g}`);
+  }
+  for (const d of est.disciplinas) {
+    for (const p of d.pre) {
+      const r = codigos.get(p);
+      if (!r) add(d.uid, `o pré-requisito ${p} não existe (foi apagado ou mudou de código?)`);
+      else if (r.fase >= d.fase)
+        add(d.uid, `o pré-requisito ${p} está na ${ordinal(r.fase)} fase; ele precisa estar numa fase anterior à ${ordinal(d.fase)}`);
+    }
+  }
+  if (!est.disciplinas.length) gerais.push('o currículo ainda não tem nenhuma disciplina');
+
+  // rede de segurança: o que o leitor do fluxograma acharia do arquivo gerado
+  if (!porUid.size && !gerais.length) gerais.push(...Curriculo.ler(paraTexto()).erros.map(e => 'no arquivo gerado, ' + e));
+  const total = gerais.length + [...porUid.values()].reduce((t, l) => t + l.length, 0);
+  return { porUid, gerais, total };
+}
+
+// ---------- desenho ----------
+function render() {
+  // guarda o campo com foco, para devolvê-lo depois de redesenhar
+  const ativo = document.activeElement, k = ativo && ativo.dataset ? ativo.dataset.k : null;
+  let sel = null;
+  try { sel = k ? [ativo.selectionStart, ativo.selectionEnd] : null; } catch (e) {}
+
+  $('nome-arquivo').value = est.nome;
+  $('cabecalho').value = est.cabecalho;
+  renderGrupos();
+  renderFases();
+  atualizar();
+
+  if (k) {
+    const n = document.querySelector(`[data-k="${CSS.escape(k)}"]`);
+    if (n) {
+      n.focus({ preventScroll: true });
+      try { if (sel && sel[0] !== null) n.setSelectionRange(sel[0], sel[1]); } catch (e) {}
+    }
+  }
+}
+
+function renderGrupos() {
+  const box = $('grupos');
+  box.replaceChildren();
+  est.grupos.forEach(g => {
+    const k = 'g' + g.uid + ':';
+    let idAntes = g.id;
+    box.append(h('div', { class: 'grupo', dataset: { uid: g.uid } },
+      h('div', { class: 'campos' },
+        h('label', { class: 'campo w-gnome' }, 'Nome na legenda',
+          h('input', { value: g.nome, dataset: { k: k + 'nome' }, oninput: e => { g.nome = e.target.value; mudou(); } })),
+        h('label', { class: 'campo w-gid', title: 'O que vai no arquivo; letras sem acento, números, _ ou -' }, 'Identificador',
+          h('input', { class: 'mono', value: g.id, spellcheck: 'false', dataset: { k: k + 'id' },
+                       onfocus: () => { idAntes = g.id.trim(); },
+                       oninput: e => { g.id = e.target.value; mudou(); },
+                       onchange: () => {
+                         const novo = g.id.trim();
+                         if (idAntes && novo && novo !== idAntes)
+                           est.disciplinas.forEach(d => { d.grupos = d.grupos.map(x => x === idAntes ? novo : x); });
+                         idAntes = novo;
+                         render();
+                       } })),
+        h('label', { class: 'campo' }, 'Cor',
+          h('input', { type: 'color', value: g.cor, dataset: { k: k + 'cor' },
+                       oninput: e => { g.cor = e.target.value; mudou(); }, onchange: render })),
+        h('button', { type: 'button', class: 'leve', onclick: () => removerGrupo(g) }, 'Remover')),
+      h('ul', { class: 'erros', dataset: { erros: g.uid } })));
+  });
+  if (!est.grupos.length) box.append(h('p', { class: 'vazio' }, 'Nenhum grupo. As disciplinas aparecem todas na mesma cor.'));
+}
+
+function renderFases() {
+  const box = $('fases');
+  box.replaceChildren();
+  const fases = est.fases.slice().sort((a, b) => a - b);
+  for (const f of fases) {
+    const antes = est.disciplinas.filter(d => d.fase < f && d.id.trim())
+      .sort((a, b) => a.fase - b.fase || a.id.localeCompare(b.id));
+    const lista = h('datalist', { id: 'pre-f' + f },
+      antes.map(d => h('option', { value: d.id.trim() + ' — ' + d.nome.trim() })));
+    const ds = daFase(f);
+    const ob = ds.reduce((t, d) => t + (d.ob ? +d.ha || 0 : 0), 0);
+    box.append(h('section', { class: 'cartao', id: 'fase-' + f },
+      h('div', { class: 'cab-cartao' },
+        h('h2', {}, `${ordinal(f)} fase`),
+        h('span', { class: 'dica' }, `${ds.length} disciplina${ds.length === 1 ? '' : 's'} · ${ob} h/a obrigatórias`)),
+      lista,
+      ds.map((d, i) => linhaDisciplina(d, ds[i - 1], ds[i + 1], fases)),
+      ds.length ? null : h('p', { class: 'vazio' }, 'Nenhuma disciplina nesta fase.'),
+      h('div', { class: 'rodape-fase' },
+        h('button', { type: 'button', onclick: () => adicionarDisciplina(f) }, '+ Disciplina'),
+        ds.length ? null : h('button', { type: 'button', class: 'leve', onclick: () => removerFase(f) }, 'Remover fase'))));
+  }
+}
+
+function linhaDisciplina(d, anterior, seguinte, fases) {
+  const k = d.uid + ':';
+  let idAntes = d.id.trim();
+  const campoTexto = (rotulo, classe, campo, extra) =>
+    h('label', { class: 'campo ' + classe, title: extra && extra.title },
+      rotulo,
+      h('input', Object.assign({ value: d[campo], dataset: { k: k + campo }, oninput: e => { d[campo] = e.target.value; mudou(); } },
+                               extra && extra.input)));
+  const trocarLinha = outra => {
+    if (!outra) return;
+    [d.linha, outra.linha] = [outra.linha, d.linha];
+    mudou();
+    render();
+  };
+
+  const primeira = d.fase <= Math.min(...est.fases);
+  const pre = h('div', { class: 'chips' },
+    d.pre.map(p => {
+      const r = porCodigo(p);
+      return h('span', { class: 'chip' + (r && r.fase < d.fase ? '' : ' ruim'), title: r ? r.nome.trim() : 'não existe' }, p,
+        h('button', { type: 'button', 'aria-label': 'Tirar ' + p + ' dos pré-requisitos',
+                      onclick: () => { d.pre = d.pre.filter(x => x !== p); mudou(); render(); } }, '×'));
+    }),
+    h('input', { class: 'add-pre', list: 'pre-f' + d.fase, placeholder: primeira ? 'a primeira fase não tem pré-requisitos' : 'adicionar: código ou nome…',
+                 disabled: primeira, dataset: { k: k + 'pre' },
+                 'aria-label': 'Adicionar pré-requisito a ' + rotuloDisc(d),
+                 oninput: e => adicionarPre(d, e.target, false),
+                 onchange: e => adicionarPre(d, e.target, true) }));
+
+  const grupos = est.grupos.length ? h('div', { class: 'chips' },
+    h('span', { class: 'rotulo' }, 'Grupos:'),
+    est.grupos.map(g => h('button', {
+      type: 'button', class: 'grupo-tog', 'aria-pressed': String(d.grupos.includes(g.id.trim())),
+      onclick: () => {
+        const id = g.id.trim();
+        d.grupos = d.grupos.includes(id) ? d.grupos.filter(x => x !== id) : [...d.grupos, id];
+        mudou(); render();
+      } }, h('i', { style: 'background:' + g.cor }), g.nome.trim() || g.id))) : null;
+
+  return h('div', { class: 'disc', dataset: { uid: d.uid } },
+    h('div', { class: 'campos' },
+      h('div', { class: 'mover' },
+        h('button', { type: 'button', class: 'icone', title: 'Subir (troca de linha com a de cima)', 'aria-label': 'Subir ' + rotuloDisc(d),
+                      disabled: !anterior, onclick: () => trocarLinha(anterior) }, '↑'),
+        h('button', { type: 'button', class: 'icone', title: 'Descer (troca de linha com a de baixo)', 'aria-label': 'Descer ' + rotuloDisc(d),
+                      disabled: !seguinte, onclick: () => trocarLinha(seguinte) }, '↓')),
+      campoTexto('Código', 'w-cod', 'id', { input: {
+        class: 'mono', spellcheck: 'false', placeholder: 'ex.: INE5402',
+        onfocus: () => { idAntes = d.id.trim(); },
+        onchange: () => { renomear(d, idAntes); idAntes = d.id.trim(); } } }),
+      campoTexto('Nome', 'w-nome', 'nome', { input: { onchange: render } }),
+      campoTexto('H/A', 'w-num', 'ha', { title: 'Horas-aula', input: { inputMode: 'numeric', onchange: render } }),
+      h('label', { class: 'campo w-tipo' }, 'Tipo',
+        h('select', { dataset: { k: k + 'ob' }, onchange: e => { d.ob = e.target.value === 'ob'; mudou(); render(); } },
+          h('option', { value: 'ob', selected: d.ob }, 'Obrigatória'),
+          h('option', { value: 'op', selected: !d.ob }, 'Optativa'))),
+      campoTexto('Pré CH', 'w-num', 'preCH', {
+        title: 'Horas-aula obrigatórias já concluídas exigidas para cursar (vazio = nenhuma)',
+        input: { inputMode: 'numeric', placeholder: '—', onchange: render } }),
+      h('label', { class: 'campo w-fase' }, 'Fase',
+        h('select', { dataset: { k: k + 'fase' }, onchange: e => {
+            const nova = +e.target.value;
+            d.fase = -1;  // fora das fases, para proximaLinha não contar a própria disciplina
+            d.linha = String(proximaLinha(nova));
+            d.fase = nova;
+            mudou(); render();
+            mensagem(`${rotuloDisc(d)} foi para a ${ordinal(d.fase)} fase, no fim da lista.`);
+          } },
+          fases.map(f => h('option', { value: f, selected: f === d.fase }, ordinal(f))))),
+      campoTexto('Linha', 'w-num', 'linha', {
+        title: 'Posição na coluna da fase, de cima para baixo. Disciplinas ligadas por pré-requisito na mesma linha ficam com a ligação reta.',
+        input: { inputMode: 'numeric', onchange: render } }),
+      h('button', { type: 'button', class: 'leve', onclick: () => removerDisciplina(d) }, 'Remover')),
+    h('div', { class: 'linha2' },
+      h('div', { class: 'chips' }, h('span', { class: 'rotulo' }, 'Pré-requisitos:'), pre),
+      grupos),
+    h('ul', { class: 'erros', dataset: { erros: d.uid } }));
+}
+
+// atualiza o que depende da validação, sem redesenhar o formulário (para
+// não tirar o foco de quem está digitando)
+function atualizar() {
+  const v = validar();
+  document.querySelectorAll('[data-erros]').forEach(ul => {
+    const msgs = v.porUid.get(+ul.dataset.erros) || [];
+    ul.replaceChildren(...msgs.map(m => h('li', {}, m)));
+    ul.closest('[data-uid]').classList.toggle('ruim', msgs.length > 0);
+  });
+
+  const lista = $('lista-problemas');
+  lista.replaceChildren(...v.gerais.map(m => h('li', {}, m)));
+  for (const [uid, msgs] of v.porUid) {
+    const d = est.disciplinas.find(x => x.uid === uid), g = est.grupos.find(x => x.uid === uid);
+    const onde = d ? `${ordinal(d.fase)} fase · ${rotuloDisc(d)}` : `grupo ${g.nome.trim() || g.id.trim() || '(sem nome)'}`;
+    lista.append(h('li', {}, h('a', { onclick: () => irPara(uid) }, onde), ': ' + msgs.join('; ')));
+  }
+  $('problemas').hidden = v.total === 0;
+
+  const ob = est.disciplinas.reduce((t, d) => t + (d.ob ? +d.ha || 0 : 0), 0);
+  const op = est.disciplinas.reduce((t, d) => t + (d.ob ? 0 : +d.ha || 0), 0);
+  $('estado').replaceChildren(
+    v.total ? h('strong', { class: 'ruim' }, `${v.total} problema${v.total === 1 ? '' : 's'} para corrigir`) : h('strong', {}, 'Tudo certo'),
+    ` · ${est.disciplinas.length} disciplinas em ${est.fases.length} fases · ${ob} h/a obrigatórias · ${op} h/a optativas` +
+    (alterado ? ' · alterações ainda não baixadas' : ''));
+
+  if ($('ver-texto').open) $('texto').textContent = paraTexto();
+  salvarRascunho();
+  return v;
+}
+
+function irPara(uid) {
+  const n = document.querySelector(`[data-uid="${uid}"]`);
+  if (!n) return;
+  n.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  n.classList.remove('foco'); void n.offsetWidth; n.classList.add('foco');
+  const campo = n.querySelector('input');
+  if (campo) campo.focus({ preventScroll: true });
+}
+
+// ---------- ações ----------
+function mudou() {
+  alterado = true;
+  atualizar();
+}
+
+function adicionarPre(d, input, confirmado) {
+  const valor = input.value.trim();
+  if (!valor) return;
+  const cod = valor.split(' — ')[0].trim();
+  const r = est.disciplinas.find(x => x !== d && (x.id.trim() === cod || x.id.trim().toLowerCase() === cod.toLowerCase() ||
+                                                  x.nome.trim().toLowerCase() === valor.toLowerCase()));
+  // enquanto digita, só aceita quando o texto é exatamente uma opção da lista
+  if (!confirmado && !(r && valor === r.id.trim() + ' — ' + r.nome.trim())) return;
+  if (!r) { mensagem(`Não achei nenhuma disciplina com o código ou nome “${valor}”.`); return; }
+  if (r.fase >= d.fase) { mensagem(`${rotuloDisc(r)} está na ${ordinal(r.fase)} fase; o pré-requisito precisa estar numa fase anterior.`); return; }
+  input.value = '';
+  if (!d.pre.includes(r.id.trim())) d.pre.push(r.id.trim());
+  mudou();
+  render();
+}
+
+function renomear(d, antes) {
+  const novo = d.id.trim();
+  if (antes && novo && novo !== antes && !porCodigo(antes)) {
+    const deps = dependentes(antes);
+    if (deps.length && confirm(`Trocar ${antes} por ${novo} também nos pré-requisitos de: ${deps.map(x => x.id.trim()).join(', ')}?`))
+      deps.forEach(x => { x.pre = x.pre.map(p => p === antes ? novo : p); });
+  }
+  render();
+}
+
+function adicionarDisciplina(f) {
+  const d = { uid: proxUid++, id: '', nome: '', fase: f, linha: String(proximaLinha(f)), ha: '', ob: true, preCH: '', pre: [], grupos: [] };
+  est.disciplinas.push(d);
+  mudou();
+  render();
+  const campo = document.querySelector(`[data-k="${d.uid}:id"]`);
+  if (campo) { campo.focus(); campo.scrollIntoView({ block: 'center' }); }
+}
+
+function removerDisciplina(d) {
+  const id = d.id.trim(), deps = id ? dependentes(id) : [];
+  const aviso = deps.length ? `\n\nEla também vai sair dos pré-requisitos de: ${deps.map(x => x.id.trim()).join(', ')}.` : '';
+  if (!confirm(`Remover ${rotuloDisc(d)}?${aviso}`)) return;
+  est.disciplinas = est.disciplinas.filter(x => x !== d);
+  if (id && !porCodigo(id)) deps.forEach(x => { x.pre = x.pre.filter(p => p !== id); });
+  mudou();
+  render();
+}
+
+function removerFase(f) {
+  est.fases = est.fases.filter(x => x !== f);
+  if (!est.fases.length) est.fases = [1];
+  mudou();
+  render();
+}
+
+function removerGrupo(g) {
+  const id = g.id.trim(), usam = est.disciplinas.filter(d => d.grupos.includes(id));
+  if (!confirm(`Remover o grupo “${g.nome.trim() || id}”?` + (usam.length ? `\n\n${usam.length} disciplina(s) vão deixar de ser desse grupo.` : ''))) return;
+  est.grupos = est.grupos.filter(x => x !== g);
+  if (!est.grupos.some(x => x.id.trim() === id)) usam.forEach(d => { d.grupos = d.grupos.filter(x => x !== id); });
+  mudou();
+  render();
+}
+
+function carregar(nome, texto) {
+  const r = deTexto(nome, texto);
+  est = r.est;
+  if (!est.fases.length) est.fases = [1];
+  alterado = false;
+  render();
+  // os erros de pré-requisito e de grupo aparecem na própria disciplina;
+  // os outros são linhas que o leitor descartou
+  const perdidas = r.erros.filter(e => !/pré-requisito|grupo não declarado/.test(e));
+  if (perdidas.length)
+    mensagem(`${nome}: ${perdidas.length} linha(s) com problema ficaram de fora: ${perdidas.slice(0, 2).join('; ')}` +
+             (perdidas.length > 2 ? '…' : '.'));
+  window.scrollTo(0, 0);
+}
+
+function salvarRascunho() {
+  try { localStorage.setItem(CHAVE_RASCUNHO, JSON.stringify({ est, alterado })); } catch (e) { /* sem rascunho */ }
+}
+
+$('nome-arquivo').addEventListener('input', e => { est.nome = e.target.value; mudou(); });
+$('cabecalho').addEventListener('input', e => { est.cabecalho = e.target.value; mudou(); });
+$('add-grupo').addEventListener('click', () => {
+  let n = est.grupos.length + 1;
+  while (est.grupos.some(g => g.id.trim() === 'grupo' + n)) n++;
+  const g = { uid: proxUid++, id: 'grupo' + n, nome: 'Grupo ' + n, cor: Curriculo.PALETA[est.grupos.length % Curriculo.PALETA.length] };
+  est.grupos.push(g);
+  mudou();
+  render();
+  const campo = document.querySelector(`[data-k="g${g.uid}:nome"]`);
+  if (campo) { campo.focus(); campo.select(); }
+});
+$('add-fase').addEventListener('click', () => {
+  const f = Math.max(0, ...est.fases) + 1;
+  est.fases.push(f);
+  mudou();
+  render();
+  $('fase-' + f).scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+$('ver-texto').addEventListener('toggle', atualizar);
+
+$('abrir').addEventListener('click', () => $('arquivo').click());
+$('arquivo').addEventListener('change', async () => {
+  const arquivo = $('arquivo').files[0];
+  $('arquivo').value = '';
+  if (!arquivo) return;
+  if (alterado && !confirm('As alterações atuais ainda não foram baixadas. Abrir outro arquivo e descartá-las?')) return;
+  carregar(arquivo.name, await arquivo.text());
+});
+$('novo').addEventListener('click', () => {
+  if (alterado && !confirm('As alterações atuais ainda não foram baixadas. Começar um currículo vazio e descartá-las?')) return;
+  est = vazio();
+  alterado = false;
+  render();
+});
+$('baixar').addEventListener('click', () => {
+  const v = validar();
+  if (v.total && !confirm(`O currículo ainda tem ${v.total} problema(s). O fluxograma só abre o arquivo depois de corrigidos. Baixar mesmo assim?`)) return;
+  let nome = est.nome.trim() || 'curriculo.txt';
+  if (!/\.txt$/i.test(nome)) nome += '.txt';
+  const a = h('a', { href: URL.createObjectURL(new Blob([paraTexto()], { type: 'text/plain;charset=utf-8' })), download: nome });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  alterado = false;
+  atualizar();
+});
+$('ver').addEventListener('click', () => {
+  const v = validar();
+  if (v.total) {
+    mensagem('Corrija os problemas listados no topo antes de ver no fluxograma.');
+    $('problemas').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  try {
+    localStorage.setItem(CHAVE_CURRICULO, JSON.stringify({ nome: est.nome.trim() || 'curriculo.txt', texto: paraTexto() }));
+  } catch (e) {
+    mensagem('Não deu para guardar o currículo no navegador (armazenamento indisponível).');
+    return;
+  }
+  location.href = 'index.html';
+});
+
+// ---------- início ----------
+// ordem: o que o fluxograma mandou abrir, o rascunho, ou um currículo vazio
+(() => {
+  let abrir = null, rascunho = null;
+  try { abrir = JSON.parse(localStorage.getItem(CHAVE_ABRIR) || 'null'); localStorage.removeItem(CHAVE_ABRIR); } catch (e) {}
+  try { rascunho = JSON.parse(localStorage.getItem(CHAVE_RASCUNHO) || 'null'); } catch (e) {}
+  const usarRascunho = () => {
+    est = rascunho.est;
+    alterado = !!rascunho.alterado;
+    proxUid = Math.max(0, ...est.disciplinas.map(d => d.uid), ...est.grupos.map(g => g.uid)) + 1;
+    render();
+  };
+  // o rascunho só é perdido se tiver alterações que o arquivo aberto não tem
+  const rascunhoDiferente = () => {
+    est = rascunho.est;
+    try { return paraTexto() !== abrir.texto; } catch (e) { return true; }
+  };
+  if (abrir && rascunho && rascunho.alterado && !rascunhoDiferente()) {
+    usarRascunho();
+  } else if (abrir && !(rascunho && rascunho.alterado &&
+                 !confirm(`Há um rascunho com alterações ainda não baixadas (${rascunho.est.nome}).\n\n` +
+                          `OK: abrir ${abrir.nome} e descartar o rascunho.\nCancelar: continuar no rascunho.`))) {
+    carregar(abrir.nome, abrir.texto);
+  } else if (rascunho && rascunho.est) {
+    usarRascunho();
+  } else {
+    est = vazio();
+    render();
+  }
+})();
+</script>
+</body>
+</html>

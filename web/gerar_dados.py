@@ -4,6 +4,7 @@ embute em web/index.html, entre os marcadores DADOS-INICIO / DADOS-FIM.
 
 Fontes (as mesmas do app Qt):
   - ../files/disciplinas.txt                   disciplinas, pré-requisitos, horas e grupos
+                                               (e o texto inteiro, para o editor)
   - ../files/linhas.json                       posição de cada caixa e as linhas,
                                                calculadas por web/roteador.js (o app
                                                Qt gera/atualiza este arquivo ao abrir)
@@ -19,7 +20,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 PROJ = os.path.dirname(AQUI)
 
 sys.path.insert(0, PROJ)
-from disciplinas import ler_disciplinas, ler_grupos  # noqa: E402
+from disciplinas import ARQUIVO, ler_disciplinas, ler_grupos  # noqa: E402
 
 lidas = ler_disciplinas()
 var2name = {d['id']: d['nome'] for d in lidas}
@@ -70,8 +71,11 @@ if esperado != obtido or len(linhas) != len(esperado):
 # tamanho do container Qt: colunas de 300 px (título da fase) e margem de 9 px
 largura = max(g['x'] for g in geo.values()) + 300 + 9
 altura = max(g['y'] + g['h'] for g in geo.values()) + 9
+# texto: o disciplinas.txt original, para o editor (editor.html) abrir o
+# currículo padrão
 dados = {'largura': largura, 'altura': altura, 'caixa': [159, 109], 'grupos': ler_grupos(),
-         'disciplinas': disciplinas, 'linhas': linhas}
+         'disciplinas': disciplinas, 'linhas': linhas,
+         'texto': open(ARQUIVO, encoding='utf-8').read()}
 bloco = json.dumps(dados, ensure_ascii=False, separators=(',', ':'))
 
 html_path = os.path.join(AQUI, 'index.html')

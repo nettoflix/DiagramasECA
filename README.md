@@ -55,6 +55,9 @@ O progresso fica salvo **só no seu navegador**: sem login e sem servidor.
 - **Usar outro currículo.** *Carregar currículo…* abre um arquivo no formato
   de `files/disciplinas.txt` e monta o fluxograma, com as linhas, no próprio
   navegador. *Currículo padrão* volta ao 20241.
+- **Editar o currículo sem mexer no texto.** *Editar currículo* abre um
+  editor em formulário (fases, disciplinas, horas, pré-requisitos escolhidos
+  numa lista, grupos), que aponta os erros na hora e baixa o `.txt` pronto.
 
 ![Modo Grupo: disciplinas coloridas por área](docs/grupo.png)
 
@@ -90,7 +93,9 @@ files/disciplinas.txt ──► app Qt: monta a grade ──► web/roteador.js 
 Quando mudar algum pré-requisito, disciplina, carga horária ou grupo:
 
 1. Edite `files/disciplinas.txt` (não precisa recompilar: o app lê o
-   arquivo da pasta `files/` ao lado do executável).
+   arquivo da pasta `files/` ao lado do executável). Quem não quiser
+   mexer no texto pode usar *Editar currículo* na versão web e substituir
+   o arquivo pelo `.txt` baixado.
 2. Abra o app. Se as posições ou os pré-requisitos mudaram, ele recalcula
    as linhas em segundo plano (cerca de 10 s; aparece "Calculando as
    linhas…" na barra) e atualiza `files/linhas.json`. Nas próximas
