@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>files/saved.txt</file>
+        <file>files/disciplinas.txt</file>
     </qresource>
 </RCC>

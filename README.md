@@ -61,7 +61,7 @@ dados:
 |---|---|
 | `web/` | **Versão web**, a que os colegas usam. Um único `index.html`, com os dados embutidos. Veja [`web/README.md`](web/README.md). |
 | `*.cpp`, `*.h`, `Diagramas2.pro` | **Aplicativo desktop** em Qt 5 (C++), a versão original. |
-| `widget.cpp` | **Fonte única dos dados do curso**: disciplinas, posições na grade, pré-requisitos (`initPrerequisites`), horas-aula (`initCargaHoraria`) e grupos (`initGrupos`). |
+| `files/disciplinas.txt` | **Fonte única dos dados do curso**, organizada por fase: disciplinas, posição na grade, pré-requisitos, horas-aula e grupos. O formato está descrito no cabeçalho do próprio arquivo. O app lê o arquivo ao abrir, e `disciplinas.py` o lê para os scripts Python. |
 | `files/saved.txt` | Linhas do fluxograma (coordenadas) e o progresso salvo pelo app desktop. |
 | `gerador_linhas/` | Scripts que **geram automaticamente** as linhas entre as disciplinas (roteamento ortogonal otimizado). Veja [`gerador_linhas/README.md`](gerador_linhas/README.md). |
 | `docs/` | Imagens deste README. |
@@ -69,7 +69,7 @@ dados:
 ### Fluxo de dados
 
 ```
-widget.cpp  ──(Qt: posições medidas)──►  gerador_linhas/  ──►  files/saved.txt
+files/disciplinas.txt  ──(Qt: posições medidas)──►  gerador_linhas/  ──►  files/saved.txt
    │                                                               │
    └──────────────────►  web/gerar_dados.py  ◄────────────────────┘
                                  │
@@ -81,7 +81,8 @@ widget.cpp  ──(Qt: posições medidas)──►  gerador_linhas/  ──► 
 
 Quando mudar algum pré-requisito, disciplina, carga horária ou grupo:
 
-1. Edite `widget.cpp`.
+1. Edite `files/disciplinas.txt` (não precisa recompilar: o app lê o
+   arquivo da pasta `files/` ao lado do executável).
 2. Se o **layout** mudou (disciplina nova ou que mudou de lugar), regere as
    linhas:
 

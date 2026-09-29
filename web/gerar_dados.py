@@ -3,7 +3,7 @@
 embute em web/index.html, entre os marcadores DADOS-INICIO / DADOS-FIM.
 
 Fontes (as mesmas do app Qt):
-  - ../widget.cpp                              nomes e pré-requisitos
+  - ../files/disciplinas.txt                   disciplinas, pré-requisitos, horas e grupos
   - ../gerador_linhas/dados/geometria_medida.txt  posição de cada diagrama
   - ../files/saved.txt                         linhas (coordenadas do container)
 
@@ -12,37 +12,20 @@ Uso:  python3 gerar_dados.py
 import json
 import os
 import re
+import sys
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PROJ = os.path.dirname(AQUI)
 
-code = open(os.path.join(PROJ, 'widget.cpp'), encoding='utf-8').read()
-code = '\n'.join(l for l in code.splitlines() if not l.strip().startswith('//'))
-var2name = dict(re.findall(
-    r'(\w+)\s*=\s*new Diagram\(\s*container\s*,\s*this\s*,\s*"([^"]*)"\s*\)', code))
-prereq = {}
-for tgt, lst in re.findall(r'(\w+)->setPrerequisites\(new QVector<Diagram\*>\{([^}]*)\}\)', code):
-    prereq[tgt] = [x.strip() for x in lst.split(',') if x.strip()]
+sys.path.insert(0, PROJ)
+from disciplinas import ler_disciplinas  # noqa: E402
 
-# horas-aula: X->setCargaHoraria(72) ou X->setCargaHoraria(144, false) (optativa)
-horas = {}
-for var, ha, opt in re.findall(r'(\w+)->setCargaHoraria\((\d+)\s*(?:,\s*(false|true))?\)', code):
-    horas[var] = (int(ha), opt != 'false')
-preCH = {var: int(h) for var, h in re.findall(r'(\w+)->setPreCH\((\d+)\)', code)}
-faltando = set(var2name) - set(horas)
-if faltando:
-    raise SystemExit(f'sem carga horária em widget.cpp: {sorted(faltando)}')
-
-# grupos: listas "const QStringList nome{"grupo", ...}" e laços
-# "for(Diagram* d : {A, B}) d->setGrupos(nome);" em Widget::initGrupos()
-ini = code[code.index('void Widget::initGrupos()'):]
-ini = ini[:ini.index('\n}\n')]
-listas = {nome: re.findall(r'"(\w+)"', conteudo)
-          for nome, conteudo in re.findall(r'(\w+)\{((?:"\w+"\s*,?\s*)+)\}', ini)}
-grupos = {}
-for membros, lista in re.findall(r'for\s*\(\s*Diagram\*\s*\w+\s*:\s*\{([^}]*)\}\s*\)\s*\w+->setGrupos\((\w+)\)', ini):
-    for var in re.findall(r'\w+', membros):
-        grupos[var] = listas[lista]
+lidas = ler_disciplinas()
+var2name = {d['id']: d['nome'] for d in lidas}
+prereq = {d['id']: d['pre'] for d in lidas if d['pre']}
+horas = {d['id']: (d['ha'], d['ob']) for d in lidas}
+preCH = {d['id']: d['preCH'] for d in lidas if d['preCH']}
+grupos = {d['id']: d['grupos'] for d in lidas if d['grupos']}
 
 geo = {}
 for line in open(os.path.join(PROJ, 'gerador_linhas', 'dados', 'geometria_medida.txt'), encoding='utf-8'):

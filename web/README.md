@@ -17,7 +17,7 @@ navegador, inclusive no celular.
   concluídas, que é o "Pré CH" do currículo 20241: Ética e Aspectos de
   Segurança (2.300), Gestão Econômica e de Investimentos (900) e Projeto
   de Fim de Curso (3.000). Optativas não entram nessa soma. As horas vêm
-  de `setCargaHoraria()`/`setPreCH()` em `../widget.cpp`.
+  de `ha:`/`preCH:` em `../files/disciplinas.txt`.
 - Passar o mouse numa disciplina destaca os pré-requisitos e os
   dependentes dela.
 - Zoom:
@@ -47,7 +47,7 @@ Os dados embutidos vêm das mesmas fontes do app Qt:
 
 | Fonte | Conteúdo |
 |---|---|
-| `../widget.cpp` | nomes das disciplinas e pré-requisitos |
+| `../files/disciplinas.txt` | disciplinas, pré-requisitos, horas-aula e grupos |
 | `../gerador_linhas/dados/geometria_medida.txt` | posição de cada caixa |
 | `../files/saved.txt` | linhas (geradas por `gerador_linhas/route2.py`) |
 

@@ -8,8 +8,10 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 PROJ=$(dirname "$HERE")
 QMAKE=${QMAKE:-qmake}
 B=${BUILD_DIR:-$HERE/build}
+mkdir -p "$B/files"
+# as disciplinas são lidas em runtime: copia sempre a versão atual
+cp "$PROJ/files/disciplinas.txt" "$B/files/"
 if [ ! -x "$B/Diagramas2" ]; then
-  mkdir -p "$B/files"
   cp "$PROJ"/*.cpp "$PROJ"/*.h "$PROJ"/*.ui "$PROJ"/*.pro "$PROJ"/resources.qrc "$B"/
   rm -f "$B"/moc_* "$B"/qrc_* "$B"/ui_* "$B"/diagramas2_plugin_import.cpp
   cp "$HERE/probe/main.cpp" "$B/main.cpp"

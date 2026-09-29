@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Orthogonal router for the DiagramasECA prerequisite lines.
 
-Reads diagram names/prerequisites from widget.cpp and the measured widget
+Reads diagram names/prerequisites from files/disciplinas.txt and the measured widget
 geometry (probe output), routes every prerequisite -> diagram edge leaving the
 right side of the prerequisite and entering the left side of the dependent
 diagram, and writes the JSON consumed by Widget::loadLines().
@@ -9,7 +9,6 @@ diagram, and writes the JSON consumed by Widget::loadLines().
 import json
 import math
 import random
-import re
 import sys
 from collections import defaultdict
 
@@ -23,13 +22,12 @@ PROBE = os.environ.get('GEOMETRIA', os.path.join(HERE, 'dados', 'geometria_medid
 # ----------------------------------------------------------------------------
 # Input
 # ----------------------------------------------------------------------------
-code = open(PROJECT + '/widget.cpp', encoding='utf-8').read()
-code = '\n'.join(l for l in code.splitlines() if not l.strip().startswith('//'))
-var2name = dict(re.findall(
-    r'(\w+)\s*=\s*new Diagram\(\s*container\s*,\s*this\s*,\s*"([^"]*)"\s*\)', code))
-prereq = {}
-for tgt, lst in re.findall(r'(\w+)->setPrerequisites\(new QVector<Diagram\*>\{([^}]*)\}\)', code):
-    prereq[tgt] = [x.strip() for x in lst.split(',') if x.strip()]
+sys.path.insert(0, PROJECT)
+from disciplinas import ler_disciplinas  # noqa: E402
+
+lidas = ler_disciplinas()
+var2name = {d['id']: d['nome'] for d in lidas}
+prereq = {d['id']: d['pre'] for d in lidas if d['pre']}
 
 geo = {}
 for line in open(PROBE, encoding='utf-8'):

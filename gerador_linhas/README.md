@@ -35,7 +35,7 @@ detalhe.
 |---|---|
 | `probe/main.cpp` | `main()` alternativo do app: abre a janela, espera 2,5 s, imprime a geometria de cada `Diagram` e salva um PNG da renderização (`container->grab()`, em escala 1:1, independente do zoom). Encontra o container através do `QGraphicsProxyWidget` da `ZoomView`. |
 | `render.sh` | Compila uma cópia do projeto com o `probe/main.cpp` (em `build/`, sem tocar no projeto), carrega um JSON de linhas e gera PNG + geometria medida. |
-| `route.py` | Leitura de `widget.cpp` (nomes e pré-requisitos), leitura da geometria medida, definição das trilhas e dos moldes de rota. Também contém a **1ª versão** do roteador (uma linha independente por aresta). |
+| `route.py` | Leitura de `files/disciplinas.txt` (nomes e pré-requisitos), leitura da geometria medida, definição das trilhas e dos moldes de rota. Também contém a **1ª versão** do roteador (uma linha independente por aresta). |
 | `route2.py` | Roteador **final** (modelo de tronco + simulated annealing). É ele que gera o `saved.txt`. |
 | `validate.py` | Verificador independente do JSON gerado. |
 | `dados/geometria_medida.txt` | Saída do probe na tela real (1920×1080) — é a entrada do roteador. |
@@ -80,7 +80,7 @@ Com 7 sementes em paralelo, o passo 2 leva cerca de 4 minutos.
 
 - Existem **49 diagramas** (disciplinas) dispostos num `QGridLayout`: cada
   coluna é uma fase e cada linha da grade é uma posição vertical.
-- `Widget::initPrerequisites()` define **56 relações** "A é pré-requisito
+- `files/disciplinas.txt` define **56 relações** "A é pré-requisito
   de B".
 - A regra pedida é que **a linha de cada pré-requisito sai dele mesmo e
   chega na disciplina que depende dele**. Como todo pré-requisito está numa
@@ -362,7 +362,7 @@ menor custo (semente 35).
 `validate.py` lê o JSON do mesmo jeito que o `loadLines()` e confere, de
 forma **independente** do roteador:
 
-- os nomes dos 49 diagramas batem com o `widget.cpp`;
+- os nomes dos 49 diagramas batem com o `files/disciplinas.txt`;
 - existe exatamente **uma linha por relação** e nenhuma a mais;
 - toda linha começa na borda direita da origem (`x = borda + 2`) e termina
   na borda esquerda do destino (`x = borda − 3`);
@@ -456,10 +456,10 @@ regra "sai pela direita e entra pela esquerda".
   virou janela de topo dentro do proxy, usaria 11 px e tudo se deslocaria
   2 px.
 - **Qualquer mudança de layout exige regenerar.** Isso inclui posições em
-  `gridLayout->addWidget`, `setFixedSize(159,159)`, `margin-top: 50px`,
+  `linha:` em `files/disciplinas.txt`, `setFixedSize(159,159)`, `margin-top: 50px`,
   espaçamentos e `FaseTitle`. Basta repetir a
-  [receita](#2-como-usar-receita-rápida). Mudanças em `initPrerequisites()`
-  também são lidas automaticamente de `widget.cpp`.
+  [receita](#2-como-usar-receita-rápida). Mudanças de pré-requisitos
+  também são lidas automaticamente de `files/disciplinas.txt`.
 - **Os pesos foram ajustados por inspeção visual.** Alterá-los muda o
   "gosto" do resultado: por exemplo, aumentar `W_BEND` produz menos curvas
   à custa de mais cruzamentos.

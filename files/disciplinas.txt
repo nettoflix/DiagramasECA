@@ -1,0 +1,100 @@
+# Disciplinas do curso (currículo 20241, conferido com curriculoECA.PDF).
+# Fonte única dos dados: o app Qt lê este arquivo ao abrir, e os scripts
+# web/gerar_dados.py e gerador_linhas/route.py também.
+#
+# Formato
+#   [Fase N]   abre a fase N (vira a coluna N do fluxograma). Cada linha
+#              seguinte, até a próxima [Fase], é uma disciplina dessa fase.
+#
+#   CÓDIGO | Nome | campo: valor | campo: valor | ...
+#
+#   CÓDIGO     identificador único (usado em "pre:" e no progresso salvo da
+#              versão web; mudar um código apaga o progresso dela ali).
+#   Nome       texto da caixa; também é a chave das linhas em files/saved.txt.
+#   Campos (em qualquer ordem):
+#     ha: 72          horas-aula (obrigatório)
+#     linha: 3        linha da grade dentro da fase (1 = logo abaixo do título).
+#                     Sem "linha:", vai para a linha seguinte à da disciplina
+#                     anterior da mesma fase. As posições precisam bater com
+#                     as linhas desenhadas em files/saved.txt.
+#     pre: A, B       pré-requisitos (códigos, separados por vírgula)
+#     grupos: a, b    grupos temáticos: informatica, controle, automacao,
+#                     mecanica, eletrica, fisica_calculo (dois = caixa dividida)
+#     preCH: 2300     horas-aula obrigatórias concluídas exigidas ("Pré CH")
+#     optativa        não conta para as horas obrigatórias
+#
+# Linhas vazias e as que começam com # são ignoradas.
+#
+# Grupos: códigos corrigidos em relação à anotação original: ECV5115 ->
+# ECV5215, FS5113 -> FSC5113, EMC5151 -> EMC5251, EEL5314 -> EEL5354,
+# DAS6505 -> DAS5105 (Projeto Integrador, em controle e em automação).
+
+[Fase 1]
+DAS_5334   | Introdução à Informática para Automação                    | ha: 72  | grupos: informatica
+DAS_5412   | Introdução à Engenharia de Controle e Automação            | ha: 72  | grupos: controle, automacao
+ECZ_5102   | Conservação de Recursos Naturais                           | ha: 36
+EGR_5606   | Desenho Técnico para Automação                             | ha: 72
+MTM_3110   | Cálculo 1                                                  | ha: 72  | grupos: fisica_calculo
+FSC_5101   | Física 1                                                   | ha: 72  | grupos: fisica_calculo
+
+[Fase 2]
+EEL_5105   | Circuitos e Técnicas Digitais                              | linha: 1  | ha: 90  | pre: DAS_5334 | grupos: eletrica
+DAS_5102   | Fundamentos da Estrutura da Informação                     | linha: 2  | ha: 72  | pre: DAS_5334 | grupos: informatica
+MTM_3121   | Álgebra Linear                                             | linha: 6  | ha: 72  | grupos: fisica_calculo
+MTM_3120   | Cálculo 2                                                  | linha: 7  | ha: 72  | pre: MTM_3110 | grupos: fisica_calculo
+FSC_5002   | Física 2                                                   | linha: 8  | ha: 72  | pre: FSC_5101, MTM_3110 | grupos: fisica_calculo
+FSC_5122   | Física Experimental                                        | linha: 9  | ha: 54  | pre: FSC_5101 | grupos: fisica_calculo
+
+[Fase 3]
+DAS_5332   | Arquit. e Prog. de Sist. Microcontrolados                  | linha: 1  | ha: 72  | pre: EEL_5105 | grupos: informatica
+DAS_5210   | Introdução ao Controle de Processos                        | linha: 5  | ha: 54  | pre: DAS_5412, FSC_5101, MTM_3110 | grupos: controle
+MTM_3131   | Equações Diferenciais Ordinárias                           | linha: 6  | ha: 72  | pre: MTM_3120, MTM_3121 | grupos: fisica_calculo
+MTM_3103   | Cálculo 3                                                  | linha: 7  | ha: 72  | pre: MTM_3120 | grupos: fisica_calculo
+FSC_5113   | Física 3                                                   | linha: 8  | ha: 72  | pre: FSC_5002 | grupos: fisica_calculo
+ECV_5215   | Mecânica dos Sólidos 1                                     | linha: 9  | ha: 90  | pre: FSC_5002, MTM_3120 | grupos: mecanica
+
+[Fase 4]
+DAS_5307   | Sistemas de Automação Discreta                             | linha: 1  | ha: 72  | pre: DAS_5412, EEL_5105 | grupos: automacao
+DAS_5308   | Programação de Sist. Automatizados                         | linha: 3  | ha: 72  | pre: DAS_5102, DAS_5332 | grupos: informatica
+DAS_5103   | Cálc. Numérico para Controle e Automação                   | linha: 4  | ha: 72  | pre: DAS_5102, MTM_3110, MTM_3121 | grupos: fisica_calculo
+DAS_5214   | Sinais e Sistemas Lineares                                 | linha: 7  | ha: 108 | pre: DAS_5210, MTM_3131 | grupos: controle
+EEL_7540   | Circuitos Elétricos para Automação                         | linha: 8  | ha: 72  | pre: FSC_5113, MTM_3131 | grupos: eletrica
+INE_5108   | Estatística e Probabilidade                                | linha: 10 | ha: 54  | pre: MTM_3110 | grupos: fisica_calculo
+
+[Fase 5]
+DAS_5203   | Modelagem e Contr. de Sist. a Eventos Discr.               | linha: 2  | ha: 90  | pre: DAS_5307 | grupos: automacao
+DAS_5320   | Metodologia para Desenv. de Sistemas                       | linha: 3  | ha: 54  | pre: DAS_5308 | grupos: informatica
+EMC_5425   | Fenômenos de Transportes                                   | linha: 5  | ha: 72  | pre: FSC_5002, MTM_3103 | grupos: mecanica
+DAS_5109   | Modelagem e Simulação de Processos                         | linha: 6  | ha: 72  | pre: DAS_5214, EEL_7540 | grupos: controle
+EEL_7550   | Eletrônica Aplicada                                        | linha: 7  | ha: 72  | pre: EEL_7540 | grupos: eletrica
+EMC_5235   | Metrologia Industrial                                      | linha: 9  | ha: 72  | pre: EEL_7540 | grupos: mecanica
+
+[Fase 6]
+CNM_7820   | Aspectos Econômicos e Sociais da Automação                 | linha: 2  | ha: 36
+DAS_5314   | Redes de Comp. para Automação                              | linha: 3  | ha: 72  | pre: DAS_5307, DAS_5308 | grupos: informatica
+EPS_2351   | Gerenciamento de Projetos                                  | linha: 4  | ha: 72  | pre: ECZ_5102, INE_5108
+EMC_5467   | Aci. Hidráulic. e Pneum. para Automação                    | linha: 5  | ha: 54  | pre: DAS_5214, DAS_5307, EMC_5425 | grupos: mecanica
+DAS_5120   | Sistemas de Controle                                       | linha: 6  | ha: 108 | pre: DAS_5109 | grupos: controle
+EEL_5193   | Máquinas e Acionamentos Elétricos                          | linha: 8  | ha: 54  | pre: EEL_7540 | grupos: eletrica
+DAS_5151   | Instrumentação em Controle                                 | linha: 9  | ha: 72  | pre: DAS_5109, EEL_7550, EMC_5235 | grupos: controle
+
+[Fase 7]
+EMC_5258   | Introdução à Automação da Manufatura                       | linha: 1  | ha: 108 | pre: DAS_5307 | grupos: mecanica
+DAS_5105   | Projeto Integrador                                         | linha: 4  | ha: 108 | pre: DAS_5109, DAS_5203, DAS_5320, EEL_7550, EPS_2351 | grupos: controle, automacao
+DAS_5142   | Sistemas Dinâmicos                                         | linha: 6  | ha: 72  | pre: DAS_5120 | grupos: controle
+EMC_5251   | Introdução à Robótica Industrial                           | linha: 7  | ha: 72  | pre: DAS_5214 | grupos: mecanica
+EEL_5354   | Eletrotécnica para Automação                               | linha: 8  | ha: 72  | pre: EEL_5193, EEL_7540 | grupos: eletrica
+DAS_5318   | Avaliação de Desemp. de Processos de Sist. Organizacionais | linha: 10 | ha: 72  | pre: DAS_5203, INE_5108 | grupos: automacao
+
+[Fase 8]
+DAS_5502   | Estágio em Controle e Automação                            | linha: 2  | ha: 216 | pre: DAS_5105 | grupos: controle, automacao
+DAS_5402   | Ética e Aspectos de Seg. em Sist. de Controle e Automação  | linha: 9  | ha: 36  | preCH: 2300
+OPT_PROF8  | Optativas Profissionalizantes                              | linha: 10 | ha: 144 | optativa
+EPS_7076   | Gestão Econômica e de Investimentos                        | linha: 11 | ha: 54  | preCH: 900
+
+[Fase 9]
+OPT_PROF16 | Optativas Profissionalizantes (16)                         | linha: 8  | ha: 288 | optativa
+OPT_LIVR   | Optativas Livres                                           | linha: 9  | ha: 36  | optativa
+
+[Fase 10]
+DAS_5512   | Projeto de Fim de Curso                                    | linha: 2  | ha: 360 | preCH: 3000 | pre: DAS_5502 | grupos: controle, automacao

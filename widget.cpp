@@ -11,6 +11,9 @@
 #include <QShortcut>
 #include <QIcon>
 #include <QPainter>
+#include <QMessageBox>
+#include <QRegularExpression>
+#include <QSet>
 
 
 
@@ -51,254 +54,20 @@ Widget::Widget(QWidget *parent)
     view = new ZoomView(scene);
     mainLayout->addWidget(view);
 
-    //PRIMEIRA FASE
-    MTM_3110 = new Diagram(container, this, "Cálculo 1");
-    FSC_5101 = new Diagram(container, this, "Física 1");
-    DAS_5334 = new Diagram(container, this, "Introdução à Informática para Automação");
-    DAS_5412= new Diagram(container, this, "Introdução à Engenharia de Controle e Automação");
-    ECZ_5102 = new Diagram(container, this, "Conservação de Recursos Naturais");
-    EGR_5606 = new Diagram(container, this, "Desenho Técnico para Automação");
-    //SEGUNDA FASE
-    FSC_5002 = new Diagram(container, this, "Física 2");
-    EEL_5105 = new Diagram(container, this,"Circuitos e Técnicas Digitais");
-    DAS_5102 = new Diagram(container, this,"Fundamentos da Estrutura da Informação");
-    MTM_3121 = new Diagram(container, this,"Álgebra Linear");
-    MTM_3120 = new Diagram(container, this,"Cálculo 2");
-    FSC_5122 = new Diagram(container, this,"Física Experimental");
-    //TERCEIRA FASE
-    DAS_5332 = new Diagram(container, this,"Arquit. e Prog. de Sist. Microcontrolados");
-    DAS_5210 = new Diagram(container, this,"Introdução ao Controle de Processos");
-    MTM_3131 = new Diagram(container, this,"Equações Diferenciais Ordinárias");
-    MTM_3103= new Diagram(container, this,"Cálculo 3");
-    FSC_5113= new Diagram(container, this,"Física 3");
-    ECV_5215= new Diagram(container, this,"Mecânica dos Sólidos 1");
-    //QUARTA FASE
-    DAS_5307 = new Diagram(container, this,"Sistemas de Automação Discreta");
-    DAS_5308 = new Diagram(container, this,"Programação de Sist. Automatizados");
-    DAS_5103 = new Diagram(container, this,"Cálc. Numérico para Controle e Automação");
-    DAS_5214 = new Diagram(container, this,"Sinais e Sistemas Lineares");
-    EEL_7540 = new Diagram(container, this,"Circuitos Elétricos para Automação");
-    INE_5108 = new Diagram(container, this,"Estatística e Probabilidade");
-    //QUINTA FASE
-    DAS_5203 = new Diagram(container, this,"Modelagem e Contr. de Sist. a Eventos Discr.");
-    DAS_5320 = new Diagram(container, this,"Metodologia para Desenv. de Sistemas");
-    EMC_5425 = new Diagram(container, this,"Fenômenos de Transportes");
-    DAS_5109 = new Diagram(container, this,"Modelagem e Simulação de Processos");
-    EEL_7550 = new Diagram(container, this,"Eletrônica Aplicada");
-    EMC_5235 = new Diagram(container, this,"Metrologia Industrial");
-    //SEXTA FASE
-    CNM_7820 = new Diagram(container, this,"Aspectos Econômicos e Sociais da Automação");
-    DAS_5314= new Diagram(container, this,"Redes de Comp. para Automação");
-    EMC_5467 = new Diagram(container, this,"Aci. Hidráulic. e Pneum. para Automação");
-    DAS_5120 = new Diagram(container, this,"Sistemas de Controle");
-    EEL_5193 = new Diagram(container, this,"Máquinas e Acionamentos Elétricos");
-    DAS_5151 = new Diagram(container, this,"Instrumentação em Controle");
-    EPS_2351 = new Diagram(container, this,"Gerenciamento de Projetos");
-    //SÉTIMA FASE
-    EMC_5258 = new Diagram(container, this,"Introdução à Automação da Manufatura");
-    DAS_5105 = new Diagram(container, this,"Projeto Integrador");
-    DAS_5142 = new Diagram(container, this,"Sistemas Dinâmicos");
-    EMC_5251 = new Diagram(container, this,"Introdução à Robótica Industrial");
-    EEL_5354 = new Diagram(container, this,"Eletrotécnica para Automação");
-    DAS_5318 = new Diagram(container, this,"Avaliação de Desemp. de Processos de Sist. Organizacionais");
-    //OITAVA FASE
-    DAS_5502 = new Diagram(container, this,"Estágio em Controle e Automação");
-    DAS_5402 = new Diagram(container, this,"Ética e Aspectos de Seg. em Sist. de Controle e Automação");
-    OPT_PROF8 = new Diagram(container, this,"Optativas Profissionalizantes");
-    EPS_7076= new Diagram(container, this,"Gestão Econômica e de Investimentos");
-    //NONA FASE
-    OPT_PROF16 = new Diagram(container, this,"Optativas Profissionalizantes (16)");
-    OPT_LIVR = new Diagram(container, this,"Optativas Livres");
-    //DÉCIMA FASE
-    DAS_5512 = new Diagram(container, this,"Projeto de Fim de Curso");
-
-    //setPrerequisites
-    this->initPrerequisites();
-    this->initCargaHoraria();
-    this->initGrupos();
-
     gridLayout->setHorizontalSpacing(this->defaultSpaceWidth);
     // dentro do QGraphicsProxyWidget o container vira janela de topo, e o estilo
     // usaria margem 11 (de janela) em vez de 9 (de widget filho): fixa em 9 para
     // manter a geometria com que files/saved.txt foi gerado
     gridLayout->setContentsMargins(9, 9, 9, 9);
     gridLayout->setVerticalSpacing(6);
-    //gridLayout->setVerticalSpacing(this->defaultSpaceHeight);
-    QWidget *spacer = new QWidget(); //spacer->setFixedSize(250,200);
-    //PRIMEIRA FASE (coluna 0)
-    QWidget* fase1 = new FaseTitle(this, "1º fase");
-    gridLayout->addWidget(fase1, 0,0);
-    gridLayout->addWidget(spacer,1,1);
-    gridLayout->addWidget(DAS_5334,2,0);
-    gridLayout->addWidget(DAS_5412,3,0);
-    gridLayout->addWidget(ECZ_5102,4,0);
-    gridLayout->addWidget(EGR_5606,5,0);
-    gridLayout->addWidget(spacer,6,0);
-    gridLayout->addWidget(MTM_3110, 7,0);
-    gridLayout->addWidget(FSC_5101,8,0);
 
-
-    //SEGUNDA FASE (coluna 1)
-    QWidget* fase2 = new FaseTitle(this, "2º fase");
-    gridLayout->addWidget(fase2, 0,1);
-    gridLayout->addWidget(EEL_5105,1,1);
-    gridLayout->addWidget(DAS_5102,2,1);
-    gridLayout->addWidget(spacer,3,1);
-    gridLayout->addWidget(spacer,4,1);
-    gridLayout->addWidget(spacer,5,1);
-    gridLayout->addWidget(MTM_3121,6,1);
-    gridLayout->addWidget(MTM_3120,7,1);
-    gridLayout->addWidget(FSC_5002,8,1);
-    gridLayout->addWidget(FSC_5122,9,1);
-    //TERCEIRA FASE (coluna 2)
-    QWidget* fase3 = new FaseTitle(this, "3º fase");
-    gridLayout->addWidget(fase3,0,2);
-    //gridLayout->addWidget(spacer,1,2);
-    gridLayout->addWidget(DAS_5332,1,2);
-    gridLayout->addWidget(spacer,2,2);
-    gridLayout->addWidget(spacer,3,2);
-    gridLayout->addWidget(spacer,4,2);
-    gridLayout->addWidget(DAS_5210,5,2);
-    gridLayout->addWidget(MTM_3131,6,2);
-    gridLayout->addWidget(MTM_3103,7,2);
-    gridLayout->addWidget(FSC_5113,8,2);
-    gridLayout->addWidget(ECV_5215,9,2);
-    //QUARTA FASE (coluna 3)
-    QWidget* fase4 = new FaseTitle(this, "4º fase");
-    gridLayout->addWidget(fase4,0,3);
-    gridLayout->addWidget(DAS_5307,1,3);
-    gridLayout->addWidget(spacer,2,3);
-    gridLayout->addWidget(DAS_5308,3,3);
-    gridLayout->addWidget(DAS_5103,4,3);
-    gridLayout->addWidget(spacer,5,3);
-    gridLayout->addWidget(spacer,6,3);
-    gridLayout->addWidget(DAS_5214,7,3);
-    gridLayout->addWidget(EEL_7540,8,3);
-    gridLayout->addWidget(spacer,9,3);
-    gridLayout->addWidget(INE_5108,10,3);
-    //QUINTA FASE (coluna 4)
-    QWidget* fase5 = new FaseTitle(this, "5º fase");
-    gridLayout->addWidget(fase5,0,4);
-    gridLayout->addWidget(spacer,1,4);
-    gridLayout->addWidget(DAS_5203,2,4);
-    gridLayout->addWidget(DAS_5320,3,4);
-    gridLayout->addWidget(spacer,4,4);
-    gridLayout->addWidget(EMC_5425,5,4);
-    gridLayout->addWidget(DAS_5109,6,4);
-    gridLayout->addWidget(EEL_7550,7,4);
-    gridLayout->addWidget(spacer,8,4);
-    gridLayout->addWidget(EMC_5235,9,4);
-    //SEXTA FASE (coluna 5)
-    QWidget* fase6 = new FaseTitle(this, "6º fase");
-    gridLayout->addWidget(fase6,0,5);
-    gridLayout->addWidget(spacer,1,5);
-    gridLayout->addWidget(CNM_7820,2,5);
-    gridLayout->addWidget(DAS_5314,3,5);
-    gridLayout->addWidget(EPS_2351,4,5);
-    gridLayout->addWidget(EMC_5467,5,5);
-    gridLayout->addWidget(DAS_5120,6,5);
-    gridLayout->addWidget(spacer,7,5);
-    gridLayout->addWidget(EEL_5193,8,5);
-    gridLayout->addWidget(DAS_5151,9,5);
-    //SÉTIMA FASE (coluna 6)
-    QWidget* fase7 = new FaseTitle(this, "7º fase");
-    gridLayout->addWidget(fase7,0,6);
-    gridLayout->addWidget(EMC_5258,1,6);
-    gridLayout->addWidget(spacer,2,6);
-    gridLayout->addWidget(spacer,3,6);
-    gridLayout->addWidget(DAS_5105,4,6);
-    gridLayout->addWidget(spacer,5,6);
-    gridLayout->addWidget(DAS_5142,6,6);
-    gridLayout->addWidget(EMC_5251,7,6);
-    gridLayout->addWidget(EEL_5354,8,6);
-    gridLayout->addWidget(spacer,9,6);
-    gridLayout->addWidget(DAS_5318,10,6);
-    //OITAVA FASE (coluna 7)
-    QWidget* fase8 = new FaseTitle(this, "8º fase");
-    gridLayout->addWidget(fase8,0,7);
-    gridLayout->addWidget(spacer,1,7);
-    gridLayout->addWidget(DAS_5502,2,7);
-    gridLayout->addWidget(spacer,3,7);
-    gridLayout->addWidget(spacer,4,7);
-    gridLayout->addWidget(spacer,5,7);
-    gridLayout->addWidget(spacer,6,7);
-    gridLayout->addWidget(spacer,7,7);
-    gridLayout->addWidget(spacer,8,7);
-    gridLayout->addWidget(DAS_5402,9,7);
-    gridLayout->addWidget(OPT_PROF8,10,7);
-    gridLayout->addWidget(EPS_7076,11,7);
-    //NONA FASE (coluna 8)
-    QWidget* fase9 = new FaseTitle(this, "9º fase");
-    gridLayout->addWidget(fase9,0,8);
-    gridLayout->addWidget(spacer,1,8);
-    gridLayout->addWidget(spacer,2,8);
-    gridLayout->addWidget(spacer,3,8);
-    gridLayout->addWidget(spacer,4,8);
-    gridLayout->addWidget(spacer,5,8);
-    gridLayout->addWidget(spacer,6,8);
-    gridLayout->addWidget(spacer,7,8);
-    gridLayout->addWidget(OPT_PROF16,8,8);
-    gridLayout->addWidget(OPT_LIVR,9,8);
-    //DÉCIMA FASE (coluna 9)
-    QWidget* fase10 = new FaseTitle(this, "10º fase");
-    gridLayout->addWidget(fase10,0,9);
-    gridLayout->addWidget(spacer,1,9);
-    gridLayout->addWidget(DAS_5512,2,9);
-
-
-    diagrams.append(MTM_3110);
-    diagrams.append(MTM_3120);
-    diagrams.append(FSC_5101);
-    diagrams.append(FSC_5002);
-    diagrams.append(DAS_5334);
-    diagrams.append(DAS_5412);
-    diagrams.append(ECZ_5102);
-    diagrams.append(EGR_5606);
-    diagrams.append(EEL_5105);
-    diagrams.append(DAS_5102);
-    diagrams.append(MTM_3121);
-    diagrams.append(FSC_5122);
-    diagrams.append(DAS_5332);
-    diagrams.append(DAS_5210);
-    diagrams.append(MTM_3131);
-    diagrams.append(MTM_3103);
-    diagrams.append(FSC_5113);
-    diagrams.append(ECV_5215);
-
-    diagrams.append(DAS_5307);
-    diagrams.append(DAS_5308);
-    diagrams.append(DAS_5103);
-    diagrams.append(DAS_5214);
-    diagrams.append(EEL_7540);
-    diagrams.append(INE_5108);
-    diagrams.append(DAS_5203);
-    diagrams.append(DAS_5320);
-    diagrams.append(EMC_5425);
-    diagrams.append(DAS_5109);
-    diagrams.append(EEL_7550);
-    diagrams.append(EMC_5235);
-    diagrams.append(CNM_7820);
-    diagrams.append(DAS_5314);
-    diagrams.append(EMC_5467);
-    diagrams.append(DAS_5120);
-    diagrams.append(EEL_5193);
-    diagrams.append(DAS_5151);
-    diagrams.append(EPS_2351);
-    diagrams.append(EMC_5258);
-    diagrams.append(DAS_5105);
-    diagrams.append(DAS_5142);
-    diagrams.append(EMC_5251);
-    diagrams.append(EEL_5354);
-    diagrams.append(DAS_5318);
-    diagrams.append(DAS_5502);
-    diagrams.append(DAS_5402);
-    diagrams.append(OPT_PROF8);
-    diagrams.append(EPS_7076);
-    diagrams.append(OPT_PROF16);
-    diagrams.append(OPT_LIVR);
-    diagrams.append(DAS_5512);
-
-
+    // disciplinas, fases, pré-requisitos, horas-aula e grupos vêm de
+    // files/disciplinas.txt na pasta do executável (sem ele, da cópia
+    // embutida nos recursos)
+    QString disciplinasPath = QCoreApplication::applicationDirPath() + "/files/disciplinas.txt";
+    if(!QFile::exists(disciplinasPath))
+        disciplinasPath = ":/files/disciplinas.txt";
+    carregarDisciplinas(disciplinasPath);
 
     // barra de zoom no topo (depois da grade pronta: um botão por fase/coluna)
     mainLayout->insertLayout(0, buildToolbar());
@@ -668,111 +437,180 @@ void Widget::setState(States state)
 {
     this->state = state;
 }
-void Widget:: initPrerequisites()
+// Lê as disciplinas (formato descrito no cabeçalho de files/disciplinas.txt),
+// cria um Diagram para cada uma e o coloca na grade: a fase N é a coluna N-1,
+// com o título da fase na linha 0. Erros de formato são avisados numa caixa
+// de diálogo e a linha com erro é ignorada.
+bool Widget::carregarDisciplinas(const QString& caminho)
 {
-    // pré-requisitos do currículo 20241 (curriculoECA.PDF)
-    //SEGUNDA FASE
-    DAS_5102->setPrerequisites(new QVector<Diagram*>{DAS_5334});
-    EEL_5105->setPrerequisites(new QVector<Diagram*>{DAS_5334});
-    FSC_5002->setPrerequisites(new QVector<Diagram*>{FSC_5101,MTM_3110});
-    FSC_5122->setPrerequisites(new QVector<Diagram*>{FSC_5101});
-    MTM_3120->setPrerequisites(new QVector<Diagram*>{MTM_3110});
-    //TERCEIRA FASE
-    DAS_5210->setPrerequisites(new QVector<Diagram*>{DAS_5412,FSC_5101, MTM_3110});
-    DAS_5332->setPrerequisites(new QVector<Diagram*>{EEL_5105});
-    ECV_5215->setPrerequisites(new QVector<Diagram*>{FSC_5002, MTM_3120});
-    FSC_5113->setPrerequisites(new QVector<Diagram*>{FSC_5002});
-    MTM_3103->setPrerequisites(new QVector<Diagram*>{MTM_3120});
-    MTM_3131->setPrerequisites(new QVector<Diagram*>{MTM_3120,MTM_3121});
-    //QUARTA FASE
-    DAS_5103->setPrerequisites(new QVector<Diagram*>{DAS_5102,MTM_3110,MTM_3121});
-    DAS_5214->setPrerequisites(new QVector<Diagram*>{DAS_5210, MTM_3131});
-    DAS_5307->setPrerequisites(new QVector<Diagram*>{DAS_5412, EEL_5105});
-    DAS_5308->setPrerequisites(new QVector<Diagram*>{DAS_5102, DAS_5332});
-    EEL_7540->setPrerequisites(new QVector<Diagram*>{FSC_5113, MTM_3131});
-    INE_5108->setPrerequisites(new QVector<Diagram*>{MTM_3110});
-    //QUINTA FASE
-    DAS_5109->setPrerequisites(new QVector<Diagram*>{DAS_5214, EEL_7540});
-    DAS_5203->setPrerequisites(new QVector<Diagram*>{DAS_5307});
-    DAS_5320->setPrerequisites(new QVector<Diagram*>{DAS_5308});
-    EEL_7550->setPrerequisites(new QVector<Diagram*>{EEL_7540});
-    EMC_5235->setPrerequisites(new QVector<Diagram*>{EEL_7540});
-    EMC_5425->setPrerequisites(new QVector<Diagram*>{FSC_5002, MTM_3103});
-    //SEXTA FASE
-    DAS_5120->setPrerequisites(new QVector<Diagram*>{DAS_5109});
-    DAS_5151->setPrerequisites(new QVector<Diagram*>{DAS_5109, EEL_7550, EMC_5235});
-    DAS_5314->setPrerequisites(new QVector<Diagram*>{DAS_5307, DAS_5308});
-    EEL_5193->setPrerequisites(new QVector<Diagram*>{EEL_7540});
-    EMC_5467->setPrerequisites(new QVector<Diagram*>{DAS_5214, DAS_5307, EMC_5425});
-    EPS_2351->setPrerequisites(new QVector<Diagram*>{ECZ_5102, INE_5108});
-    //SÉTIMA FASE
-    DAS_5105->setPrerequisites(new QVector<Diagram*>{DAS_5109, DAS_5203, DAS_5320, EEL_7550, EPS_2351});
-    DAS_5142->setPrerequisites(new QVector<Diagram*>{DAS_5120});
-    DAS_5318->setPrerequisites(new QVector<Diagram*>{DAS_5203, INE_5108});
-    EEL_5354->setPrerequisites(new QVector<Diagram*>{EEL_5193, EEL_7540});
-    EMC_5251->setPrerequisites(new QVector<Diagram*>{DAS_5214});
-    EMC_5258->setPrerequisites(new QVector<Diagram*>{DAS_5307});
-    //OITAVA FASE
-    DAS_5502->setPrerequisites(new QVector<Diagram*>{DAS_5105});
-    //DÉCIMA FASE
-    DAS_5512->setPrerequisites(new QVector<Diagram*>{DAS_5502});
-}
+    QStringList erros;
+    QFile file(caminho);
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QMessageBox::critical(this, "Fluxograma ECA",
+                              QString::fromUtf8("Não foi possível abrir %1").arg(caminho));
+        return false;
+    }
+    QTextStream in(&file);
+    in.setCodec("UTF-8");
 
-void Widget::initCargaHoraria()
-{
-    // horas-aula (H/A) de cada disciplina; "false" = optativa (não conta
-    // para as exigências de carga horária, que são de horas obrigatórias)
-    DAS_5334->setCargaHoraria(72);  DAS_5412->setCargaHoraria(72);  ECZ_5102->setCargaHoraria(36);
-    EGR_5606->setCargaHoraria(72);  FSC_5101->setCargaHoraria(72);  MTM_3110->setCargaHoraria(72);
-    DAS_5102->setCargaHoraria(72);  EEL_5105->setCargaHoraria(90);  FSC_5002->setCargaHoraria(72);
-    FSC_5122->setCargaHoraria(54);  MTM_3120->setCargaHoraria(72);  MTM_3121->setCargaHoraria(72);
-    DAS_5210->setCargaHoraria(54);  DAS_5332->setCargaHoraria(72);  ECV_5215->setCargaHoraria(90);
-    FSC_5113->setCargaHoraria(72);  MTM_3103->setCargaHoraria(72);  MTM_3131->setCargaHoraria(72);
-    DAS_5103->setCargaHoraria(72);  DAS_5214->setCargaHoraria(108); DAS_5307->setCargaHoraria(72);
-    DAS_5308->setCargaHoraria(72);  EEL_7540->setCargaHoraria(72);  INE_5108->setCargaHoraria(54);
-    DAS_5109->setCargaHoraria(72);  DAS_5203->setCargaHoraria(90);  DAS_5320->setCargaHoraria(54);
-    EEL_7550->setCargaHoraria(72);  EMC_5235->setCargaHoraria(72);  EMC_5425->setCargaHoraria(72);
-    CNM_7820->setCargaHoraria(36);  DAS_5120->setCargaHoraria(108); DAS_5151->setCargaHoraria(72);
-    DAS_5314->setCargaHoraria(72);  EEL_5193->setCargaHoraria(54);  EMC_5467->setCargaHoraria(54);
-    EPS_2351->setCargaHoraria(72);
-    DAS_5105->setCargaHoraria(108); DAS_5142->setCargaHoraria(72);  DAS_5318->setCargaHoraria(72);
-    EEL_5354->setCargaHoraria(72);  EMC_5251->setCargaHoraria(72);  EMC_5258->setCargaHoraria(108);
-    DAS_5402->setCargaHoraria(36);  DAS_5502->setCargaHoraria(216); EPS_7076->setCargaHoraria(54);
-    OPT_PROF8->setCargaHoraria(144, false);
-    OPT_PROF16->setCargaHoraria(288, false);
-    OPT_LIVR->setCargaHoraria(36, false);
-    DAS_5512->setCargaHoraria(360);
+    static const QStringList gruposConhecidos{"informatica", "controle", "automacao",
+                                              "mecanica", "eletrica", "fisica_calculo"};
+    const QRegularExpression cabecalhoFase("^\\[\\s*fase\\s+(\\d+)\\s*\\]$",
+                                           QRegularExpression::CaseInsensitiveOption);
+    struct Pendente { Diagram* diagram; QStringList pre; int numLinha; };
+    QVector<Pendente> pendentes;
+    QHash<QString, Diagram*> porCodigo;
+    QSet<QString> nomes;
+    QHash<int, int> ultimaLinha; // fase -> linha da grade da última disciplina
+    int fase = 0;
+    int numLinha = 0;
+    auto erro = [&](int n, const QString& msg) {
+        erros << QString("linha %1: %2").arg(n).arg(msg);
+    };
+    auto lista = [](const QString& valor) {
+        QStringList l;
+        for(const QString& item : valor.split(',', QString::SkipEmptyParts))
+            if(!item.trimmed().isEmpty())
+                l << item.trimmed();
+        return l;
+    };
 
-    // exigência de horas-aula obrigatórias já concluídas ("Pré CH" no currículo)
-    DAS_5402->setPreCH(2300);
-    EPS_7076->setPreCH(900);
-    DAS_5512->setPreCH(3000);
-}
+    while(!in.atEnd())
+    {
+        const QString linha = in.readLine().trimmed();
+        numLinha++;
+        if(linha.isEmpty() || linha.startsWith('#'))
+            continue;
 
-void Widget::initGrupos()
-{
-    // grupos temáticos (cores em Diagram::corDoGrupo). Códigos corrigidos em
-    // relação à anotação original: ECV5115 -> ECV5215, FS5113 -> FSC5113,
-    // EMC5151 -> EMC5251, EEL5314 -> EEL5354, DAS6505 -> DAS5105 (Projeto
-    // Integrador, em controle e em automação).
-    const QStringList informatica{"informatica"}, controle{"controle"}, automacao{"automacao"},
-            mecanica{"mecanica"}, eletrica{"eletrica"}, fisica{"fisica_calculo"},
-            controleAutomacao{"controle", "automacao"};
-    for(Diagram* d : {DAS_5334, DAS_5102, DAS_5332, DAS_5308, DAS_5320, DAS_5314})
-        d->setGrupos(informatica);
-    for(Diagram* d : {DAS_5210, DAS_5214, DAS_5109, DAS_5151, DAS_5120, DAS_5142})
-        d->setGrupos(controle);
-    for(Diagram* d : {DAS_5307, DAS_5203, DAS_5318})
-        d->setGrupos(automacao);
-    for(Diagram* d : {DAS_5412, DAS_5105, DAS_5502, DAS_5512})
-        d->setGrupos(controleAutomacao);
-    for(Diagram* d : {ECV_5215, EMC_5425, EMC_5235, EMC_5467, EMC_5258, EMC_5251})
-        d->setGrupos(mecanica);
-    for(Diagram* d : {EEL_7540, EEL_7550, EEL_5193, EEL_5354, EEL_5105})
-        d->setGrupos(eletrica);
-    for(Diagram* d : {FSC_5101, MTM_3110, FSC_5122, FSC_5002, MTM_3121, MTM_3120, MTM_3103,
-                      MTM_3131, FSC_5113, DAS_5103, INE_5108})
-        d->setGrupos(fisica);
+        QRegularExpressionMatch m = cabecalhoFase.match(linha);
+        if(m.hasMatch())
+        {
+            fase = m.captured(1).toInt();
+            if(fase < 1)
+                erro(numLinha, "fase deve ser 1 ou maior");
+            else if(gridLayout->itemAtPosition(0, fase - 1) == nullptr)
+                gridLayout->addWidget(new FaseTitle(this, QString::fromUtf8("%1º fase").arg(fase)), 0, fase - 1);
+            continue;
+        }
+        if(fase < 1)
+        {
+            erro(numLinha, QString::fromUtf8("disciplina antes de um cabeçalho [Fase N]"));
+            continue;
+        }
+
+        QStringList campos = linha.split('|');
+        for(QString& c : campos)
+            c = c.trimmed();
+        if(campos.size() < 2 || campos[0].isEmpty() || campos[1].isEmpty())
+        {
+            erro(numLinha, QString::fromUtf8("esperado \"CÓDIGO | Nome | ha: ...\""));
+            continue;
+        }
+        const QString codigo = campos[0], nome = campos[1];
+        if(porCodigo.contains(codigo))
+        {
+            erro(numLinha, QString::fromUtf8("código repetido: %1").arg(codigo));
+            continue;
+        }
+        if(nomes.contains(nome))
+        {
+            erro(numLinha, QString::fromUtf8("nome repetido: %1").arg(nome));
+            continue;
+        }
+
+        int ha = -1, preCH = 0, linhaGrade = ultimaLinha.value(fase, 0) + 1;
+        bool obrigatoria = true, valido = true;
+        QStringList pre, grupos;
+        for(int i = 2; i < campos.size(); i++)
+        {
+            const QString chave = campos[i].section(':', 0, 0).trimmed();
+            const QString valor = campos[i].section(':', 1).trimmed();
+            bool numero = true;
+            if(chave == "ha")
+                ha = valor.toInt(&numero);
+            else if(chave == "linha")
+                linhaGrade = valor.toInt(&numero);
+            else if(chave == "preCH")
+                preCH = valor.toInt(&numero);
+            else if(chave == "pre")
+                pre = lista(valor);
+            else if(chave == "grupos")
+                grupos = lista(valor);
+            else if(chave == "optativa" && valor.isEmpty())
+                obrigatoria = false;
+            else
+            {
+                erro(numLinha, QString::fromUtf8("campo desconhecido: %1").arg(campos[i]));
+                valido = false;
+            }
+            if(!numero)
+            {
+                erro(numLinha, QString::fromUtf8("número inválido em \"%1\"").arg(campos[i]));
+                valido = false;
+            }
+        }
+        for(const QString& g : grupos)
+            if(!gruposConhecidos.contains(g))
+            {
+                erro(numLinha, QString::fromUtf8("grupo desconhecido: %1").arg(g));
+                valido = false;
+            }
+        if(ha < 0)
+        {
+            erro(numLinha, QString::fromUtf8("falta a carga horária (ha: N)"));
+            valido = false;
+        }
+        if(linhaGrade < 1)
+        {
+            erro(numLinha, "a linha da grade deve ser 1 ou maior");
+            valido = false;
+        }
+        else if(gridLayout->itemAtPosition(linhaGrade, fase - 1) != nullptr)
+        {
+            erro(numLinha, QString::fromUtf8("a linha %1 da fase %2 já está ocupada").arg(linhaGrade).arg(fase));
+            valido = false;
+        }
+        if(!valido)
+            continue;
+
+        Diagram* d = new Diagram(container, this, nome);
+        d->setCargaHoraria(ha, obrigatoria);
+        if(preCH > 0)
+            d->setPreCH(preCH);
+        if(!grupos.isEmpty())
+            d->setGrupos(grupos);
+        gridLayout->addWidget(d, linhaGrade, fase - 1);
+        diagrams.append(d);
+        porCodigo.insert(codigo, d);
+        nomes.insert(nome);
+        ultimaLinha[fase] = linhaGrade;
+        if(!pre.isEmpty())
+            pendentes.append({d, pre, numLinha});
+    }
+
+    // pré-requisitos só depois de ler tudo: podem citar qualquer disciplina
+    for(const Pendente& p : pendentes)
+    {
+        QVector<Diagram*>* prerequisites = new QVector<Diagram*>;
+        for(const QString& codigo : p.pre)
+        {
+            if(porCodigo.contains(codigo))
+                prerequisites->append(porCodigo.value(codigo));
+            else
+                erro(p.numLinha, QString::fromUtf8("pré-requisito desconhecido: %1").arg(codigo));
+        }
+        p.diagram->setPrerequisites(prerequisites);
+    }
+
+    if(!erros.isEmpty())
+    {
+        qWarning().noquote() << caminho << "\n" << erros.join("\n");
+        QMessageBox::warning(this, "Fluxograma ECA",
+                             QString::fromUtf8("Problemas em %1 (as linhas com erro foram ignoradas):\n\n%2")
+                             .arg(caminho, erros.join("\n")));
+    }
+    return erros.isEmpty();
 }
 
 int Widget::horasObrigatoriasConcluidas() const

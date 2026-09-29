@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent check of a saved.txt against widget.cpp + measured geometry."""
+"""Independent check of a saved.txt against files/disciplinas.txt + measured geometry."""
 import json
 import sys
 from collections import defaultdict
