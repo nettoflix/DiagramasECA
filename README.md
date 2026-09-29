@@ -50,6 +50,10 @@ incluindo as exigências de carga horária.
 
 O progresso fica salvo **só no seu navegador**: sem login e sem servidor.
 
+- **Usar outro currículo.** *Carregar currículo…* abre um arquivo no formato
+  de `files/disciplinas.txt` e monta o fluxograma, com as linhas, no próprio
+  navegador. *Currículo padrão* volta ao 20241.
+
 ![Modo Grupo: disciplinas coloridas por área](docs/grupo.png)
 
 ## Como o projeto está organizado
@@ -59,7 +63,7 @@ dados:
 
 | Pasta / arquivo | O que é |
 |---|---|
-| `web/` | **Versão web**, a que os colegas usam. Um único `index.html`, com os dados embutidos. Veja [`web/README.md`](web/README.md). |
+| `web/` | **Versão web**, a que os colegas usam. `index.html` com os dados embutidos, e o botão *Carregar currículo…* monta o fluxograma a partir de qualquer `disciplinas.txt` (com `curriculo.js`). Veja [`web/README.md`](web/README.md). |
 | `*.cpp`, `*.h`, `Diagramas2.pro` | **Aplicativo desktop** em Qt 5 (C++), a versão original. |
 | `files/disciplinas.txt` | **Fonte única dos dados do curso**, organizada por fase: disciplinas, posição na grade, pré-requisitos, horas-aula e grupos. O formato está descrito no cabeçalho do próprio arquivo. O app lê o arquivo ao abrir, e `disciplinas.py` o lê para os scripts Python. |
 | `web/roteador.js` | **Roteador das linhas** entre as disciplinas (roteamento ortogonal otimizado por simulated annealing). É o mesmo arquivo na versão web e no app Qt, que o executa com o `QJSEngine`. |

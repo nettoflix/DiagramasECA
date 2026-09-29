@@ -670,7 +670,8 @@ var Roteador = (function () {
         return JSON.stringify(rotear(JSON.parse(entradaJSON), opcoesJSON ? JSON.parse(opcoesJSON) : {}));
     }
 
-    return {rotear: rotear, rotearJSON: rotearJSON};
+    // mude a versão ao alterar o método: a versão web descarta as linhas guardadas
+    return {rotear: rotear, rotearJSON: rotearJSON, versao: '1'};
 })();
 
 if (typeof module !== 'undefined' && module.exports)

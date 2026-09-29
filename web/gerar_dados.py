@@ -37,8 +37,9 @@ if set(geo) != set(var2name) or {tuple(a) for a in cache['entrada']['arestas']} 
                      'abra o app Qt uma vez para recalcular as linhas')
 
 def codigo(var):
-    """MTM_3110 -> MTM3110; optativas não têm código de disciplina."""
-    return '' if var.startswith('OPT') else var.replace('_', '')
+    """MTM_3110 -> MTM3110; o que não tem cara de código (ex.: OPT_PROF8, as
+    optativas) fica sem código. Mesma regra de codigoDisciplina() em curriculo.js."""
+    return var.replace('_', '', 1) if re.fullmatch(r'[A-Z]{3}_?\d{4}', var) else ''
 
 
 disciplinas = []
