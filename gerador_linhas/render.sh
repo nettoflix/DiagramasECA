@@ -9,12 +9,16 @@ PROJ=$(dirname "$HERE")
 QMAKE=${QMAKE:-qmake}
 B=${BUILD_DIR:-$HERE/build}
 mkdir -p "$B/files"
-# as disciplinas são lidas em runtime: copia sempre a versão atual
+# as disciplinas e o cache das linhas são lidos em runtime: copia sempre a
+# versão atual (sem cache, o app calcula as linhas, o que leva mais que os
+# 2,5 s que o probe espera)
 cp "$PROJ/files/disciplinas.txt" "$B/files/"
+[ -f "$PROJ/files/linhas.json" ] && cp "$PROJ/files/linhas.json" "$B/files/"
 if [ ! -x "$B/Diagramas2" ]; then
   cp "$PROJ"/*.cpp "$PROJ"/*.h "$PROJ"/*.ui "$PROJ"/*.pro "$PROJ"/resources.qrc "$B"/
   rm -f "$B"/moc_* "$B"/qrc_* "$B"/ui_* "$B"/diagramas2_plugin_import.cpp
   cp "$HERE/probe/main.cpp" "$B/main.cpp"
+  mkdir -p "$B/web" && cp "$PROJ/web/roteador.js" "$B/web/"
   touch "$B/files/saved.txt"
   (cd "$B" && "$QMAKE" Diagramas2.pro >/dev/null && make -j"$(nproc)" 2>&1 | { grep -E " error" >&2 || true; }; test -x Diagramas2)
 fi

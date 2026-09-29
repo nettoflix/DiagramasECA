@@ -26,6 +26,7 @@ public:
     QWidget *mainWidget;
     QWidget *parent;
     QString name;
+    QString codigo;            // identificador em files/disciplinas.txt
     int lineIndex = 0;
     bool adicionandoPontos = false;
     bool isActive () const;

@@ -48,8 +48,7 @@ Os dados embutidos vêm das mesmas fontes do app Qt:
 | Fonte | Conteúdo |
 |---|---|
 | `../files/disciplinas.txt` | disciplinas, pré-requisitos, horas-aula e grupos |
-| `../gerador_linhas/dados/geometria_medida.txt` | posição de cada caixa |
-| `../files/saved.txt` | linhas (geradas por `gerador_linhas/route2.py`) |
+| `../files/linhas.json` | posição de cada caixa e linhas (calculadas por `roteador.js`) |
 
 Depois de mudar o currículo ou as linhas:
 

@@ -41,6 +41,9 @@ public:
     void saveLines();
     void loadLines();
     bool carregarDisciplinas(const QString& caminho);
+    QJsonObject entradaRoteador() const;
+    void atualizarLinhas();
+    void aplicarLinhas(const QJsonArray& linhas);
     int horasObrigatoriasConcluidas() const;
 public slots:
     void checkPrerequisitesEvent();
@@ -50,6 +53,8 @@ private:
     ZoomView* view=nullptr;
     QLabel* zoomLabel=nullptr;
     QLabel* horasLabel=nullptr;
+    QLabel* linhasLabel=nullptr;
+    QString linhasPath;
     int lastFase=-1;
     bool firstShow=true;
     bool shiftAlone=false;

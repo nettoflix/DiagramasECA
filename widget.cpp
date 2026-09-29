@@ -14,6 +14,11 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QSet>
+#include <QJSEngine>
+#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QCryptographicHash>
+#include <QElapsedTimer>
 
 
 
@@ -31,6 +36,7 @@ Widget::Widget(QWidget *parent)
     this->defaultSpaceWidth = 10;
     // path = "/home/nettoflix/Netto/Desenvolvimento/DiagramasECA/test.txt";
     path = QCoreApplication::applicationDirPath() + "/files/saved.txt";
+    linhasPath = QCoreApplication::applicationDirPath() + "/files/linhas.json";
     qDebug("path: [%s]", path.toLatin1().data());
     QBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(4, 4, 4, 4);
@@ -74,6 +80,7 @@ Widget::Widget(QWidget *parent)
 
     // tamanho natural da grade (sem esticar), igual ao usado para gerar saved.txt
     container->adjustSize();
+    gridLayout->activate(); // posiciona as caixas já agora: o roteador usa a geometria delas
     container->installEventFilter(this);
     QGraphicsProxyWidget* proxy = scene->addWidget(container);
     proxy->setPos(0, 0);
@@ -87,6 +94,7 @@ Widget::Widget(QWidget *parent)
 
     loadLines();
     checkPrerequisitesEvent();
+    atualizarLinhas();
 
 }
 void Widget::showEvent(QShowEvent *event){
@@ -180,23 +188,11 @@ void Widget::loadLines()
     for(Diagram* diagram : diagrams)
     {
         QJsonObject diagramObj = diagramasObject.value(diagram->name).toObject();
-        QJsonArray arr_allLines = diagramObj.value("lines").toArray();
         bool isActive = diagramObj.value("isActive").toBool();
         if(isActive) diagram->setActive(true);
 
-        qDebug()<<"Diagram: "<< diagram->name;
-        for(int i=0; i<arr_allLines.size(); i++)
-        {
-            QJsonArray arr_singleLine =  arr_allLines.at(i).toArray();
-            for(int j=0; j<arr_singleLine.size(); j++)
-            {
-                QJsonObject pointObject = arr_singleLine.at(j).toObject();
-                QPoint point = QPoint(pointObject.value("x").toInt(), pointObject.value("y").toInt());
-                diagram->lines[i]->addPoint(point);
-                // diagram->lines.append(new ConnectingLine(this));
-            }
-        }
-        diagram->lineIndex = arr_allLines.size();
+        // as linhas não vêm mais daqui: são calculadas pelo roteador
+        // (atualizarLinhas); de saved.txt só se usa o progresso
     }
 
 }
@@ -575,6 +571,7 @@ bool Widget::carregarDisciplinas(const QString& caminho)
             continue;
 
         Diagram* d = new Diagram(container, this, nome);
+        d->codigo = codigo;
         d->setCargaHoraria(ha, obrigatoria);
         if(preCH > 0)
             d->setPreCH(preCH);
@@ -611,6 +608,138 @@ bool Widget::carregarDisciplinas(const QString& caminho)
                              .arg(caminho, erros.join("\n")));
     }
     return erros.isEmpty();
+}
+
+// Entrada do roteador (web/roteador.js): geometria real de cada caixa na
+// grade e as relações de pré-requisito.
+QJsonObject Widget::entradaRoteador() const
+{
+    QJsonObject caixas;
+    QJsonArray arestas;
+    for(Diagram* d : diagrams)
+    {
+        int linha, coluna, rs, cs;
+        gridLayout->getItemPosition(gridLayout->indexOf(d), &linha, &coluna, &rs, &cs);
+        caixas.insert(d->codigo, QJsonObject{{"x", d->x()}, {"y", d->y()}, {"w", d->width()},
+                                             {"h", d->height()}, {"linha", linha}, {"coluna", coluna}});
+        if(d->prerequisites != nullptr)
+            for(Diagram* p : *d->prerequisites)
+                arestas.append(QJsonArray{p->codigo, d->codigo});
+    }
+    return QJsonObject{{"caixas", caixas}, {"arestas", arestas}, {"margemTopo", 50}};
+}
+
+// Roda o roteador para uma semente, numa thread do QtConcurrent; cada chamada
+// tem o seu próprio motor JS, então as sementes rodam em paralelo.
+struct RotearSemente
+{
+    typedef QString result_type;
+    QString codigo, entrada;
+    int iteracoes;
+    QString operator()(int semente) const
+    {
+        const QJsonObject opcoes{{"iteracoes", iteracoes}, {"sementes", QJsonArray{semente}}};
+        QJSEngine engine;
+        QJSValue r = engine.evaluate(codigo, "roteador.js");
+        if(!r.isError())
+            r = engine.globalObject().property("Roteador").property("rotearJSON")
+                    .call({entrada, QString(QJsonDocument(opcoes).toJson(QJsonDocument::Compact))});
+        return r.isError() ? "ERRO: " + r.toString() : r.toString();
+    }
+};
+
+// As linhas são calculadas por web/roteador.js (o mesmo código da versão web)
+// e guardadas em files/linhas.json junto com a entrada que as gerou: só
+// recalcula quando as disciplinas, as posições ou o roteador mudam.
+void Widget::atualizarLinhas()
+{
+    QFile arquivo(":/web/roteador.js");
+    arquivo.open(QFile::ReadOnly);
+    const QByteArray codigo = arquivo.readAll();
+    const QJsonObject entrada = entradaRoteador();
+    const QJsonObject opcoes{{"iteracoes", 60000}, {"sementes", QJsonArray{1, 2, 3}}};
+    const QString versao = QCryptographicHash::hash(codigo, QCryptographicHash::Sha1).toHex();
+
+    const QJsonObject cache = QJsonDocument::fromJson(readFile(linhasPath)).object();
+    if(cache.value("roteador").toString() == versao && cache.value("entrada").toObject() == entrada
+            && cache.value("opcoes").toObject() == opcoes)
+    {
+        aplicarLinhas(cache.value("linhas").toArray());
+        return;
+    }
+
+    linhasLabel->setText(QString::fromUtf8("Calculando as linhas…"));
+    linhasLabel->show();
+    QElapsedTimer* tempo = new QElapsedTimer;
+    tempo->start();
+    QFutureWatcher<QString>* watcher = new QFutureWatcher<QString>(this);
+    connect(watcher, &QFutureWatcher<QString>::finished, this, [=]() {
+        const QList<QString> resultados = watcher->future().results();
+        watcher->deleteLater();
+        qDebug() << "roteador:" << tempo->elapsed() << "ms";
+        delete tempo;
+        // fica com a semente de menor custo (a primeira, em caso de empate)
+        QJsonObject r;
+        for(const QString& resultado : resultados)
+        {
+            if(resultado.startsWith("ERRO"))
+            {
+                qWarning().noquote() << resultado;
+                linhasLabel->setText(QString::fromUtf8("Erro ao calcular as linhas"));
+                linhasLabel->setToolTip(resultado);
+                return;
+            }
+            QJsonObject o = QJsonDocument::fromJson(resultado.toUtf8()).object();
+            if(r.isEmpty() || o.value("custo").toDouble() < r.value("custo").toDouble())
+                r = o;
+        }
+        aplicarLinhas(r.value("linhas").toArray());
+        linhasLabel->hide();
+        QJsonObject novo{{"roteador", versao}, {"entrada", entrada}, {"opcoes", opcoes},
+                         {"relatorio", r.value("relatorio")}, {"linhas", r.value("linhas")}};
+        writeFile(linhasPath, QJsonDocument(novo).toJson(QJsonDocument::Compact));
+    });
+    QList<int> sementes;
+    for(const QJsonValue& s : opcoes.value("sementes").toArray())
+        sementes << s.toInt();
+    RotearSemente tarefa{QString::fromUtf8(codigo), QString(QJsonDocument(entrada).toJson(QJsonDocument::Compact)),
+                         opcoes.value("iteracoes").toInt()};
+    watcher->setFuture(QtConcurrent::mapped(sementes, tarefa));
+}
+
+// linhas: [{de, para, pts: [[x, y], ...]}]; cada linha pertence à disciplina de origem
+void Widget::aplicarLinhas(const QJsonArray& linhas)
+{
+    QHash<QString, Diagram*> porCodigo;
+    for(Diagram* d : diagrams)
+    {
+        porCodigo.insert(d->codigo, d);
+        for(ConnectingLine* l : d->lines)
+            l->clearPoints();
+        d->lineIndex = 0;
+    }
+    for(const QJsonValue& v : linhas)
+    {
+        const QJsonObject o = v.toObject();
+        Diagram* d = porCodigo.value(o.value("de").toString());
+        if(d == nullptr)
+            continue;
+        if(d->lineIndex >= d->lines.size())
+        {
+            ConnectingLine* nova = new ConnectingLine(container);
+            nova->setGeometry(container->rect());
+            nova->show();
+            d->lines.append(nova);
+        }
+        ConnectingLine* l = d->lines[d->lineIndex++];
+        for(const QJsonValue& p : o.value("pts").toArray())
+            l->addPoint(QPoint(p.toArray().at(0).toInt(), p.toArray().at(1).toInt()));
+    }
+    // recolore as linhas (verde se a origem está concluída)
+    for(Diagram* d : diagrams)
+        if(d->isActive())
+            d->setActive(true);
+    checkPrerequisitesEvent();
 }
 
 int Widget::horasObrigatoriasConcluidas() const
@@ -712,6 +841,10 @@ QLayout* Widget::buildToolbar()
     horasLabel = new QLabel;
     horasLabel->setToolTip(QString::fromUtf8("Soma das horas-aula das disciplinas obrigatórias concluídas"));
     bar->addWidget(horasLabel);
+    bar->addSpacing(16);
+    linhasLabel = new QLabel;
+    linhasLabel->hide();
+    bar->addWidget(linhasLabel);
     bar->addStretch();
 
     QLabel* hint = new QLabel(QString::fromUtf8("Ctrl+roda: zoom \u00b7 bot\u00e3o do meio: arrastar"));

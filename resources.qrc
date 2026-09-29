@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>files/saved.txt</file>
         <file>files/disciplinas.txt</file>
+        <file>web/roteador.js</file>
     </qresource>
 </RCC>

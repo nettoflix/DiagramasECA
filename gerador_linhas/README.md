@@ -5,6 +5,15 @@ Esta pasta contém tudo o que foi usado para gerar automaticamente o arquivo
 disciplina (diagrama) aos seus pré-requisitos — e explica o procedimento em
 detalhe.
 
+> **Atualização:** o roteador (`route.py` + `route2.py`) foi portado para
+> JavaScript em [`web/roteador.js`](../web/roteador.js), que roda na versão
+> web e no app Qt (via `QJSEngine`). O app calcula as linhas sozinho a
+> partir da geometria real da grade e as guarda em `files/linhas.json`, e o
+> `saved.txt` ficou só com o progresso. Não é mais preciso medir a geometria
+> com o `render.sh` nem rodar o `route2.py`. Os scripts desta pasta ficam
+> como referência do método, que continua o mesmo; o port só troca o
+> gerador aleatório (Lehmer, igual em qualquer motor JS).
+
 ![Resultado final](imagens/3_final.png)
 
 ---

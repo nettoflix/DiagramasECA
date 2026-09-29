@@ -62,19 +62,21 @@ dados:
 | `web/` | **Versão web**, a que os colegas usam. Um único `index.html`, com os dados embutidos. Veja [`web/README.md`](web/README.md). |
 | `*.cpp`, `*.h`, `Diagramas2.pro` | **Aplicativo desktop** em Qt 5 (C++), a versão original. |
 | `files/disciplinas.txt` | **Fonte única dos dados do curso**, organizada por fase: disciplinas, posição na grade, pré-requisitos, horas-aula e grupos. O formato está descrito no cabeçalho do próprio arquivo. O app lê o arquivo ao abrir, e `disciplinas.py` o lê para os scripts Python. |
-| `files/saved.txt` | Linhas do fluxograma (coordenadas) e o progresso salvo pelo app desktop. |
-| `gerador_linhas/` | Scripts que **geram automaticamente** as linhas entre as disciplinas (roteamento ortogonal otimizado). Veja [`gerador_linhas/README.md`](gerador_linhas/README.md). |
+| `web/roteador.js` | **Roteador das linhas** entre as disciplinas (roteamento ortogonal otimizado por simulated annealing). É o mesmo arquivo na versão web e no app Qt, que o executa com o `QJSEngine`. |
+| `files/linhas.json` | Cache das linhas calculadas, junto com a entrada que as gerou (posições e pré-requisitos). O app recalcula sozinho quando algo muda. |
+| `files/saved.txt` | Progresso salvo pelo app desktop (as linhas gravadas nele não são mais lidas). |
+| `gerador_linhas/` | Versão original do gerador de linhas, em Python, com a explicação detalhada do método. Veja [`gerador_linhas/README.md`](gerador_linhas/README.md). |
 | `docs/` | Imagens deste README. |
 
 ### Fluxo de dados
 
 ```
-files/disciplinas.txt  ──(Qt: posições medidas)──►  gerador_linhas/  ──►  files/saved.txt
-   │                                                               │
-   └──────────────────►  web/gerar_dados.py  ◄────────────────────┘
-                                 │
-                                 ▼
-                          web/index.html
+files/disciplinas.txt ──► app Qt: monta a grade ──► web/roteador.js ──► files/linhas.json
+         │                                                                  │
+         └────────────────────►  web/gerar_dados.py  ◄──────────────────────┘
+                                         │
+                                         ▼
+                                  web/index.html
 ```
 
 ## Atualizar o currículo
@@ -83,34 +85,25 @@ Quando mudar algum pré-requisito, disciplina, carga horária ou grupo:
 
 1. Edite `files/disciplinas.txt` (não precisa recompilar: o app lê o
    arquivo da pasta `files/` ao lado do executável).
-2. Se o **layout** mudou (disciplina nova ou que mudou de lugar), regere as
-   linhas:
-
-   ```bash
-   cd gerador_linhas
-   ./render.sh ../files/saved.txt medicao              # mede as posições reais
-   cp medicao_geometria.txt dados/geometria_medida.txt
-   python3 route2.py 200000 1 saida.json               # rode algumas sementes e fique com a de menor custo
-   python3 validate.py saida.json
-   ```
-
-   Depois copie as linhas para `files/saved.txt`. O passo a passo completo
-   está em `gerador_linhas/README.md`.
+2. Abra o app. Se as posições ou os pré-requisitos mudaram, ele recalcula
+   as linhas em segundo plano (cerca de 10 s; aparece "Calculando as
+   linhas…" na barra) e atualiza `files/linhas.json`. Nas próximas
+   aberturas as linhas vêm do cache.
 3. Regere os dados da versão web:
 
    ```bash
    python3 web/gerar_dados.py
    ```
 
-4. Faça commit e push. O GitHub Pages publica o novo `web/index.html`.
+4. Faça commit (inclusive de `files/linhas.json`) e push. O GitHub Pages publica o novo `web/index.html`.
 
-Se só mudou pré-requisito, carga horária ou grupo (sem mexer no layout),
-basta o passo 3. Porém, uma relação de pré-requisito **nova** precisa de uma
-linha nova, e então também é preciso regerar as linhas (passo 2).
+Se só mudou carga horária, nome ou grupo, as linhas continuam valendo e
+basta o passo 3.
 
 ## Aplicativo desktop (Qt)
 
-Requer Qt 5 (testado com Qt 5.9.6) e um compilador C++.
+Requer Qt 5 (testado com Qt 5.9.6, módulos `qml` e `concurrent`) e um
+compilador C++.
 
 ```bash
 qmake Diagramas2.pro
@@ -118,7 +111,8 @@ make
 ./Diagramas2
 ```
 
-O app lê e grava `files/saved.txt` na pasta do executável.
+O app lê `files/disciplinas.txt` e `files/linhas.json` e grava
+`files/saved.txt`, todos na pasta `files/` ao lado do executável.
 
 Controles:
 - **Tecla `1`:** salva o progresso.

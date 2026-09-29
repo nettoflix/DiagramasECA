@@ -4,8 +4,9 @@ embute em web/index.html, entre os marcadores DADOS-INICIO / DADOS-FIM.
 
 Fontes (as mesmas do app Qt):
   - ../files/disciplinas.txt                   disciplinas, pré-requisitos, horas e grupos
-  - ../gerador_linhas/dados/geometria_medida.txt  posição de cada diagrama
-  - ../files/saved.txt                         linhas (coordenadas do container)
+  - ../files/linhas.json                       posição de cada caixa e as linhas,
+                                               calculadas por web/roteador.js (o app
+                                               Qt gera/atualiza este arquivo ao abrir)
 
 Uso:  python3 gerar_dados.py
 """
@@ -27,12 +28,13 @@ horas = {d['id']: (d['ha'], d['ob']) for d in lidas}
 preCH = {d['id']: d['preCH'] for d in lidas if d['preCH']}
 grupos = {d['id']: d['grupos'] for d in lidas if d['grupos']}
 
-geo = {}
-for line in open(os.path.join(PROJ, 'gerador_linhas', 'dados', 'geometria_medida.txt'), encoding='utf-8'):
-    if line.startswith('DIAG\t'):
-        _, name, row, col, x, y, w, h = line.rstrip('\n').split('\t')
-        geo[name] = dict(row=int(row), col=int(col), x=int(x), y=int(y))
-
+cache = json.load(open(os.path.join(PROJ, 'files', 'linhas.json'), encoding='utf-8'))
+geo = {var: dict(col=g['coluna'], x=g['x'], y=g['y'], w=g['w'], h=g['h'])
+       for var, g in cache['entrada']['caixas'].items()}
+esperado = {(s, t) for t, ss in prereq.items() for s in ss}
+if set(geo) != set(var2name) or {tuple(a) for a in cache['entrada']['arestas']} != esperado:
+    raise SystemExit('files/linhas.json está desatualizado em relação a files/disciplinas.txt: '
+                     'abra o app Qt uma vez para recalcular as linhas')
 
 def codigo(var):
     """MTM_3110 -> MTM3110; optativas não têm código de disciplina."""
@@ -41,7 +43,7 @@ def codigo(var):
 
 disciplinas = []
 for var, name in var2name.items():
-    g = geo[name]
+    g = geo[var]
     disciplinas.append({
         'id': var,
         'codigo': codigo(var),
@@ -57,31 +59,17 @@ for var, name in var2name.items():
     })
 disciplinas.sort(key=lambda d: (d['fase'], d['y']))
 
-# linhas: a origem é a chave do JSON; o destino é a caixa em cuja borda
-# esquerda a polilinha termina (x = borda - 3)
-name2var = {v: k for k, v in var2name.items()}
-saved = json.load(open(os.path.join(PROJ, 'files', 'saved.txt'), encoding='utf-8'))['Diagramas']
-linhas = []
-for nome_origem, obj in saved.items():
-    for pts in obj['lines']:
-        P = [[p['x'], p['y']] for p in pts]
-        if len(P) < 2:
-            # linha começada no modo de edição e salva sem ser terminada
-            print(f'aviso: ignorando linha de {len(P)} ponto(s) em "{nome_origem}"')
-            continue
-        ex, ey = P[-1]
-        alvo = [n for n, g in geo.items() if ex == g['x'] - 3 and g['y'] + 50 <= ey < g['y'] + 159]
-        if len(alvo) != 1:
-            raise SystemExit(f'linha de {nome_origem} termina fora de uma borda: {P[-1]}')
-        linhas.append({'de': name2var[nome_origem], 'para': name2var[alvo[0]], 'pts': P})
+linhas = [{'de': l['de'], 'para': l['para'], 'pts': l['pts']} for l in cache['linhas']]
 
 # confere: exatamente uma linha por pré-requisito
-esperado = {(s, t) for t, ss in prereq.items() for s in ss}
 obtido = {(l['de'], l['para']) for l in linhas}
 if esperado != obtido or len(linhas) != len(esperado):
     raise SystemExit(f'linhas não batem com os pré-requisitos: faltam {esperado - obtido}, sobram {obtido - esperado}')
 
-dados = {'largura': 3108, 'altura': 2033, 'caixa': [159, 109],
+# tamanho do container Qt: colunas de 300 px (título da fase) e margem de 9 px
+largura = max(g['x'] for g in geo.values()) + 300 + 9
+altura = max(g['y'] + g['h'] for g in geo.values()) + 9
+dados = {'largura': largura, 'altura': altura, 'caixa': [159, 109],
          'disciplinas': disciplinas, 'linhas': linhas}
 bloco = json.dumps(dados, ensure_ascii=False, separators=(',', ':'))
 
