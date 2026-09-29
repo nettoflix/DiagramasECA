@@ -38,13 +38,15 @@ public:
     bool obrigatoria = true;   // optativas não contam para o "Pré CH"
     int preCH = 0;             // H/A obrigatórias concluídas exigidas (0 = nenhuma)
     int faltamHoras() const;   // quanto falta para atender preCH (0 = atendido)
-    // grupos temáticos (informatica, controle, automacao, mecanica, eletrica,
-    // fisica_calculo); a caixa é pintada com a cor do grupo, e com dois grupos
+    // grupos temáticos, declarados na seção [Grupos] do arquivo de
+    // disciplinas; a caixa é pintada com a cor do grupo, e com dois grupos
     // é dividida na diagonal
     QStringList grupos;
     void setGrupos(const QStringList& grupos);
     static QString corDoGrupo(const QString& grupo);
     static QString nomeDoGrupo(const QString& grupo);
+    static QHash<QString, QString> coresGrupo;  // id do grupo -> cor (#rrggbb)
+    static QHash<QString, QString> nomesGrupo;  // id do grupo -> nome exibido
     enum Estado { Bloqueada, Disponivel, Concluida };
     void aplicarEstado(Estado estado);
     void reaplicar() { aplicarEstado(estado); }

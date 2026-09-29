@@ -1,0 +1,84 @@
+# Ciências da Computação (curso 208), currículo 20071 — Bacharelado em
+# Ciências da Computação, transcrito de
+# CURRICULO_CIÊNCIAS_DA_COMPUTAÇÃO_20071.pdf (CAGR/SeTIC, 23/09/2026).
+# Não oficial: confira sempre no CAGR.
+#
+# Formato: o mesmo de files/disciplinas.txt (ver o cabeçalho daquele
+# arquivo). Não há grupos temáticos neste curso.
+#
+# Como o PDF foi lido:
+#   - Só a coluna "Pré-Requisito" vira "pre:"; "Equivalentes" (onde estão
+#     todos os "ou" do PDF) é ignorada.
+#   - As linhas da grade seguem as cadeias de pré-requisito, para as
+#     ligações ficarem retas (ex.: Circuitos e Técnicas Digitais ->
+#     Sistemas Digitais -> Organização de Computadores I -> Sistemas
+#     Operacionais I -> Computação Distribuída / Sistemas Operacionais II).
+#   - "Optativa I" a "IV" aparecem no PDF como vagas obrigatórias da 7ª e 8ª
+#     fases, sem código; aqui ficam como optativas, para o total de horas
+#     obrigatórias mostrado bater com o do currículo: 3204 h/a = 2898 de
+#     disciplinas obrigatórias + 270 de TCC + 36 de INE7011. O PDF exige 432 h/a de
+#     optativas no total (ingresso até 2018.2) ou 672 h/a somando optativas,
+#     extracurriculares e atividades complementares (ingresso desde 2019.1).
+#   - INE7011 (Atividades Complementares 1, 36 h/a, obrigatória) não tem
+#     fase no PDF; ficou na 8ª.
+
+[Fase 1]
+EEL5105 | Circuitos e Técnicas Digitais                   | linha: 1 | ha: 90
+INE5402 | Programação Orientada a Objetos I               | linha: 2 | ha: 108
+INE5403 | Fundamentos de Matemática Discreta para Computação | linha: 3 | ha: 108
+MTM3110 | Cálculo 1                                       | linha: 4 | ha: 72
+INE5401 | Introdução à Computação                         | linha: 5 | ha: 36
+
+[Fase 2]
+INE5406 | Sistemas Digitais                               | linha: 1 | ha: 90  | pre: EEL5105
+INE5404 | Programação Orientada a Objetos II              | linha: 2 | ha: 108 | pre: INE5402
+INE5407 | Ciência, Tecnologia e Sociedade                 | linha: 3 | ha: 54
+MTM3120 | Cálculo 2                                       | linha: 4 | ha: 72  | pre: MTM3110
+MTM3121 | Álgebra Linear                                  | linha: 5 | ha: 72
+
+[Fase 3]
+INE5411 | Organização de Computadores I                   | linha: 1 | ha: 108 | pre: INE5406
+INE5410 | Programação Concorrente                         | linha: 2 | ha: 72  | pre: INE5404
+INE5408 | Estruturas de Dados                             | linha: 3 | ha: 108 | pre: INE5404
+INE5202 | Cálculo Numérico em Computadores                | linha: 4 | ha: 72  | pre: INE5402, MTM3120, MTM3121
+MTM3131 | Equações Diferenciais Ordinárias                | linha: 5 | ha: 72  | pre: MTM3120, MTM3121
+
+[Fase 4]
+INE5412 | Sistemas Operacionais I                         | linha: 1 | ha: 72 | pre: INE5410, INE5411
+INE5414 | Redes de Computadores I                         | linha: 2 | ha: 72 | pre: INE5404
+INE5413 | Grafos                                          | linha: 3 | ha: 72 | pre: INE5403, INE5408
+INE5415 | Teoria da Computação                            | linha: 4 | ha: 72 | pre: INE5403, INE5408
+INE5416 | Paradigmas de Programação                       | linha: 5 | ha: 90 | pre: INE5408
+INE5417 | Engenharia de Software I                        | linha: 6 | ha: 90 | pre: INE5408
+
+[Fase 5]
+INE5418 | Computação Distribuída                          | linha: 1 | ha: 72 | pre: INE5412, INE5414
+INE5422 | Redes de Computadores II                        | linha: 2 | ha: 72 | pre: INE5414
+INE5420 | Computação Gráfica                              | linha: 3 | ha: 72 | pre: INE5408, MTM3120, MTM3121
+INE5421 | Linguagens Formais e Compiladores               | linha: 4 | ha: 72 | pre: INE5415
+INE5405 | Probabilidade e Estatística                     | linha: 5 | ha: 90 | pre: MTM3110
+INE5419 | Engenharia de Software II                       | linha: 6 | ha: 72 | pre: INE5417
+
+[Fase 6]
+INE5424 | Sistemas Operacionais II                        | linha: 1 | ha: 72 | pre: INE5412
+INE5423 | Banco de Dados I                                | linha: 2 | ha: 72 | pre: INE5408
+INE5430 | Inteligência Artificial                         | linha: 3 | ha: 72 | pre: INE5405, INE5413, INE5416
+INE5426 | Construção de Compiladores                      | linha: 4 | ha: 72 | pre: INE5421
+INE5425 | Modelagem e Simulação                           | linha: 5 | ha: 72 | pre: INE5202, INE5405
+INE5427 | Planejamento e Gestão de Projetos               | linha: 6 | ha: 72 | pre: INE5417
+INE5453 | Introdução ao Trabalho de Conclusão de Curso    | linha: 7 | ha: 18 | pre: INE5417
+
+[Fase 7]
+INE5429 | Segurança em Computação                         | linha: 1 | ha: 72  | pre: INE5403, INE5414
+INE5432 | Banco de Dados II                               | linha: 2 | ha: 72  | pre: INE5423
+INE5431 | Sistemas Multimídia                             | linha: 3 | ha: 72  | pre: INE5414
+INE5428 | Informática e Sociedade                         | linha: 4 | ha: 72  | pre: INE5407
+INE5433 | Trabalho de Conclusão de Curso I                | linha: 6 | ha: 108 | pre: INE5427, INE5453
+OPT_I   | Optativa I                                      | linha: 7 | ha: 54  | optativa
+OPT_II  | Optativa II                                     | linha: 8 | ha: 54  | optativa
+
+[Fase 8]
+INE7011 | Atividades Complementares 1                     | linha: 5 | ha: 36
+INE5434 | Trabalho de Conclusão de Curso II               | linha: 6 | ha: 162 | pre: INE5433
+OPT_III | Optativa III                                    | linha: 7 | ha: 60  | optativa
+OPT_IV  | Optativa IV                                     | linha: 8 | ha: 60  | optativa

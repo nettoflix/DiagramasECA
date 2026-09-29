@@ -55,6 +55,7 @@ private:
     QLabel* horasLabel=nullptr;
     QLabel* linhasLabel=nullptr;
     QString linhasPath;
+    QStringList ordemGrupos;  // grupos na ordem da seção [Grupos]
     int lastFase=-1;
     bool firstShow=true;
     bool shiftAlone=false;

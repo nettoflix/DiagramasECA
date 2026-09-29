@@ -450,11 +450,21 @@ bool Widget::carregarDisciplinas(const QString& caminho)
     QTextStream in(&file);
     in.setCodec("UTF-8");
 
-    static const QStringList gruposConhecidos{"informatica", "controle", "automacao",
-                                              "mecanica", "eletrica", "fisica_calculo"};
+    // cores dos grupos declarados sem "cor:", pela ordem de declaração (a
+    // mesma paleta de web/curriculo.js e disciplinas.py)
+    static const QStringList paleta{"#b9a5e6", "#76c9bd", "#f3b75c", "#e79b87", "#efdb6c", "#9dc0e7",
+                                    "#a8d08d", "#f2a7c3", "#c9b79c", "#8fd3e8", "#d9a3e0", "#b5c46e"};
     const QRegularExpression cabecalhoFase("^\\[\\s*fase\\s+(\\d+)\\s*\\]$",
                                            QRegularExpression::CaseInsensitiveOption);
-    struct Pendente { Diagram* diagram; QStringList pre; int numLinha; };
+    const QRegularExpression cabecalhoGrupos("^\\[\\s*grupos\\s*\\]$",
+                                             QRegularExpression::CaseInsensitiveOption);
+    const QRegularExpression idGrupo("^[A-Za-z0-9_-]+$");
+    const QRegularExpression corValida("^#[0-9A-Fa-f]{6}$");
+    Diagram::coresGrupo.clear();
+    Diagram::nomesGrupo.clear();
+    ordemGrupos.clear();
+    bool emGrupos = false;  // dentro da seção [Grupos]
+    struct Pendente { Diagram* diagram; QStringList pre, grupos; int numLinha; };
     QVector<Pendente> pendentes;
     QHash<QString, Diagram*> porCodigo;
     QSet<QString> nomes;
@@ -479,14 +489,60 @@ bool Widget::carregarDisciplinas(const QString& caminho)
         if(linha.isEmpty() || linha.startsWith('#'))
             continue;
 
+        if(cabecalhoGrupos.match(linha).hasMatch())
+        {
+            emGrupos = true;
+            continue;
+        }
         QRegularExpressionMatch m = cabecalhoFase.match(linha);
         if(m.hasMatch())
         {
+            emGrupos = false;
             fase = m.captured(1).toInt();
             if(fase < 1)
                 erro(numLinha, "fase deve ser 1 ou maior");
             else if(gridLayout->itemAtPosition(0, fase - 1) == nullptr)
                 gridLayout->addWidget(new FaseTitle(this, QString::fromUtf8("%1º fase").arg(fase)), 0, fase - 1);
+            continue;
+        }
+        if(emGrupos)
+        {
+            // ID | Nome exibido | cor: #rrggbb   (nome e cor opcionais)
+            QStringList campos = linha.split('|');
+            for(QString& c : campos)
+                c = c.trimmed();
+            const QString id = campos[0];
+            if(!idGrupo.match(id).hasMatch())
+            {
+                erro(numLinha, QString::fromUtf8("identificador de grupo inválido (use letras sem acento, números, _ ou -): %1").arg(id));
+                continue;
+            }
+            if(Diagram::nomesGrupo.contains(id))
+            {
+                erro(numLinha, QString::fromUtf8("grupo repetido: %1").arg(id));
+                continue;
+            }
+            QString cor;
+            bool valido = true;
+            for(int i = 2; i < campos.size(); i++)
+            {
+                const QString chave = campos[i].section(':', 0, 0).trimmed();
+                const QString valor = campos[i].section(':', 1).trimmed();
+                if(chave == "cor" && corValida.match(valor).hasMatch())
+                    cor = valor.toLower();
+                else
+                {
+                    erro(numLinha, QString::fromUtf8("campo inválido no grupo (esperado \"cor: #rrggbb\"): %1").arg(campos[i]));
+                    valido = false;
+                }
+            }
+            if(!valido)
+                continue;
+            if(cor.isEmpty())
+                cor = paleta[ordemGrupos.size() % paleta.size()];
+            Diagram::nomesGrupo.insert(id, campos.size() > 1 && !campos[1].isEmpty() ? campos[1] : id);
+            Diagram::coresGrupo.insert(id, cor);
+            ordemGrupos << id;
             continue;
         }
         if(fase < 1)
@@ -546,12 +602,6 @@ bool Widget::carregarDisciplinas(const QString& caminho)
                 valido = false;
             }
         }
-        for(const QString& g : grupos)
-            if(!gruposConhecidos.contains(g))
-            {
-                erro(numLinha, QString::fromUtf8("grupo desconhecido: %1").arg(g));
-                valido = false;
-            }
         if(ha < 0)
         {
             erro(numLinha, QString::fromUtf8("falta a carga horária (ha: N)"));
@@ -575,20 +625,31 @@ bool Widget::carregarDisciplinas(const QString& caminho)
         d->setCargaHoraria(ha, obrigatoria);
         if(preCH > 0)
             d->setPreCH(preCH);
-        if(!grupos.isEmpty())
-            d->setGrupos(grupos);
         gridLayout->addWidget(d, linhaGrade, fase - 1);
         diagrams.append(d);
         porCodigo.insert(codigo, d);
         nomes.insert(nome);
         ultimaLinha[fase] = linhaGrade;
-        if(!pre.isEmpty())
-            pendentes.append({d, pre, numLinha});
+        if(!pre.isEmpty() || !grupos.isEmpty())
+            pendentes.append({d, pre, grupos, numLinha});
     }
 
-    // pré-requisitos só depois de ler tudo: podem citar qualquer disciplina
+    // pré-requisitos e grupos só depois de ler tudo: podem citar disciplinas
+    // e grupos declarados mais adiante no arquivo
     for(const Pendente& p : pendentes)
     {
+        QStringList grupos;
+        for(const QString& g : p.grupos)
+        {
+            if(Diagram::nomesGrupo.contains(g))
+                grupos << g;
+            else
+                erro(p.numLinha, QString::fromUtf8("grupo não declarado em [Grupos]: %1").arg(g));
+        }
+        if(!grupos.isEmpty())
+            p.diagram->setGrupos(grupos);
+        if(p.pre.isEmpty())
+            continue;
         QVector<Diagram*>* prerequisites = new QVector<Diagram*>;
         for(const QString& codigo : p.pre)
         {
@@ -861,6 +922,7 @@ QLayout* Widget::buildToolbar()
     QToolButton* btGrupo = new QToolButton;
     btGrupo->setText("Grupo");
     btGrupo->setToolTip(QString::fromUtf8("Cor da área de cada disciplina; clique num grupo para destacá-lo"));
+    btGrupo->setVisible(!ordemGrupos.isEmpty()); // currículo sem [Grupos]: só "Situação"
     for(QToolButton* b : {btSituacao, btGrupo})
     {
         b->setCheckable(true);
@@ -904,7 +966,7 @@ QLayout* Widget::buildToolbar()
     lg->setContentsMargins(0, 0, 0, 0);
     lg->setSpacing(6);
     QList<QToolButton*> botoesGrupo;
-    for(const QString& g : {"informatica", "controle", "automacao", "mecanica", "eletrica", "fisica_calculo"})
+    for(const QString& g : ordemGrupos)
     {
         QToolButton* b = new QToolButton;
         b->setText(Diagram::nomeDoGrupo(g));
@@ -916,22 +978,34 @@ QLayout* Widget::buildToolbar()
         lg->addWidget(b);
         botoesGrupo << b;
     }
-    QLabel* ambos = new QLabel;
-    ambos->setPixmap([]() {
+    // combinações de grupos que aparecem nas disciplinas (caixa em faixas diagonais)
+    QList<QStringList> combinacoes;
+    for(Diagram* d : diagrams)
+        if(d->grupos.size() > 1 && !combinacoes.contains(d->grupos))
+            combinacoes << d->grupos;
+    if(!combinacoes.isEmpty())
+        lg->addSpacing(8);
+    for(const QStringList& combinacao : combinacoes)
+    {
         QPixmap px(22, 16);
         px.fill(Qt::transparent);
         QPainter p(&px);
-        QPolygon a, b;
-        a << QPoint(0, 0) << QPoint(22, 0) << QPoint(0, 16);
-        b << QPoint(22, 0) << QPoint(22, 16) << QPoint(0, 16);
-        p.setPen(Qt::NoPen);
-        p.setBrush(QColor(Diagram::corDoGrupo("controle"))); p.drawPolygon(a);
-        p.setBrush(QColor(Diagram::corDoGrupo("automacao"))); p.drawPolygon(b);
-        return px;
-    }());
-    lg->addSpacing(8);
-    lg->addWidget(ambos);
-    lg->addWidget(new QLabel(QString::fromUtf8("Controle + Automação")));
+        QLinearGradient faixas(0, 0, 22, 16);
+        QStringList nomes;
+        for(int i = 0; i < combinacao.size(); i++)
+        {
+            const QColor cor(Diagram::corDoGrupo(combinacao[i]));
+            faixas.setColorAt(i == 0 ? 0.0 : double(i) / combinacao.size() + 0.001, cor);
+            faixas.setColorAt(double(i + 1) / combinacao.size(), cor);
+            nomes << Diagram::nomeDoGrupo(combinacao[i]);
+        }
+        p.fillRect(px.rect(), faixas);
+        p.end();
+        QLabel* icone = new QLabel;
+        icone->setPixmap(px);
+        lg->addWidget(icone);
+        lg->addWidget(new QLabel(nomes.join(" + ")));
+    }
     QLabel* sem = new QLabel; sem->setPixmap(quadrado(QColor(Diagram::corDoGrupo(""))));
     lg->addWidget(sem);
     lg->addWidget(new QLabel("Sem grupo"));

@@ -39,7 +39,9 @@ incluindo as exigências de carga horária.
 - **Ver as áreas do curso.** No modo *Grupo*, as disciplinas são coloridas
   por área: Informática, Controle, Automação, Mecânica, Elétrica e Física e
   Cálculo. Disciplinas de duas áreas aparecem com a caixa dividida na
-  diagonal. Clicar num grupo na legenda destaca só as disciplinas dele.
+  diagonal. Clicar num grupo na legenda destaca só as disciplinas dele. Os
+  grupos (nomes e cores) são os declarados na seção `[Grupos]` do arquivo de
+  disciplinas; um currículo sem essa seção mostra só o modo *Situação*.
 - **Seguir as dependências.** No PC, passar o mouse sobre uma disciplina
   destaca de onde ela vem e o que ela libera.
 - **Navegar com zoom.**

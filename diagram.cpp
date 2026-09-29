@@ -252,27 +252,19 @@ void Diagram::setActive(bool set)
        // paintDiagramColorAndLines(true);
     }
 }
+// grupos declarados na seção [Grupos] de files/disciplinas.txt (preenchidos
+// por Widget::carregarDisciplinas)
+QHash<QString, QString> Diagram::coresGrupo;
+QHash<QString, QString> Diagram::nomesGrupo;
+
 QString Diagram::corDoGrupo(const QString& grupo)
 {
-    static const QMap<QString, QString> cores = {
-        {"informatica",    "#b9a5e6"},   // lavanda
-        {"controle",       "#76c9bd"},   // verde-água
-        {"automacao",      "#f3b75c"},   // âmbar
-        {"mecanica",       "#e79b87"},   // terracota
-        {"eletrica",       "#efdb6c"},   // amarelo
-        {"fisica_calculo", "#9dc0e7"},   // azul-céu
-    };
-    return cores.value(grupo, "#dfe3e8"); // sem grupo: cinza neutro
+    return coresGrupo.value(grupo, "#dfe3e8"); // sem grupo: cinza neutro
 }
 
 QString Diagram::nomeDoGrupo(const QString& grupo)
 {
-    static const QMap<QString, QString> nomes = {
-        {"informatica", QString::fromUtf8("Informática")}, {"controle", "Controle"},
-        {"automacao", QString::fromUtf8("Automação")}, {"mecanica", QString::fromUtf8("Mecânica")},
-        {"eletrica", QString::fromUtf8("Elétrica")}, {"fisica_calculo", QString::fromUtf8("Física e Cálculo")},
-    };
-    return nomes.value(grupo, grupo);
+    return nomesGrupo.value(grupo, grupo);
 }
 
 void Diagram::setGrupos(const QStringList& grupos)

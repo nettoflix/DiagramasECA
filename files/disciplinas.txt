@@ -18,16 +18,39 @@
 #                     anterior da mesma fase. As posições precisam bater com
 #                     as linhas desenhadas em files/saved.txt.
 #     pre: A, B       pré-requisitos (códigos, separados por vírgula)
-#     grupos: a, b    grupos temáticos: informatica, controle, automacao,
-#                     mecanica, eletrica, fisica_calculo (dois = caixa dividida)
+#     grupos: a, b    grupos temáticos, declarados em [Grupos] (dois ou mais =
+#                     caixa dividida em faixas diagonais)
 #     preCH: 2300     horas-aula obrigatórias concluídas exigidas ("Pré CH")
 #     optativa        não conta para as horas obrigatórias
+#
+#   [Grupos]   (opcional) declara os grupos temáticos, um por linha, na
+#              ordem em que aparecem na legenda "Colorir por: Grupo":
+#
+#   ID | Nome exibido | cor: #rrggbb
+#
+#   ID         o que as disciplinas usam em "grupos:" (letras sem acento,
+#              números, _ ou -).
+#   Nome       texto da legenda (sem ele, usa o ID).
+#   cor        opcional; sem ela, o grupo recebe a próxima cor de uma paleta
+#              fixa. Sem a seção, o modo "Grupo" não aparece.
 #
 # Linhas vazias e as que começam com # são ignoradas.
 #
 # Grupos: códigos corrigidos em relação à anotação original: ECV5115 ->
 # ECV5215, FS5113 -> FSC5113, EMC5151 -> EMC5251, EEL5314 -> EEL5354,
 # DAS6505 -> DAS5105 (Projeto Integrador, em controle e em automação).
+#
+# DAS5300 (Ações de Extensão, 216 h/a obrigatórias) não tem fase no
+# currículo; fica na 10ª. São no mínimo 216 h/a em ações de extensão
+# (I - Projetos, II - Eventos, III - Cursos), das quais 108 em Projetos.
+
+[Grupos]
+informatica    | Informática      | cor: #b9a5e6
+controle       | Controle         | cor: #76c9bd
+automacao      | Automação        | cor: #f3b75c
+mecanica       | Mecânica         | cor: #e79b87
+eletrica       | Elétrica         | cor: #efdb6c
+fisica_calculo | Física e Cálculo | cor: #9dc0e7
 
 [Fase 1]
 DAS_5334   | Introdução à Informática para Automação                    | ha: 72  | grupos: informatica
@@ -98,3 +121,4 @@ OPT_LIVR   | Optativas Livres                                           | linha:
 
 [Fase 10]
 DAS_5512   | Projeto de Fim de Curso                                    | linha: 2  | ha: 360 | preCH: 3000 | pre: DAS_5502 | grupos: controle, automacao
+DAS_5300   | Ações de Extensão                                          | linha: 9  | ha: 216

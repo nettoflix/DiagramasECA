@@ -18,7 +18,10 @@
 var Curriculo = (function () {
     'use strict';
 
-    var GRUPOS = ['informatica', 'controle', 'automacao', 'mecanica', 'eletrica', 'fisica_calculo'];
+    // cores dos grupos declarados sem "cor:", pela ordem de declaração (a
+    // mesma paleta de widget.cpp e disciplinas.py)
+    var PALETA = ['#b9a5e6', '#76c9bd', '#f3b75c', '#e79b87', '#efdb6c', '#9dc0e7',
+                  '#a8d08d', '#f2a7c3', '#c9b79c', '#8fd3e8', '#d9a3e0', '#b5c46e'];
     var GRADE = {margem: 9, larguraColuna: 300, espacoH: 10, alturaTitulo: 200,
                  caixa: 159, espacoV: 6, margemTopo: 50};
     var OPCOES_ROTEADOR = {iteracoes: 60000, sementes: [1, 2, 3]};
@@ -35,11 +38,13 @@ var Curriculo = (function () {
     }
 
     /*
-     * Retorna {disciplinas: [...], fases: [números com cabeçalho], erros: [...]}.
+     * Retorna {disciplinas: [...], fases: [números com cabeçalho],
+     *          grupos: [{id, nome, cor}], erros: [...]}.
      * Cada disciplina: {id, nome, fase, linha, ha, ob, preCH, pre, grupos}.
      */
     function ler(texto) {
-        var disciplinas = [], fases = [], erros = [];
+        var disciplinas = [], fases = [], grupos = [], porGrupo = {}, erros = [];
+        var emGrupos = false;  // dentro da seção [Grupos]
         var porId = {}, nomes = {}, ultimaLinha = {}, ocupado = {}, numLinhaDe = {};
         var fase = 0;
         var linhas = texto.split(/\r\n|\r|\n/);
@@ -48,11 +53,35 @@ var Curriculo = (function () {
         for (var n = 1; n <= linhas.length; n++) {
             var linha = linhas[n - 1].trim();
             if (!linha || linha.charAt(0) === '#') continue;
+            if (/^\[\s*grupos\s*\]$/i.test(linha)) { emGrupos = true; continue; }
             var m = /^\[\s*fase\s+(\d+)\s*\]$/i.exec(linha);
             if (m) {
+                emGrupos = false;
                 fase = parseInt(m[1], 10);
                 if (fase < 1) erro(n, 'fase deve ser 1 ou maior');
                 else if (fases.indexOf(fase) < 0) fases.push(fase);
+                continue;
+            }
+            if (emGrupos) {
+                // ID | Nome exibido | cor: #rrggbb   (nome e cor opcionais)
+                var cg = linha.split('|').map(function (c) { return c.trim(); });
+                if (!/^[A-Za-z0-9_-]+$/.test(cg[0])) {
+                    erro(n, 'identificador de grupo inválido (use letras sem acento, números, _ ou -): ' + cg[0]);
+                    continue;
+                }
+                if (porGrupo[cg[0]]) { erro(n, 'grupo repetido: ' + cg[0]); continue; }
+                var cor = '', grupoValido = true;
+                for (var q = 2; q < cg.length; q++) {
+                    var pc = cg[q].indexOf(':');
+                    var ch = (pc < 0 ? cg[q] : cg[q].slice(0, pc)).trim(), vl = pc < 0 ? '' : cg[q].slice(pc + 1).trim();
+                    if (ch === 'cor' && /^#[0-9A-Fa-f]{6}$/.test(vl)) cor = vl.toLowerCase();
+                    else { erro(n, 'campo inválido no grupo (esperado "cor: #rrggbb"): ' + cg[q]); grupoValido = false; }
+                }
+                if (!grupoValido) continue;
+                var gr = {id: cg[0], nome: cg.length > 1 && cg[1] ? cg[1] : cg[0],
+                          cor: cor || PALETA[grupos.length % PALETA.length]};
+                grupos.push(gr);
+                porGrupo[gr.id] = gr;
                 continue;
             }
             if (fase < 1) { erro(n, 'disciplina antes de um cabeçalho [Fase N]'); continue; }
@@ -86,8 +115,6 @@ var Curriculo = (function () {
                     valido = false;
                 }
             }
-            for (i = 0; i < d.grupos.length; i++)
-                if (GRUPOS.indexOf(d.grupos[i]) < 0) { erro(n, 'grupo desconhecido: ' + d.grupos[i]); valido = false; }
             if (d.ha === null) { erro(n, 'falta a carga horária (ha: N)'); valido = false; }
             if (d.linha < 1) { erro(n, 'a linha da grade deve ser 1 ou maior'); valido = false; }
             else if (ocupado[d.linha + ',' + fase]) {
@@ -104,9 +131,13 @@ var Curriculo = (function () {
             ocupado[d.linha + ',' + fase] = true;
         }
 
-        // pré-requisitos só depois de ler tudo: podem citar qualquer disciplina
+        // pré-requisitos e grupos só depois de ler tudo: podem citar
+        // disciplinas e grupos declarados mais adiante no arquivo
         for (var j = 0; j < disciplinas.length; j++) {
             var dj = disciplinas[j];
+            for (var k2 = 0; k2 < dj.grupos.length; k2++)
+                if (!porGrupo[dj.grupos[k2]])
+                    erro(numLinhaDe[dj.id], 'grupo não declarado em [Grupos]: ' + dj.grupos[k2]);
             for (var k = 0; k < dj.pre.length; k++) {
                 var pr = porId[dj.pre[k]];
                 if (!pr) erro(numLinhaDe[dj.id], 'pré-requisito desconhecido: ' + dj.pre[k]);
@@ -114,7 +145,7 @@ var Curriculo = (function () {
                     erro(numLinhaDe[dj.id], 'o pré-requisito ' + pr.id + ' precisa estar numa fase anterior à ' + dj.fase);
             }
         }
-        return {disciplinas: disciplinas, fases: fases, erros: erros};
+        return {disciplinas: disciplinas, fases: fases, grupos: grupos, erros: erros};
     }
 
     /*
@@ -189,7 +220,7 @@ var Curriculo = (function () {
             erros: [],
             dados: {largura: grade.largura, altura: grade.altura,
                     caixa: [GRADE.caixa, GRADE.caixa - GRADE.margemTopo],
-                    disciplinas: disciplinas, linhas: rotas.linhas}
+                    grupos: lido.grupos, disciplinas: disciplinas, linhas: rotas.linhas}
         };
     }
 

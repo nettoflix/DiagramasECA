@@ -1,0 +1,134 @@
+# Psicologia (curso 319), currículo 20101 — Formação de Psicólogo
+# (habilitação "Bacharelado em Psicologia"), transcrito de
+# CURRICULO_PSICOLOGIA_20101.pdf (CAGR/SeTIC, 23/09/2026). Não oficial:
+# confira sempre no CAGR.
+#
+# Formato: o mesmo de files/disciplinas.txt (ver o cabeçalho daquele
+# arquivo). Não há grupos temáticos neste curso.
+#
+# Como o PDF foi lido:
+#   - Fases 1 a 6: núcleo comum (listado nas páginas da Licenciatura). As
+#     linhas da grade seguem as cadeias de pré-requisito, para as ligações
+#     ficarem retas (ex.: Prática e Pesquisa Orientada I a VI na linha 2).
+#   - Fases 7 a 10: núcleo profissionalizante do bacharelado. O aluno cursa
+#     2 das 4 ênfases (A a D): Fundamentação I e Estágio I da 1ª ênfase na
+#     7ª fase, os II na 8ª, e o mesmo para a 2ª ênfase na 9ª e 10ª. As
+#     quatro aparecem para marcar as que foram cursadas; cada ênfase ocupa
+#     as mesmas linhas da grade em todas as fases (A nas linhas 1-2, B nas
+#     3-4, C nas 5-6, D nas 7-8). Por isso o total de horas obrigatórias
+#     mostrado conta as quatro ênfases, não só as duas cursadas.
+#   - Só a coluna "Pré-Requisito" vira "pre:"; "Equivalentes" é ignorada.
+#   - Pré-requisitos transcritos como estão no PDF, inclusive os da 2ª
+#     ênfase na 10ª fase, que apontam para as disciplinas da 1ª ênfase
+#     (ex.: PSI7003 exige PSI7701, e não PSI7901).
+#   - PSI7018 exige "PSI7008" no PDF, disciplina que não aparece nele;
+#     aqui ficou PSI7808 (Seminários Integrados I), a anterior da sequência.
+#   - PSI7710 (Psicologia Institucional) aparece só na lista da 7ª fase
+#     das páginas da Licenciatura; foi mantida. PSI7508 e PSI7609 ficaram
+#     de fora: o PDF diz que são obrigatórias só para a Licenciatura.
+#   - PSI7705, PSI7805 e os Projetos Orientados I e II (TCC) são citados
+#     nos textos das fases, mas não estão listados no PDF; ficaram de fora.
+#   - Disciplinas complementares: no mínimo 450 h/a do núcleo comum (só
+#     para Formação de Psicólogo) e 270 h/a do núcleo profissionalizante,
+#     representadas por uma caixa cada, como optativas.
+
+[Fase 1]
+PSI7101 | Psicologia: Ciência e Profissão                  | linha: 1 | ha: 54
+PSI7103 | Prática e Pesquisa Orientada I                   | linha: 2 | ha: 72
+PSI7102 | História da Psicologia                           | linha: 3 | ha: 72
+PSI7202 | Processos Psicológicos Básicos                   | linha: 4 | ha: 54
+MOR7104 | Processos Biopsicológicos I: Neuroanatomia e Sistemas Orgânicos | linha: 5 | ha: 72
+ANT7101 | Introdução à Antropologia                        | linha: 6 | ha: 108
+FIL5791 | Epistemologia das Ciências Humanas               | linha: 7 | ha: 72
+
+[Fase 2]
+PSI7201 | Desenvolvimento Humano e Aprendizagem            | linha: 1 | ha: 72 | pre: PSI7101, PSI7102
+PSI7203 | Prática e Pesquisa Orientada II                  | linha: 2 | ha: 72
+PSI7305 | Psicologia Comportamental                        | linha: 3 | ha: 72 | pre: PSI7102
+PSI7204 | Psicologia e Atenção à Saúde I                   | linha: 4 | ha: 36
+CFS7106 | Processos Biopsicológicos II: Fisiologia Humana  | linha: 5 | ha: 72
+PSI7205 | Neuropsicologia                                  | linha: 6 | ha: 54
+SPO5129 | Sociologia Geral B                               | linha: 7 | ha: 72
+
+[Fase 3]
+PSI7301 | Processos Psicológicos na Infância               | linha: 1 | ha: 54 | pre: PSI7201
+PSI7303 | Prática e Pesquisa Orientada III: Pesquisa em Psicologia | linha: 2 | ha: 72 | pre: PSI7203
+PSI7302 | Psicanálise                                      | linha: 3 | ha: 72 | pre: PSI7102
+PSI7304 | Psicologia e Atenção à Saúde II                  | linha: 4 | ha: 36 | pre: PSI7204
+BEG7105 | Processos Biopsicológicos III: Genética Humana   | linha: 5 | ha: 36
+PSI7706 | Ética e Legislação Profissional em Psicologia    | linha: 6 | ha: 54 | pre: PSI7102
+PSI7306 | Políticas Públicas, Direitos Humanos e Práticas Psicossociais | linha: 7 | ha: 72
+PSI7606 | Psicologia e Pessoas com Deficiência             | linha: 8 | ha: 72
+
+[Fase 4]
+PSI7401 | Processos Psicológicos na Adolescência e Juventude | linha: 1 | ha: 54 | pre: PSI7301
+PSI7403 | Prática e Pesquisa Orientada IV: Pesquisa em Psicologia | linha: 2 | ha: 72 | pre: PSI7303
+PSI7404 | Psicologia de Base Fenomenológica                | linha: 3 | ha: 72 | pre: PSI7102
+PSI7402 | Psicometria                                      | linha: 4 | ha: 72 | pre: PSI7103, PSI7203
+PSI7405 | Psicologia Social I                              | linha: 5 | ha: 72
+PSI7406 | Psicologia Histórico-Cultural                    | linha: 6 | ha: 72 | pre: PSI7102
+PSI7407 | Estatística Aplicada à Psicologia                | linha: 7 | ha: 36
+
+[Fase 5]
+PSI7503 | Prática e Pesquisa Orientada V: Pesquisa em Psicologia | linha: 2 | ha: 72 | pre: PSI7403
+PSI7506 | Psicologia e Pensamento Sistêmico                | linha: 3 | ha: 72 | pre: PSI7102
+PSI7507 | Psicopatologia I                                 | linha: 4 | ha: 72 | pre: PSI7304
+PSI7505 | Psicologia Social II                             | linha: 5 | ha: 72 | pre: PSI7405
+PSI7504 | Psicologia do Trabalho                           | linha: 6 | ha: 72
+PSI7502 | Avaliação Psicológica                            | linha: 7 | ha: 72 | pre: PSI7402
+
+[Fase 6]
+PSI7601 | Psicologia e Processos Educacionais              | linha: 1 | ha: 72 | pre: PSI7401
+PSI7603 | Prática e Pesquisa Orientada VI: Prática Clínica e de Saúde | linha: 2 | ha: 72 | pre: PSI7503
+PSI7605 | Teoria e Técnica dos Processos Grupais           | linha: 3 | ha: 54
+PSI7607 | Psicopatologia II                                | linha: 4 | ha: 54 | pre: PSI7507
+PSI7602 | Método Clínico                                   | linha: 5 | ha: 54 | pre: PSI7304
+PSI7604 | Psicologia das Organizações                      | linha: 6 | ha: 72 | pre: PSI7504
+PSI7610 | Psicologia e Relações Étnico-Raciais             | linha: 7 | ha: 72
+COMP_NC | Disciplinas Complementares do Núcleo Comum       | linha: 9 | ha: 450 | optativa
+
+[Fase 7]
+PSI7701 | Fundamentação da Ênfase I A (1ª ênfase)          | linha: 1 | ha: 72  | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7013 | Estágio Profissionalizante I A (1ª ênfase)       | linha: 2 | ha: 216 | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7702 | Fundamentação da Ênfase I B (1ª ênfase)          | linha: 3 | ha: 72  | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7014 | Estágio Profissionalizante I B (1ª ênfase)       | linha: 4 | ha: 216 | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7703 | Fundamentação da Ênfase I C (1ª ênfase)          | linha: 5 | ha: 72  | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7015 | Estágio Profissionalizante I C (1ª ênfase)       | linha: 6 | ha: 216 | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7704 | Fundamentação da Ênfase I D (1ª ênfase)          | linha: 7 | ha: 72  | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7016 | Estágio Profissionalizante I D (1ª ênfase)       | linha: 8 | ha: 216 | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+PSI7709 | Intervenções em Urgências Psicológicas           | linha: 9 | ha: 36  | pre: PSI7602
+PSI7710 | Psicologia Institucional                         | linha: 10 | ha: 36
+
+[Fase 8]
+PSI7801 | Fundamentação da Ênfase II A (1ª ênfase)         | linha: 1 | ha: 72  | pre: PSI7701
+PSI7023 | Estágio Profissionalizante II A (1ª ênfase)      | linha: 2 | ha: 216 | pre: PSI7013
+PSI7802 | Fundamentação da Ênfase II B (1ª ênfase)         | linha: 3 | ha: 72  | pre: PSI7702
+PSI7024 | Estágio Profissionalizante II B (1ª ênfase)      | linha: 4 | ha: 216 | pre: PSI7014
+PSI7803 | Fundamentação da Ênfase II C (1ª ênfase)         | linha: 5 | ha: 72  | pre: PSI7703
+PSI7025 | Estágio Profissionalizante II C (1ª ênfase)      | linha: 6 | ha: 216 | pre: PSI7015
+PSI7804 | Fundamentação da Ênfase II D (1ª ênfase)         | linha: 7 | ha: 72  | pre: PSI7704
+PSI7026 | Estágio Profissionalizante II D (1ª ênfase)      | linha: 8 | ha: 216 | pre: PSI7016
+PSI7808 | Seminários Integrados I: Introdução ao Campo     | linha: 9 | ha: 36  | pre: PSI7601, PSI7602, PSI7603, PSI7604, PSI7605, PSI7606, PSI7607
+
+[Fase 9]
+PSI7901 | Fundamentação da Ênfase I A (2ª ênfase)          | linha: 1 | ha: 72  | pre: PSI7602, PSI7603, PSI7605
+PSI7033 | Estágio Profissionalizante I A (2ª ênfase)       | linha: 2 | ha: 216
+PSI7902 | Fundamentação da Ênfase I B (2ª ênfase)          | linha: 3 | ha: 72  | pre: PSI7405, PSI7502, PSI7504, PSI7604, PSI7605
+PSI7034 | Estágio Profissionalizante I B (2ª ênfase)       | linha: 4 | ha: 216
+PSI7903 | Fundamentação da Ênfase I C (2ª ênfase)          | linha: 5 | ha: 72  | pre: PSI7201, PSI7401, PSI7406, PSI7601, PSI7605
+PSI7035 | Estágio Profissionalizante I C (2ª ênfase)       | linha: 6 | ha: 216 | pre: PSI7601
+PSI7904 | Fundamentação da Ênfase I D (2ª ênfase)          | linha: 7 | ha: 72  | pre: PSI7306, PSI7505, PSI7605
+PSI7036 | Estágio Profissionalizante I D (2ª ênfase)       | linha: 8 | ha: 216
+PSI7910 | Gênero, Corpos e Sexualidades                    | linha: 9 | ha: 54
+
+[Fase 10]
+PSI7003 | Fundamentação da Ênfase II A (2ª ênfase)         | linha: 1 | ha: 72  | pre: PSI7701
+PSI7043 | Estágio Profissionalizante II A (2ª ênfase)      | linha: 2 | ha: 216 | pre: PSI7013
+PSI7004 | Fundamentação da Ênfase II B (2ª ênfase)         | linha: 3 | ha: 72  | pre: PSI7702
+PSI7044 | Estágio Profissionalizante II B (2ª ênfase)      | linha: 4 | ha: 216 | pre: PSI7014
+PSI7005 | Fundamentação da Ênfase II C (2ª ênfase)         | linha: 5 | ha: 72  | pre: PSI7703
+PSI7045 | Estágio Profissionalizante II C (2ª ênfase)      | linha: 6 | ha: 216 | pre: PSI7015
+PSI7006 | Fundamentação da Ênfase II D (2ª ênfase)         | linha: 7 | ha: 72  | pre: PSI7704
+PSI7046 | Estágio Profissionalizante II D (2ª ênfase)      | linha: 8 | ha: 216 | pre: PSI7016
+PSI7018 | Seminários Integrados II: Sistematização do Campo | linha: 9 | ha: 36 | pre: PSI7808
+COMP_NP | Disciplinas Complementares do Núcleo Profissionalizante | linha: 10 | ha: 270 | optativa
