@@ -1,10 +1,14 @@
-# Fluxograma ECA
+# Fluxograma de Currículos
 
-Fluxograma interativo de currículos da UFSC. O padrão é o de
-**Engenharia de Controle e Automação** (currículo 20241), e a lista
-*Currículo* no topo da página traz outros cursos e currículos. Você marca as disciplinas que já cursou, e ele mostra o
-que está liberado para cursar, o que ainda está bloqueado e por quê,
-incluindo as exigências de carga horária.
+Fluxograma interativo dos currículos dos cursos de graduação da UFSC. A
+lista *Currículo*, no topo da página, traz os cursos disponíveis; o padrão
+é **Engenharia de Controle e Automação** (currículo 20241). Você marca as
+disciplinas que já cursou, e ele mostra o que está liberado para cursar, o
+que ainda está bloqueado e por quê, incluindo as exigências de carga
+horária.
+
+**Seu curso não está na lista?** Monte o currículo no editor e mande para
+a lista: veja [Mandar o currículo do seu curso](#mandar-o-currículo-do-seu-curso).
 
 **Use no navegador (PC ou celular):**
 <https://nettoflix.github.io/DiagramasECA/web/>
@@ -64,6 +68,43 @@ O progresso fica salvo **só no seu navegador**: sem login e sem servidor.
 
 ![Modo Grupo: disciplinas coloridas por área](docs/grupo.png)
 
+## Mandar o currículo do seu curso
+
+Não precisa programar nem instalar nada:
+
+1. No fluxograma, abra a lista *Currículo* e escolha **+ Meu curso não está
+   na lista…**. Abre o editor, com um currículo vazio.
+2. Com o PDF do currículo do curso no CAGR ao lado, cadastre fase por fase:
+   código, nome, horas-aula, se é obrigatória ou optativa, e os
+   pré-requisitos (escolhidos numa lista). O editor aponta os erros na hora,
+   e **Ver no fluxograma** mostra como está ficando. Nas *Observações*,
+   anote o curso, o currículo e o que precisou ser interpretado do PDF.
+3. Clique em **Enviar para a lista…**, informe o curso e o número do
+   currículo e baixe o arquivo. Depois mande o arquivo por um dos dois
+   caminhos:
+   - **issue no GitHub**: abre o formulário já preenchido; é só arrastar o
+     arquivo para o campo *Arquivo*;
+   - **e-mail** para otacilionetto.ufsc@gmail.com: o assunto e o texto já
+     vêm prontos; é só anexar o arquivo.
+
+Enquanto o currículo não entra na lista, você já pode usá-lo: *Carregar
+currículo…* abre o arquivo no seu navegador.
+
+### Para quem mantém a lista
+
+1. Salve o `.txt` recebido em `files/curriculos/` (o editor já sugere o
+   nome no padrão `curso_curriculo.txt`).
+2. Acrescente uma linha em `files/curriculos/lista.txt`:
+   `arquivo.txt | Nome exibido (ano)`.
+3. Confira (opcional; o GitHub confere de novo a cada push):
+
+   ```bash
+   node .github/verificar_curriculos.js
+   ```
+
+4. Faça commit e push e feche a issue. Em poucos minutos o currículo
+   aparece na lista para todo mundo.
+
 ## Como o projeto está organizado
 
 O repositório tem duas versões do mesmo fluxograma, que usam os mesmos
@@ -73,6 +114,7 @@ dados:
 |---|---|
 | `web/` | **Versão web**, a que os colegas usam. `index.html` com o currículo padrão embutido, a lista *Currículo* (lida de `files/curriculos/lista.txt`) e o botão *Carregar currículo…*, que monta o fluxograma a partir de qualquer `disciplinas.txt` (com `curriculo.js`). Veja [`web/README.md`](web/README.md). |
 | `files/curriculos/` | Os currículos da lista da versão web (um `.txt` cada) e `lista.txt`, com os que aparecem e o nome exibido. |
+| `.github/` | Formulário de issue para mandar um currículo e a verificação automática (`verificar_curriculos.js`, rodada pelo GitHub Actions a cada push que mexe nos currículos). |
 | `*.cpp`, `*.h`, `Diagramas2.pro` | **Aplicativo desktop** em Qt 5 (C++), a versão original. |
 | `files/disciplinas.txt` | **Fonte única dos dados do curso**, organizada por fase: disciplinas, posição na grade, pré-requisitos, horas-aula e grupos. O formato está descrito no cabeçalho do próprio arquivo. O app lê o arquivo ao abrir, e `disciplinas.py` o lê para os scripts Python. |
 | `web/roteador.js` | **Roteador das linhas** entre as disciplinas (roteamento ortogonal otimizado por simulated annealing). É o mesmo arquivo na versão web e no app Qt, que o executa com o `QJSEngine`. |

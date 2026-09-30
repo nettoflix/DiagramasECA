@@ -1,4 +1,4 @@
-# Fluxograma ECA — versão web
+# Fluxograma de Currículos — versão web
 
 Feito por **Nettoflix** — <https://nettoflix.github.io/DiagramasECA/web/>
 
@@ -116,6 +116,13 @@ fazer a própria versão.
   topo (código repetido, pré-requisito numa fase igual ou posterior, linha
   ocupada...). O editor confere o resultado também com `Curriculo.ler()`,
   o mesmo leitor do botão *Carregar currículo…*.
+- **Enviar para a lista…** pede o curso e o número do currículo, baixa o
+  arquivo com o nome no padrão da pasta (`curso_curriculo.txt`) e abre uma
+  issue no GitHub já preenchida (formulário em
+  `../.github/ISSUE_TEMPLATE/novo-curriculo.yml`) ou um e-mail pronto
+  (endereço em `EMAIL_CONTATO`, no início do script do editor).
+- **+ Meu curso não está na lista…**, no fim da lista *Currículo* do
+  fluxograma, abre o editor com um currículo vazio (`editor.html?novo`).
 - **Baixar .txt** salva o arquivo; **Ver no fluxograma** mostra o
   currículo na página (fica guardado só no navegador, como um arquivo
   carregado). Enquanto isso, o trabalho fica num rascunho no navegador.

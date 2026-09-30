@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Mandar o currículo por e-mail
+    url: mailto:otacilionetto.ufsc@gmail.com?subject=Curr%C3%ADculo%20para%20o%20fluxograma
+    about: Sem conta no GitHub? Mande o arquivo .txt do editor por e-mail.

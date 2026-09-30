@@ -941,8 +941,14 @@ function iniciar(DADOS, extra) {
   const escolha = document.getElementById('curriculo');
   escolha.replaceChildren(...extra.lista.map(c => new Option(c.nome, 'lista:' + c.arquivo)));
   if (extra.salvoNome) escolha.append(new Option(`Arquivo carregado: ${extra.salvoNome}`, 'carregado'));
+  escolha.append(new Option('+ Meu curso não está na lista…', 'novo'));
   escolha.value = extra.escolha;
   escolha.addEventListener('change', () => {
+    if (escolha.value === 'novo') {
+      escolha.value = extra.escolha;  // ao voltar do editor, a lista mostra o currículo atual
+      location.href = 'editor.html?novo';
+      return;
+    }
     gravar(CHAVE_SELECAO, escolha.value);
     location.reload();
   });

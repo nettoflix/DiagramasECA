@@ -1,0 +1,46 @@
+name: Novo currículo para a lista
+description: Mande o currículo do seu curso para entrar na lista do fluxograma.
+title: "Currículo: "
+labels: ["novo currículo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por mandar o currículo! Monte o arquivo no [editor](https://nettoflix.github.io/DiagramasECA/web/editor.html) (no fluxograma: lista **Currículo** → **+ Meu curso não está na lista…**) e use **Enviar para a lista…**: ele baixa o `.txt` e abre esta página com o curso e o currículo preenchidos.
+  - type: input
+    id: curso
+    attributes:
+      label: Curso
+      placeholder: "ex.: Engenharia Elétrica"
+    validations:
+      required: true
+  - type: input
+    id: curriculo
+    attributes:
+      label: Currículo
+      description: O número do currículo no CAGR.
+      placeholder: "ex.: 20241"
+    validations:
+      required: true
+  - type: textarea
+    id: arquivo
+    attributes:
+      label: Arquivo
+      description: Arraste para cá o arquivo .txt baixado pelo editor.
+    validations:
+      required: true
+  - type: dropdown
+    id: conferido
+    attributes:
+      label: Conferido com o PDF do currículo no CAGR?
+      options:
+        - Sim, disciplinas e pré-requisitos
+        - Em parte
+        - Não
+    validations:
+      required: true
+  - type: textarea
+    id: observacoes
+    attributes:
+      label: Observações
+      description: Algo que ficou de fora ou foi interpretado do PDF (optativas, disciplinas sem fase, pré-requisitos com "ou"...).

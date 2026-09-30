@@ -220,6 +220,39 @@ pre#texto {
 }
 .msg.visivel { opacity: 1; }
 
+a.botao {
+  display: inline-flex;
+  align-items: center;
+  font: inherit;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 4px 12px;
+  min-height: 30px;
+  box-sizing: border-box;
+  text-decoration: none;
+  cursor: pointer;
+}
+a.botao:hover { border-color: var(--suave); }
+a.botao.principal { background: var(--foco); border-color: var(--foco); color: var(--sobre-foco); }
+a.botao[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
+dialog {
+  width: min(560px, calc(100vw - 32px));
+  box-sizing: border-box;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.25);
+}
+dialog::backdrop { background: rgb(0 0 0 / 0.35); }
+dialog h2 { margin-bottom: 4px; }
+.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
+.passos li > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.fim { display: flex; justify-content: flex-end; margin-top: 14px; }
+
 @media (max-width: 640px) {
   .acoes { margin-left: 0; }
   .w-cod, .w-nome, .w-arq, .w-gnome, .w-gid { flex: 1 1 100%; }
@@ -236,6 +269,7 @@ pre#texto {
     <input id="arquivo" type="file" accept=".txt,text/plain" hidden>
     <button id="novo" type="button" class="leve" title="Começar um currículo vazio">Novo</button>
     <button id="ver" type="button" title="Mostrar este currículo no fluxograma (fica guardado só neste navegador)">Ver no fluxograma</button>
+    <button id="enviar" type="button" title="Mandar este currículo para entrar na lista do fluxograma, para todo mundo">Enviar para a lista…</button>
     <button id="baixar" type="button" class="principal" title="Salvar o currículo num arquivo .txt">Baixar .txt</button>
   </div>
   <div class="estado" id="estado" role="status" aria-live="polite"></div>
@@ -258,7 +292,8 @@ pre#texto {
       </label>
     </div>
     <label class="campo" style="margin-top: 8px">Observações (vão no topo do arquivo: curso, currículo, de onde veio, decisões tomadas…)
-      <textarea id="cabecalho" data-k="cab" rows="5" spellcheck="true"></textarea>
+      <textarea id="cabecalho" data-k="cab" rows="5" spellcheck="true"
+                placeholder="Exemplo:&#10;Engenharia Elétrica (curso 235), currículo 20241, transcrito do PDF do currículo no CAGR em 30/09/2026. Não oficial: confira sempre no CAGR.&#10;&#10;Decisões: a disciplina X não tem fase no PDF; ficou na 10ª."></textarea>
     </label>
   </section>
 
@@ -282,6 +317,34 @@ pre#texto {
   </section>
 </main>
 
+<dialog id="dlg-enviar" aria-labelledby="dlg-titulo">
+  <form method="dialog">
+    <h2 id="dlg-titulo">Enviar para a lista do fluxograma</h2>
+    <p class="dica">Depois de conferido, o currículo entra na lista <b>Currículo</b> do fluxograma, para todo mundo. Antes de enviar, confira as disciplinas e os pré-requisitos com o PDF do currículo no CAGR.</p>
+    <div class="campos" style="margin-top: 10px">
+      <label class="campo w-nome">Curso
+        <input id="env-curso" placeholder="ex.: Engenharia Elétrica" autocomplete="off">
+      </label>
+      <label class="campo w-cod">Currículo
+        <input id="env-curriculo" placeholder="ex.: 20241" inputmode="numeric" autocomplete="off">
+      </label>
+    </div>
+    <ol class="passos">
+      <li>Baixe o arquivo:
+        <div><a id="env-baixar" class="botao principal" href="#">Baixar</a></div>
+      </li>
+      <li>Mande o arquivo por um destes caminhos:
+        <div>
+          <a id="env-github" class="botao" target="_blank" rel="noopener">Abrir uma issue no GitHub</a>
+          <a id="env-email" class="botao">Enviar por e-mail</a>
+        </div>
+        <p class="dica">Na issue, arraste o arquivo baixado para o campo “Arquivo”. No e-mail, o assunto e o texto já vêm prontos: é só anexar o arquivo. O endereço é <b id="env-endereco"></b>.</p>
+      </li>
+    </ol>
+    <div class="fim"><button value="fechar">Fechar</button></div>
+  </form>
+</dialog>
+
 <div class="msg" id="msg" role="status" aria-live="polite"></div>
 
 <script src="curriculo.js"></script>
@@ -290,6 +353,9 @@ const CHAVE_CURRICULO = 'fluxograma-eca:curriculo:v1';        // as mesmas de in
 const CHAVE_SELECAO = 'fluxograma-eca:selecao:v1';
 const CHAVE_ABRIR = 'fluxograma-eca:editor-abrir:v1';         // posta pelo botão "Editar currículo" de index.html
 const CHAVE_RASCUNHO = 'fluxograma-eca:editor-rascunho:v1';
+// para onde vão os currículos enviados para a lista (botão "Enviar para a lista")
+const ISSUES = 'https://github.com/nettoflix/DiagramasECA/issues/new';
+const EMAIL_CONTATO = 'otacilionetto.ufsc@gmail.com';
 const RE_CODIGO = /^[A-Za-z0-9_.-]+$/;
 const RE_GRUPO = /^[A-Za-z0-9_-]+$/;
 
@@ -731,10 +797,7 @@ $('novo').addEventListener('click', () => {
   alterado = false;
   render();
 });
-$('baixar').addEventListener('click', () => {
-  const v = validar();
-  if (v.total && !confirm(`O currículo ainda tem ${v.total} problema(s). O fluxograma só abre o arquivo depois de corrigidos. Baixar mesmo assim?`)) return;
-  let nome = est.nome.trim() || 'curriculo.txt';
+function baixarArquivo(nome) {
   if (!/\.txt$/i.test(nome)) nome += '.txt';
   const a = h('a', { href: URL.createObjectURL(new Blob([paraTexto()], { type: 'text/plain;charset=utf-8' })), download: nome });
   document.body.append(a);
@@ -743,6 +806,55 @@ $('baixar').addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   alterado = false;
   atualizar();
+}
+$('baixar').addEventListener('click', () => {
+  const v = validar();
+  if (v.total && !confirm(`O currículo ainda tem ${v.total} problema(s). O fluxograma só abre o arquivo depois de corrigidos. Baixar mesmo assim?`)) return;
+  baixarArquivo(est.nome.trim() || 'curriculo.txt');
+});
+
+// ---------- enviar para a lista ----------
+// o nome do arquivo segue o padrão de files/curriculos/: curso_curriculo.txt
+const semAcento = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const nomeEnvio = () => {
+  const curso = semAcento($('env-curso').value).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  const curriculo = $('env-curriculo').value.replace(/\D/g, '');
+  return curso && curriculo ? `${curso}_${curriculo}.txt` : '';
+};
+function atualizarEnvio() {
+  const curso = $('env-curso').value.trim(), curriculo = $('env-curriculo').value.trim(), nome = nomeEnvio();
+  est.envio = { curso, curriculo };
+  salvarRascunho();
+  const titulo = `Currículo: ${curso} (${curriculo})`;
+  const corpo = `Olá,\n\nSegue em anexo o arquivo ${nome}, com o currículo ${curriculo} de ${curso}, ` +
+                `montado no editor do fluxograma para entrar na lista.\n\n` +
+                `Conferido com o PDF do currículo no CAGR: (sim/não)\nObservações:\n\n`;
+  $('env-baixar').textContent = nome ? `Baixar ${nome}` : 'Baixar (preencha curso e currículo)';
+  $('env-github').href = ISSUES + '?' + new URLSearchParams({ template: 'novo-curriculo.yml', title: titulo, curso, curriculo });
+  $('env-email').href = `mailto:${EMAIL_CONTATO}?subject=${encodeURIComponent(titulo)}&body=${encodeURIComponent(corpo)}`;
+  for (const id of ['env-baixar', 'env-github', 'env-email']) $(id).setAttribute('aria-disabled', String(!nome));
+}
+$('env-endereco').textContent = EMAIL_CONTATO;
+$('env-curso').addEventListener('input', atualizarEnvio);
+$('env-curriculo').addEventListener('input', atualizarEnvio);
+$('env-baixar').addEventListener('click', e => {
+  e.preventDefault();
+  if (nomeEnvio()) baixarArquivo(nomeEnvio());
+});
+$('enviar').addEventListener('click', () => {
+  if (validar().total) {
+    mensagem('Corrija os problemas listados no topo antes de enviar.');
+    $('problemas').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  // chute inicial: o que já foi digitado, o topo das observações ou o nome do arquivo
+  const envio = est.envio || {};
+  const cab = /^(.+?)\s*(?:\(curso \d+\))?,\s*currículo (\d+)/i.exec((est.cabecalho || '').split('\n')[0]);
+  const doArquivo = /_(\d{5})\.txt$/.exec(est.nome);
+  $('env-curso').value = envio.curso || (cab ? cab[1].trim() : '');
+  $('env-curriculo').value = envio.curriculo || (cab ? cab[2] : doArquivo ? doArquivo[1] : '');
+  atualizarEnvio();
+  $('dlg-enviar').showModal();
 });
 $('ver').addEventListener('click', () => {
   const v = validar();
@@ -764,6 +876,20 @@ $('ver').addEventListener('click', () => {
 // ---------- início ----------
 // ordem: o que o fluxograma mandou abrir, o rascunho, ou um currículo vazio
 (() => {
+  // "Meu curso não está na lista" no fluxograma: começa um currículo vazio
+  if (new URLSearchParams(location.search).has('novo')) {
+    history.replaceState(null, '', location.pathname);
+    let rascunho = null;
+    try { rascunho = JSON.parse(localStorage.getItem(CHAVE_RASCUNHO) || 'null'); } catch (e) {}
+    if (!(rascunho && rascunho.alterado &&
+          !confirm(`Há um rascunho com alterações ainda não baixadas (${rascunho.est.nome}).\n\n` +
+                   'OK: começar um currículo novo e descartar o rascunho.\nCancelar: continuar no rascunho.'))) {
+      est = vazio();
+      render();
+      mensagem('Currículo novo: preencha as fases e as disciplinas; os problemas aparecem no topo. Quando terminar, use “Enviar para a lista…”.');
+      return;
+    }
+  }
   let abrir = null, rascunho = null;
   try { abrir = JSON.parse(localStorage.getItem(CHAVE_ABRIR) || 'null'); localStorage.removeItem(CHAVE_ABRIR); } catch (e) {}
   try { rascunho = JSON.parse(localStorage.getItem(CHAVE_RASCUNHO) || 'null'); } catch (e) {}
