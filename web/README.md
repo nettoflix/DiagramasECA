@@ -2,10 +2,14 @@
 
 Feito por **Nettoflix** — <https://nettoflix.github.io/DiagramasECA/web/>
 
-`index.html` é a versão web do app, com os dados do currículo 20241
-embutidos. Usa também `roteador.js` e `curriculo.js` (da mesma pasta), e
-nenhuma outra dependência além das fontes do Google Fonts. Abre em qualquer
-navegador, inclusive no celular, e também direto do disco (`file://`).
+`index.html` é a versão web do app. A lista **Currículo**, no topo, mostra
+os currículos de `../files/curriculos/lista.txt`, e o padrão é Engenharia de
+Controle e Automação 2024, que também vem embutido na página. Usa também
+`roteador.js` e `curriculo.js` (da mesma pasta), e nenhuma outra dependência
+além das fontes do Google Fonts. Abre em qualquer navegador, inclusive no
+celular. Aberta direto do disco (`file://`), o navegador não deixa a página
+ler outros arquivos, então só aparece o currículo embutido (mais o que for
+carregado pelo botão).
 
 | Arquivo | O que é |
 |---|---|
@@ -50,6 +54,30 @@ navegador, inclusive no celular, e também direto do disco (`file://`).
 Qualquer hospedagem de arquivos estáticos serve (Netlify, Cloudflare
 Pages...), já que é só um arquivo HTML.
 
+## Escolher o currículo
+
+A lista vem de `../files/curriculos/lista.txt`, uma linha por currículo:
+
+```
+engenharia_de_controle_e_automacao_20241.txt | Engenharia de Controle e Automação (2024)
+ciencias_da_computacao_20071.txt             | Ciências da Computação (2007)
+```
+
+O primeiro é o padrão. Para acrescentar um currículo, coloque o `.txt` em
+`files/curriculos/` e uma linha na lista; depois do push, ele aparece para
+todo mundo.
+
+- A página baixa a lista e o currículo escolhido a cada abertura, então
+  uma correção no arquivo aparece na hora.
+- As linhas de cada currículo são calculadas na primeira vez (alguns
+  segundos, com o aviso "Calculando as linhas…") e ficam guardadas no
+  navegador. Nas próximas vezes só são recalculadas se o arquivo ou o
+  roteador mudarem. O currículo igual a `../files/disciplinas.txt` usa as
+  linhas embutidas por `gerar_dados.py` e nunca precisa de cálculo.
+- Sem rede, a página usa a última versão vista de cada currículo.
+- A escolha fica guardada no navegador, e o progresso é separado por
+  currículo. O ECA 2024 mantém o progresso salvo antes da lista existir.
+
 ## Carregar outro currículo
 
 O botão **Carregar currículo…** abre um arquivo no formato de
@@ -62,13 +90,15 @@ O botão **Carregar currículo…** abre um arquivo no formato de
    linhas…"). O resultado também fica guardado, e as próximas aberturas
    são instantâneas.
 
-**Currículo padrão** volta aos dados embutidos. O progresso marcado é o
-mesmo nos dois casos: fica salvo pelo código de cada disciplina.
+O arquivo aparece na lista como "Arquivo carregado: nome.txt" (só neste
+navegador), e dá para voltar a ele depois de escolher outro currículo.
+Carregar outro arquivo substitui o anterior. Um currículo montado no editor
+e aberto com **Ver no fluxograma** entra no mesmo lugar.
 
 ## Editar um currículo (sem mexer no texto)
 
 **Editar currículo** abre `editor.html` com o currículo que está na tela
-(o padrão ou o carregado). O editor também abre qualquer `.txt` pelo botão
+(um da lista ou o carregado). O editor também abre qualquer `.txt` pelo botão
 **Abrir arquivo…**, ou começa do zero com **Novo**. É pensado para a
 coordenação e a secretaria manterem o arquivo oficial, e para o estudante
 fazer a própria versão.

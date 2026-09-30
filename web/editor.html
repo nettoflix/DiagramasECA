@@ -286,7 +286,8 @@ pre#texto {
 
 <script src="curriculo.js"></script>
 <script>
-const CHAVE_CURRICULO = 'fluxograma-eca:curriculo:v1';        // a mesma de index.html
+const CHAVE_CURRICULO = 'fluxograma-eca:curriculo:v1';        // as mesmas de index.html
+const CHAVE_SELECAO = 'fluxograma-eca:selecao:v1';
 const CHAVE_ABRIR = 'fluxograma-eca:editor-abrir:v1';         // posta pelo botão "Editar currículo" de index.html
 const CHAVE_RASCUNHO = 'fluxograma-eca:editor-rascunho:v1';
 const RE_CODIGO = /^[A-Za-z0-9_.-]+$/;
@@ -752,6 +753,7 @@ $('ver').addEventListener('click', () => {
   }
   try {
     localStorage.setItem(CHAVE_CURRICULO, JSON.stringify({ nome: est.nome.trim() || 'curriculo.txt', texto: paraTexto() }));
+    localStorage.setItem(CHAVE_SELECAO, JSON.stringify('carregado'));
   } catch (e) {
     mensagem('Não deu para guardar o currículo no navegador (armazenamento indisponível).');
     return;

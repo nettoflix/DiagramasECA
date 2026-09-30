@@ -1,7 +1,8 @@
 # Fluxograma ECA
 
-Fluxograma interativo do curso de **Engenharia de Controle e Automação**
-(currículo 20241). Você marca as disciplinas que já cursou, e ele mostra o
+Fluxograma interativo de currículos da UFSC. O padrão é o de
+**Engenharia de Controle e Automação** (currículo 20241), e a lista
+*Currículo* no topo da página traz outros cursos e currículos. Você marca as disciplinas que já cursou, e ele mostra o
 que está liberado para cursar, o que ainda está bloqueado e por quê,
 incluindo as exigências de carga horária.
 
@@ -11,9 +12,8 @@ incluindo as exigências de carga horária.
 ![Modo Situação: concluídas em verde, disponíveis em azul, bloqueadas em cinza](docs/situacao.png)
 
 > **Aviso:** projeto pessoal e **não oficial**. Os pré-requisitos e as
-> cargas horárias foram conferidos com o currículo 20241 do curso, mas
-> confira sempre no CAGR antes da matrícula. Quem está num currículo mais
-> antigo pode ter pré-requisitos e códigos diferentes.
+> cargas horárias foram transcritos dos currículos publicados no CAGR, mas
+> confira sempre lá antes da matrícula.
 
 ## O que dá para fazer
 
@@ -52,9 +52,12 @@ incluindo as exigências de carga horária.
 
 O progresso fica salvo **só no seu navegador**: sem login e sem servidor.
 
-- **Usar outro currículo.** *Carregar currículo…* abre um arquivo no formato
-  de `files/disciplinas.txt` e monta o fluxograma, com as linhas, no próprio
-  navegador. *Currículo padrão* volta ao 20241.
+- **Escolher o currículo.** A lista *Currículo* traz os currículos de
+  `files/curriculos/lista.txt` (para acrescentar um, coloque o `.txt` na
+  pasta e uma linha na lista). O progresso é separado por currículo.
+- **Usar um arquivo próprio.** *Carregar currículo…* abre um arquivo no
+  formato de `files/disciplinas.txt` e monta o fluxograma, com as linhas, no
+  próprio navegador. Ele fica na lista como "Arquivo carregado".
 - **Editar o currículo sem mexer no texto.** *Editar currículo* abre um
   editor em formulário (fases, disciplinas, horas, pré-requisitos escolhidos
   numa lista, grupos), que aponta os erros na hora e baixa o `.txt` pronto.
@@ -68,7 +71,8 @@ dados:
 
 | Pasta / arquivo | O que é |
 |---|---|
-| `web/` | **Versão web**, a que os colegas usam. `index.html` com os dados embutidos, e o botão *Carregar currículo…* monta o fluxograma a partir de qualquer `disciplinas.txt` (com `curriculo.js`). Veja [`web/README.md`](web/README.md). |
+| `web/` | **Versão web**, a que os colegas usam. `index.html` com o currículo padrão embutido, a lista *Currículo* (lida de `files/curriculos/lista.txt`) e o botão *Carregar currículo…*, que monta o fluxograma a partir de qualquer `disciplinas.txt` (com `curriculo.js`). Veja [`web/README.md`](web/README.md). |
+| `files/curriculos/` | Os currículos da lista da versão web (um `.txt` cada) e `lista.txt`, com os que aparecem e o nome exibido. |
 | `*.cpp`, `*.h`, `Diagramas2.pro` | **Aplicativo desktop** em Qt 5 (C++), a versão original. |
 | `files/disciplinas.txt` | **Fonte única dos dados do curso**, organizada por fase: disciplinas, posição na grade, pré-requisitos, horas-aula e grupos. O formato está descrito no cabeçalho do próprio arquivo. O app lê o arquivo ao abrir, e `disciplinas.py` o lê para os scripts Python. |
 | `web/roteador.js` | **Roteador das linhas** entre as disciplinas (roteamento ortogonal otimizado por simulated annealing). É o mesmo arquivo na versão web e no app Qt, que o executa com o `QJSEngine`. |
@@ -110,6 +114,16 @@ Quando mudar algum pré-requisito, disciplina, carga horária ou grupo:
 
 Se só mudou carga horária, nome ou grupo, as linhas continuam valendo e
 basta o passo 3.
+
+Na versão web, o ECA 2024 da lista vem de
+`files/curriculos/engenharia_de_controle_e_automacao_20241.txt`: mantenha-o
+igual a `files/disciplinas.txt` (as disciplinas; os comentários podem ser
+diferentes). Se os dois divergirem, a página continua certa, mas mostra o
+arquivo da lista e calcula as linhas no navegador de cada estudante na
+primeira visita, em vez de usar as embutidas.
+
+Os outros currículos da lista não precisam de nada disso: basta trocar o
+`.txt` em `files/curriculos/` e fazer push.
 
 ## Aplicativo desktop (Qt)
 

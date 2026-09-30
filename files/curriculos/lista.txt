@@ -1,0 +1,13 @@
+# Currículos que aparecem na lista "Currículo" do fluxograma web.
+#
+# Uma linha por currículo:   arquivo.txt | Nome exibido na lista
+# O arquivo fica nesta pasta (files/curriculos/). O primeiro da lista é o
+# que abre por padrão. Para acrescentar um currículo, coloque o .txt aqui
+# e uma linha nesta lista; para tirar, apague a linha.
+#
+# Linhas vazias e as que começam com # são ignoradas.
+
+engenharia_de_controle_e_automacao_20241.txt | Engenharia de Controle e Automação (2024)
+engenharia_de_controle_e_automacao_19911.txt | Engenharia de Controle e Automação (1991)
+ciencias_da_computacao_20071.txt             | Ciências da Computação (2007)
+psicologia_20101.txt                         | Psicologia (2010)

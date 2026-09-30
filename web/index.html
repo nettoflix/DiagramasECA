@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Fluxograma ECA</title>
+<title>Fluxograma</title>
 <meta name="author" content="Nettoflix">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,12 +130,6 @@ h1 {
   letter-spacing: 0.01em;
   text-wrap: balance;
 }
-h1 small {
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--suave);
-  margin-left: 6px;
-}
 .progresso {
   display: flex;
   align-items: center;
@@ -191,6 +185,22 @@ h1 small {
   color: var(--suave);
 }
 .aviso-curriculo { white-space: nowrap; }
+.escolha { display: inline-flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%; }
+.escolha .rotulo { color: var(--suave); font-size: 13px; }
+.escolha select {
+  font: inherit;
+  font-weight: 600;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  padding: 3px 8px;
+  min-height: 30px;
+  min-width: 0;
+  max-width: 100%;
+  cursor: pointer;
+}
+.escolha select:focus-visible { outline: 2px solid var(--foco); outline-offset: 1px; }
 .credito a {
   color: var(--tinta);
   font-weight: 700;
@@ -235,7 +245,7 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
   font-variant-numeric: tabular-nums;
 }
 .sep { width: 1px; align-self: stretch; background: var(--borda); margin-inline: 4px; }
-#limpar, #carregar, #editar, #padrao { color: var(--suave); }
+#limpar, #carregar, #editar { color: var(--suave); }
 #limpar.confirmar { color: #fff; background: #b8322a; border-color: #b8322a; }
 
 .palco { position: relative; flex: 1; min-height: 0; }
@@ -333,7 +343,6 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
   .fases { order: 5; flex-basis: 100%; padding-bottom: 2px; }
 
   .dica { display: none; }
-  h1 small { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lig, .disc rect.caixa, .trilho span, .msg { transition: none; }
@@ -344,12 +353,15 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
 <body>
 <header class="topo">
   <div class="linha-topo">
-    <h1>Fluxograma ECA <small>Engenharia de Controle e Automação</small></h1>
+    <h1>Fluxograma</h1>
+    <label class="escolha"><span class="rotulo">Currículo</span>
+      <select id="curriculo" title="Escolher o currículo (a lista vem de files/curriculos/lista.txt)"></select>
+    </label>
     <div class="progresso" aria-live="polite">
       <div class="trilho" aria-hidden="true"><span id="barra"></span></div>
       <span><strong id="feitas">0</strong> de <strong id="total">0</strong> concluídas · <strong id="abertas">0</strong> disponíveis · <strong id="horas">0</strong> de <strong id="horas-total">0</strong> h/a obrigatórias</span>
     </div>
-    <p class="credito"><span class="aviso-curriculo" id="aviso-curriculo" title="Os dados seguem o currículo 20241 do curso. Confira sempre no CAGR antes da matrícula.">Currículo 20241 · não oficial, confira no CAGR</span> · feito por <a href="https://www.instagram.com/nettinhoflix/?__d=11" target="_blank" rel="noopener">Nettoflix</a></p>
+    <p class="credito"><span class="aviso-curriculo" id="aviso-curriculo" title="Os dados são transcrições dos currículos publicados no CAGR. Confira sempre lá antes da matrícula.">Não oficial, confira no CAGR</span> · feito por <a href="https://www.instagram.com/nettinhoflix/?__d=11" target="_blank" rel="noopener">Nettoflix</a></p>
   </div>
   <div class="legenda" aria-label="Legenda">
     <span class="rotulo">Colorir por:</span>
@@ -377,7 +389,6 @@ button.ativa { border-color: var(--aberta); color: var(--aberta); }
     <div class="fases" id="fases" role="group" aria-label="Focar numa fase"></div>
     <span class="dica">Clique numa disciplina para marcar · arraste para mover · roda ou pinça para zoom · Shift+clique nas fases: intervalo</span>
     <button id="carregar" type="button" title="Abrir um arquivo disciplinas.txt (o formato está descrito no cabeçalho de files/disciplinas.txt)">Carregar currículo…</button>
-    <button id="padrao" type="button" title="Voltar ao currículo 20241 embutido na página" hidden>Currículo padrão</button>
     <input id="arquivo" type="file" accept=".txt,text/plain" hidden>
     <button id="editar" type="button" title="Abrir o currículo mostrado no editor, para mudar disciplinas, fases e pré-requisitos sem mexer no texto">Editar currículo</button>
     <button id="limpar" type="button">Limpar progresso</button>
@@ -402,12 +413,13 @@ const DADOS = /*DADOS-INICIO*/{"largura":3108,"altura":2033,"caixa":[159,109],"g
 <script src="curriculo.js"></script>
 <script>
 // desenha o fluxograma a partir de DADOS (o embutido acima ou o de um
-// currículo carregado); extra: {nome, texto} do arquivo carregado ou {aviso}
+// currículo escolhido); extra: o que o carregador no fim da página descobriu
+// (escolha, lista, rotulo, nomeArquivo, texto, chaveProgresso, aviso...)
 function iniciar(DADOS, extra) {
   const SVGNS = 'http://www.w3.org/2000/svg';
   // progresso separado por currículo: o padrão mantém a chave original, e cada
   // arquivo carregado tem a sua (pelo nome), para um não apagar o do outro
-  const CHAVE = 'fluxograma-eca:concluidas:v1' + (extra.nome ? ':arquivo:' + extra.nome : '');
+  const CHAVE = 'fluxograma-eca:concluidas:v1' + extra.chaveProgresso;
   const [BW, BH] = DADOS.caixa;
   const mapa = document.getElementById('mapa');
   const gCab = document.getElementById('g-cab');
@@ -923,15 +935,22 @@ function iniciar(DADOS, extra) {
   desenharCaixas(); definirModo(modo); verTudo(false);   // desenha já, com a fonte de reserva
   fontes.then(() => { desenharCaixas(); atualizar(); });  // e refaz a quebra de linha com a fonte certa
 
-  // ---------- currículo carregado de um disciplinas.txt ----------
+  // ---------- escolha do currículo, arquivo carregado e editor ----------
   const btCarregar = document.getElementById('carregar');
-  const btPadrao = document.getElementById('padrao');
   const inArquivo = document.getElementById('arquivo');
-  if (extra.nome) {
+  const escolha = document.getElementById('curriculo');
+  escolha.replaceChildren(...extra.lista.map(c => new Option(c.nome, 'lista:' + c.arquivo)));
+  if (extra.salvoNome) escolha.append(new Option(`Arquivo carregado: ${extra.salvoNome}`, 'carregado'));
+  escolha.value = extra.escolha;
+  escolha.addEventListener('change', () => {
+    gravar(CHAVE_SELECAO, escolha.value);
+    location.reload();
+  });
+  document.title = `Fluxograma · ${extra.rotulo}`;
+  if (extra.carregado) {
     const aviso = document.getElementById('aviso-curriculo');
-    aviso.textContent = `Currículo carregado de ${extra.nome} · não oficial`;
-    aviso.title = 'Dados lidos do arquivo carregado, não do currículo 20241 embutido na página.';
-    btPadrao.hidden = false;
+    aviso.textContent = `Carregado de ${extra.nomeArquivo} · não oficial`;
+    aviso.title = 'Dados lidos do arquivo carregado (ou montado no editor), guardado só neste navegador.';
   }
   if (extra.aviso) mensagem(extra.aviso);
   btCarregar.addEventListener('click', () => inArquivo.click());
@@ -947,65 +966,119 @@ function iniciar(DADOS, extra) {
                (erros.length > 3 ? ` (e mais ${erros.length - 3})` : '') + '.');
       return;
     }
-    try {
-      localStorage.setItem(CHAVE_CURRICULO, JSON.stringify({ nome: arquivo.name, texto }));
-    } catch (e) {
+    if (!gravar(CHAVE_CURRICULO, { nome: arquivo.name, texto })) {
       mensagem('Não deu para guardar o arquivo no navegador (armazenamento indisponível).');
       return;
     }
+    gravar(CHAVE_SELECAO, 'carregado');
     location.reload();
   });
   document.getElementById('editar').addEventListener('click', () => {
     // o editor abre o que estiver aqui (e depois apaga a chave)
-    try {
-      localStorage.setItem(CHAVE_EDITOR_ABRIR, JSON.stringify({ nome: extra.nome || 'disciplinas.txt', texto: extra.texto || DADOS.texto }));
-    } catch (e) {
+    if (!gravar(CHAVE_EDITOR_ABRIR, { nome: extra.nomeArquivo, texto: extra.texto })) {
       mensagem('Não deu para passar o currículo ao editor (armazenamento indisponível).');
       return;
     }
     location.href = 'editor.html';
   });
-  btPadrao.addEventListener('click', () => {
-    try { localStorage.removeItem(CHAVE_CURRICULO); } catch (e) {}
-    location.reload();
-  });
 }
 
-// Currículo: o padrão vem embutido em DADOS (gerado por gerar_dados.py).
-// Um disciplinas.txt carregado pelo botão fica guardado no navegador, junto
-// com os dados calculados para ele (as linhas levam alguns segundos).
-const CHAVE_CURRICULO = 'fluxograma-eca:curriculo:v1';
-const CHAVE_CURRICULO_DADOS = 'fluxograma-eca:curriculo-dados:v1';
-const CHAVE_EDITOR_ABRIR = 'fluxograma-eca:editor-abrir:v1';  // lida por editor.html
+// Currículos: a lista vem de ../files/curriculos/lista.txt ("arquivo.txt |
+// Nome"), e o primeiro é o padrão. Cada currículo é baixado ao abrir, e as
+// linhas calculadas para ele ficam guardadas no navegador (levam alguns
+// segundos); só são recalculadas se o arquivo ou o roteador mudarem. DADOS
+// (embutido por gerar_dados.py) evita o cálculo quando o arquivo é igual ao
+// files/disciplinas.txt, e é o que aparece sem acesso aos arquivos (por
+// exemplo, abrindo index.html direto do disco).
+// Um disciplinas.txt carregado pelo botão ou montado no editor fica guardado
+// no navegador e aparece na lista como "Arquivo carregado".
+const PASTA = '../files/curriculos/';
+const ARQUIVO_PADRAO = 'engenharia_de_controle_e_automacao_20241.txt';  // sem lista: o equivalente a DADOS
+const CHAVE_CURRICULO = 'fluxograma-eca:curriculo:v1';                    // arquivo carregado: {nome, texto}
+const CHAVE_CURRICULO_DADOS = 'fluxograma-eca:curriculo-dados:v1';        // + ':<arquivo>' para os da lista
+const CHAVE_SELECAO = 'fluxograma-eca:selecao:v1';                        // 'lista:<arquivo>' ou 'carregado'
+const CHAVE_LISTA = 'fluxograma-eca:lista:v1';                            // última lista baixada, para usar sem rede
+const CHAVE_EDITOR_ABRIR = 'fluxograma-eca:editor-abrir:v1';              // lida por editor.html
+function lerChave(chave) {
+  try { return JSON.parse(localStorage.getItem(chave) || 'null'); } catch (e) { return null; }
+}
+function gravar(chave, valor) {
+  try { localStorage.setItem(chave, JSON.stringify(valor)); return true; } catch (e) { return false; }
+}
+function lerLista(texto) {
+  return texto.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith('#')).map(l => {
+    const [arquivo, nome] = l.split('|').map(c => c.trim());
+    return { arquivo, nome: nome || arquivo.replace(/\.txt$/i, '') };
+  }).filter(c => /^[^/\\]+\.txt$/i.test(c.arquivo));
+}
+async function baixar(caminho) {
+  const r = await fetch(caminho, { cache: 'no-cache' });  // confere com o servidor: mudanças aparecem na hora
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.text();
+}
+// mesmas disciplinas, posições e grupos (os comentários não importam)
+const essencia = texto => { const l = Curriculo.ler(texto); return JSON.stringify([l.disciplinas, l.grupos]); };
 (async () => {
-  let salvo = null;
-  try { salvo = JSON.parse(localStorage.getItem(CHAVE_CURRICULO) || 'null'); } catch (e) {}
-  if (!salvo) { iniciar(DADOS, {}); return; }
-  let dados = null, aviso = null;
+  let lista = null, aviso = null;
   try {
-    const cache = JSON.parse(localStorage.getItem(CHAVE_CURRICULO_DADOS) || 'null');
-    // dados guardados antes desta versão não têm os grupos: recalcula
-    if (cache && cache.texto === salvo.texto && cache.versao === Roteador.versao && cache.dados.grupos) dados = cache.dados;
-  } catch (e) {}
-  if (!dados) {
-    const msg = document.getElementById('msg');
-    msg.textContent = `Calculando as linhas de ${salvo.nome}…`;
-    msg.classList.add('visivel');
-    await new Promise(r => setTimeout(r, 50));  // deixa a mensagem aparecer antes do cálculo
-    try {
-      const r = Curriculo.gerar(salvo.texto);
-      if (r.erros.length) throw new Error(r.erros.slice(0, 3).join('; '));
-      dados = r.dados;
-      try {
-        localStorage.setItem(CHAVE_CURRICULO_DADOS, JSON.stringify({ texto: salvo.texto, versao: Roteador.versao, dados }));
-      } catch (e) { /* sem cache: recalcula da próxima vez */ }
-    } catch (e) {
-      aviso = `Não deu para usar ${salvo.nome} (${e.message}); voltando ao currículo padrão.`;
-      try { localStorage.removeItem(CHAVE_CURRICULO); } catch (e2) {}
-    }
-    msg.classList.remove('visivel');
+    lista = lerLista(await baixar(PASTA + 'lista.txt'));
+    gravar(CHAVE_LISTA, lista);
+  } catch (e) {
+    lista = lerChave(CHAVE_LISTA);
   }
-  iniciar(dados || DADOS, dados ? { nome: salvo.nome, texto: salvo.texto } : { aviso });
+  if (!lista || !lista.length) lista = [{ arquivo: ARQUIVO_PADRAO, nome: 'Engenharia de Controle e Automação (2024)' }];
+
+  const salvo = lerChave(CHAVE_CURRICULO);
+  // quem já tinha um arquivo carregado antes da lista continua nele
+  let escolha = lerChave(CHAVE_SELECAO) || (salvo ? 'carregado' : null);
+  if (escolha === 'carregado' ? !salvo : !lista.some(c => 'lista:' + c.arquivo === escolha)) escolha = 'lista:' + lista[0].arquivo;
+  const carregado = escolha === 'carregado';
+  const item = carregado ? null : lista.find(c => 'lista:' + c.arquivo === escolha);
+  const chaveDados = carregado ? CHAVE_CURRICULO_DADOS : CHAVE_CURRICULO_DADOS + ':' + item.arquivo;
+  const cache = lerChave(chaveDados);
+
+  let texto = null;
+  if (carregado) texto = salvo.texto;
+  else {
+    try { texto = await baixar(PASTA + item.arquivo); }
+    catch (e) {
+      texto = cache ? cache.texto : null;  // sem rede: a última versão vista
+      if (!texto && item.arquivo !== ARQUIVO_PADRAO)
+        aviso = `Não deu para abrir ${item.arquivo} (${e.message}); mostrando o currículo padrão embutido na página.`;
+    }
+  }
+
+  let dados = null;
+  if (texto !== null && essencia(texto) === essencia(DADOS.texto)) dados = DADOS;
+  else if (texto !== null) {
+    // dados guardados antes desta versão não têm os grupos: recalcula
+    if (cache && cache.texto === texto && cache.versao === Roteador.versao && cache.dados && cache.dados.grupos) dados = cache.dados;
+    else {
+      const nome = carregado ? salvo.nome : item.nome;
+      const msg = document.getElementById('msg');
+      msg.textContent = `Calculando as linhas de ${nome}…`;
+      msg.classList.add('visivel');
+      await new Promise(r => setTimeout(r, 50));  // deixa a mensagem aparecer antes do cálculo
+      try {
+        const r = Curriculo.gerar(texto);
+        if (r.erros.length) throw new Error(r.erros.slice(0, 3).join('; '));
+        dados = r.dados;
+        gravar(chaveDados, { texto, versao: Roteador.versao, dados });  // sem espaço: recalcula da próxima vez
+      } catch (e) {
+        aviso = `Não deu para usar ${nome} (${e.message}); mostrando o currículo padrão embutido na página.`;
+      }
+      msg.classList.remove('visivel');
+    }
+  }
+  if (!dados) { dados = DADOS; texto = DADOS.texto; }
+  iniciar(dados, {
+    escolha, carregado, lista, aviso, texto,
+    rotulo: carregado ? salvo.nome : item.nome,
+    nomeArquivo: carregado ? salvo.nome : item.arquivo,
+    salvoNome: salvo && salvo.nome,
+    // o progresso é por currículo; o de DADOS mantém a chave original
+    chaveProgresso: carregado ? ':arquivo:' + salvo.nome : dados === DADOS ? '' : ':lista:' + item.arquivo,
+  });
 })();
 </script>
 </body>
